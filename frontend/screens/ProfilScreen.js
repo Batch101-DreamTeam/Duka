@@ -1,10 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
-
+import Header from '../components/Header';
 export default function Profil({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <Text style={styles.titleAc}>Welcome to Profil</Text>
+            <Header />
+            <View style={styles.containerContent}>
+                <View style={styles.SearchRow} >
+                    <FontAwesome name="search" style={styles.iconSearch} size={20} />
+                    <TextInput style={styles.inputSearch} placeholder=" Search" maxLength={200} />
+                </View>
+
+            </View>
 
 
 
@@ -15,9 +22,17 @@ export default function Profil({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+
     },
+    containerContent: {
+        flex: 1,
+
+        backgroundColor: '',
+
+    },
+
+
 
 });
