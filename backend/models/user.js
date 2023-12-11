@@ -4,10 +4,13 @@ const mongoose = require('mongoose');
 const userShema = mongoose.Schema({
       Username: String,
       IsAdmin: Boolean,
+      // defaullt false
       Mail: String,
+      // unique
       Password: String,
+      // chiffré 
       Token: String,
-      // clé Token à voir si on ne trouve pas une alt à jwt pr mobile  
+      // clé Token à voir si on ne trouve pas une alt à jwt pr mobile  (token permanant) 
       AvatarUrl: String,
       ActiveAccount: Boolean,
       Favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers' }],
