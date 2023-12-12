@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,25 +13,32 @@ import ProfilScreen from "./screens/ProfilScreen.js";
 import Photo from "./components/Photo.js";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import User from "./reducers/user.js";
+
 
 // reducer
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import storage from "redux-persist/lib/storage";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { Provider } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import user from './reducers/user';
 
-const reducers = combineReducers({ User });
 
-const persistConfig = { key: "applicationName", storage };
+const persistConfig = {
+  key: 'duka',
+  storage: AsyncStorage,
+
+};
+
+const reducers = combineReducers({ user });
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
-  reducer: persistReducer(persistConfig, reducers),
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
-});
-
-const persistor = persistStore(store);
+})
+const persistor = persistStore(store)
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -73,7 +81,7 @@ const TabNavigator = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
