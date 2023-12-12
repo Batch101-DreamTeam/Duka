@@ -1,19 +1,24 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+
 import Header from '../components/Header';
+import InputSearch from '../components/inputSearch';
+// const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
+
 export default function AcceuilScreen({ navigation }) {
     return (
+
+
 
         <View style={styles.container}>
 
             <Header />
+            <InputSearch />
             <View style={styles.containerContent}>
-                <View style={styles.SearchRow} >
-                    <FontAwesome name="search" style={styles.iconSearch} size={20} />
-                    <TextInput style={styles.inputSearch} placeholder=" Search" maxLength={200} />
-                </View>
 
             </View>
+
+
+
 
 
 
@@ -29,28 +34,14 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         // justifyContent: 'center',
     },
+
     containerContent: {
         flex: 1,
+        borderRadius: 20,
         // marginTop: 100,
-        backgroundColor: '',
+        backgroundColor: 'white',
         // alignItems: 'center',
         // justifyContent: 'center',
     },
-    SearchRow: {
-        flexDirection: 'row',
-        borderWidth: 2,
-        borderRadius: 10
-    },
-    inputSearch: {
-        height: 40,
-        width: 300,
-        borderRadius: 10,
-
-    },
-    iconSearch: {
-        alignSelf: 'flex-start',
-        padding: 10
-    },
-
 
 });

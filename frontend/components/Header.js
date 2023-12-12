@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         borderBottomWidth: 1,
-        marginBottom: 10,
-        backgroundColor: '#10A840',
+        marginBottom: 0,
+        backgroundColor: 'white',
         marginTop: 30,
     },
     duka: {
