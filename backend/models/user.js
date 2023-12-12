@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const userShema = mongoose.Schema({
       username: String,
       isAdmin: Boolean,
+      onSale: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers'}],
       // defaullt false
       mail: {
             type: String,
