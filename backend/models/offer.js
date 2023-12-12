@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const offerShema = mongoose.Schema({
   seller: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+  sellerName: String,
   name: String,
   sold: Boolean,
   images: [String],
@@ -11,6 +12,8 @@ const offerShema = mongoose.Schema({
   category: String,
   dateOfCreation: Date,
   locations: [String],
+  category: [String],
+  // cateories déja définies
 });
 
 
