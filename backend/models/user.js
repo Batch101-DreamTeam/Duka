@@ -5,8 +5,10 @@ const userShema = mongoose.Schema({
       username: String,
       isAdmin: Boolean,
       // defaullt false
-      mail: String,
-      // unique
+      mail: {
+            type: String,
+            unique: true // `email` must be unique
+          },
       password: String,
       // chiffré 
       token: String,
