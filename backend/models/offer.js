@@ -1,17 +1,18 @@
-const mongoose  =  require('mongoose');
+const mongoose = require('mongoose');
 
 
-const offerShema =  mongoose.Schema  ({
-      Seller :  { type: mongoose.Schema.Types.ObjectId, ref: 'users'},
-      Sold : Boolean,
-      Images : [ String ],
-      Description : String,
-      Price : Number,
-      DateOfCreation : Date,
-      Locations : [String],
-    });
+const offerShema = mongoose.Schema({
+  seller: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+  name: String,
+  sold: Boolean,
+  images: [String],
+  description: String,
+  price: Number,
+  dateOfCreation: Date,
+  locations: [String],
+});
 
-    
+
 const Offer = mongoose.model('offers', offerShema);
 
-module.exports = offerShema; 
+module.exports = Offer; 

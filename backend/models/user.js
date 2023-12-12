@@ -2,23 +2,23 @@ const mongoose = require('mongoose');
 
 //host et traveller sont des clés liées à pusher (système de chat)
 const userShema = mongoose.Schema({
-      Username: String,
-      IsAdmin: Boolean,
+      username: String,
+      isAdmin: Boolean,
       // defaullt false
-      Mail: String,
+      mail: String,
       // unique
-      Password: String,
+      password: String,
       // chiffré 
-      Token: String,
+      token: String,
       // clé Token à voir si on ne trouve pas une alt à jwt pr mobile  (token permanant) 
-      AvatarUrl: String,
-      ActiveAccount: Boolean,
-      Favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers' }],
-      Reputation: Boolean,
+      avatarUrl: String,
+      activeAccount: Boolean,
+      favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers' }],
+      reputation: Boolean,
       // ou moyenne des notes
-      Conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'chatChannels' }],
-      DateOfCreation: Date,
-      Location: [String]
+      conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'chatChannels' }],
+      dateOfCreation: Date,
+      location: [String]
 });
 
 const User = mongoose.model('users', userShema);
