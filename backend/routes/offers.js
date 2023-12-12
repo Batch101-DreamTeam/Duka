@@ -4,7 +4,7 @@ const Offer = require("../models/offer");
 const { checkBody } = require('../modules/checkBody');
 
 router.post('/addOffer', (req, res) => {
-    if (!checkBody(req.body, ['name', 'description', 'price', 'locations'])) { // liste des champs obligatoires
+    if (!checkBody(req.body, ['name', 'description', 'price', 'locations'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
         res.json({ result: false, error: 'Missing or empty fields' });
         return;
     }
@@ -17,8 +17,8 @@ router.post('/addOffer', (req, res) => {
                 images: req.body.images,
                 description: req.body.description,
                 price: req.body.price,
-                dateOfCreation: req.body.date,
-                locations: req.body.location,
+                dateOfCreation: req.body.date, //la donnée sera donnée dans le front
+                locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
 
             })
             newOffer.save()
