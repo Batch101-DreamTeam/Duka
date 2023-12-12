@@ -1,7 +1,7 @@
 import { StyleSheet, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 
 import Header from '../components/Header';
-import InputSearch from '../components/inputSearch';
+import InputSearch from '../components/InputSearch';
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function AcceuilScreen({ navigation }) {
