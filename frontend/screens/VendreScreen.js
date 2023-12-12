@@ -10,7 +10,6 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Camera, CameraType, FlashMode } from 'expo-camera';
 import { Foundation } from '@expo/vector-icons';
-import { useIsFocused } from '@react-navigation/native';
 
 export default function Vendre({ navigation }) {
     const [name, setName] = useState('');
@@ -22,8 +21,7 @@ export default function Vendre({ navigation }) {
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
     const [fillField, setFillField] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
-    const [hasPermission, setHasPermission] = useState(false);
-    const isFocused = useIsFocused();
+
 
     //const user = useSelector((state) => state.user.value);
 
@@ -46,12 +44,12 @@ export default function Vendre({ navigation }) {
                 body: JSON.stringify({
                     seller: 'id',//prendre valeur reducer (id)
                     name: name,
-                    images: 'image',
+                    images: 'image',// recup dans le reducer
                     category: category,
                     description: description,
                     price: price,
-                    dateOfCreation: date, //valeur reducer
-                    locations: locations, // à récupérer sous forme de liste déroulante dans le front
+                    dateOfCreation: date,
+                    locations: locations,
                 }),
             })
                 .then(response => response.json())
