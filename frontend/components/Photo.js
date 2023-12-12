@@ -6,9 +6,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useIsFocused } from "@react-navigation/native";
 
 
-export default function Photo() {
+export default function Photo(navigation) {
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
     const [hasPermission, setHasPermission] = useState(false);
@@ -28,20 +28,21 @@ export default function Photo() {
 
     const takePicture = async () => {
         const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
+        console.log(photo.uri)
         formData.append('photoFromFront', {
             uri: photo.uri,
             name: 'photo.jpg',
             type: 'image/jpeg',
         });
 
-        fetch('http://172.16.0.153:3000/upload', {
+        fetch('http://172.16.0.153:3000/offers/upload', {
             method: 'POST',
             body: formData,
         }).then((response) => response.json())
             .then((data) => {
             });
 
-        dispatch(addPhoto(photo.uri));
+        //dispatch(addPhoto(photo.uri));
     }
 
     if (!hasPermission || !isFocused) {
