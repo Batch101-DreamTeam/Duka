@@ -1,9 +1,72 @@
 var express = require('express');
 var router = express.Router();
+const { checkBody } = require('./../modules/checkBody');
+const User = require('./../models/user')
+const uid2 = require('uid2');
+const bcrypt = require('bcrypt');
+
+
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+
+router.get('/connexion', async(req, res, next) => {
+  if (!checkBody(req.body, ['name', 'description', 'price', 'locations'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
+    res.json({ result: false, error: 'Missing or empty fields' });
+    return;
+} 
+  const alreadyFound = await User.findOne({mail: req.body.mail})  
+  if(!alreadyFound){
+    res.status(400).json({ result: false, message: "aucun utilisateur trouvé"})
+    return 
+  }
+  else if(alreadyFound && bcrypt.compareSync(req.body.password, alreadyFound.password)){
+    res.status(200).json({result: true, data: {
+         username: alreadyFound.username,
+         mail: alreadyFound.mail,
+         token: alreadyFound.token,
+    }})
+  }
+  
+});
+
+
+router.get('/incription', async(req, res, next)=> {
+  if (!checkBody(req.body, ['name', 'description', 'price', 'locations'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
+    res.json({ result: false, error: 'Missing or empty fields' });
+    return;
+} 
+  const alreadyFound = await User.findOne({mail: req.body.mail})  
+if(!alreadyFound){
+  const hash = bcrypt.hashSync('password', 10);
+
+  const newUser = new User({
+    token: uid2(32),
+    username: req.body.username,
+    password: hash,
+    avatarUrl: "",
+    activeAccount: true,
+    mail: req.body.mail,
+    isAdmin: false,
+    favorites: [],
+    reputation: true,
+    conversations: [],
+    dateOfCreation: new Date(),
+    location: []
+});
+
+newUser.save()
+.then((data)=>{
+   res.status(200).json({
+     result: true, 
+     data: newUser
+   })
+
+})   
+}
+});
+
 
 module.exports = router;
