@@ -8,6 +8,7 @@ const offerShema = mongoose.Schema({
   images: [String],
   description: String,
   price: Number,
+  category: String,
   dateOfCreation: Date,
   locations: [String],
 });
