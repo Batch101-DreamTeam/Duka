@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Modal, Pressable, Image, Alert } from 'react-native';
 import Header from '../components/Header';
 import { useState, useEffect } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -10,6 +10,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Camera, CameraType, FlashMode } from 'expo-camera';
 import { Foundation } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function Vendre({ navigation }) {
     const [name, setName] = useState('');
@@ -21,8 +22,21 @@ export default function Vendre({ navigation }) {
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
     const [fillField, setFillField] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
+    const [image, setImage] = useState(null); // image cherché depuis la bibliothèque du téléphone
 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
 
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
     //const user = useSelector((state) => state.user.value);
 
     let date = new Date().toJSON();
@@ -98,7 +112,7 @@ export default function Vendre({ navigation }) {
                     }}>
                     <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
                         <View style={styles.modalView}>
-                            <TouchableOpacity style={styles.send}>
+                            <TouchableOpacity style={styles.send} onPress={pickImage}>
                                 <Foundation name="photo" size={24} color="white" style={styles.iconModal} />
                                 <Text style={styles.whiteSmall}>
                                     A partir de la bibliothèque
@@ -112,6 +126,7 @@ export default function Vendre({ navigation }) {
                             </TouchableOpacity >
                         </View>
                     </Pressable>
+                    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
                 </Modal>
                 <View style={styles.SearchRow} >
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />

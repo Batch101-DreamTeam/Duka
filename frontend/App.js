@@ -45,35 +45,37 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName = "";
+    <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName = '';
 
-          if (route.name === "Acceuil") {
-            iconName = "home";
-          } else if (route.name === "Favoris") {
-            iconName = "heart";
-          } else if (route.name === "Vendre") {
-            iconName = "plus";
-          } else if (route.name === "Message") {
-            iconName = "envelope";
-          } else if (route.name === "Profil") {
-            iconName = "user";
-          }
+        if (route.name === 'Acceuil') {
+          iconName = 'home';
+        } else if (route.name === 'Favoris') {
+          iconName = 'heart';
+        }
+        else if (route.name === 'Vendre') {
+          iconName = 'plus';
+        }
+        else if (route.name === 'Message') {
+          iconName = 'envelope';
+        }
+        else if (route.name === 'Profil') {
+          iconName = 'user';
+        }
 
-          return <FontAwesome name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: "#ec6e5b",
-        tabBarInactiveTintColor: "#335561",
-        headerShown: false,
-      })}
-    >
+        return <FontAwesome name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#ec6e5b',
+      tabBarInactiveTintColor: '#335561',
+      headerShown: false,
+    })}>
       <Tab.Screen name="Acceuil" component={AcceuilScreen} />
       <Tab.Screen name="Favoris" component={FavorisScreen} />
       <Tab.Screen name="Vendre" component={VendreScreen} />
       <Tab.Screen name="Message" component={MessageScreen} />
       <Tab.Screen name="Profil" component={ProfilScreen} />
+
     </Tab.Navigator>
   );
 };
