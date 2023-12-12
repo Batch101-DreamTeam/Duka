@@ -2,21 +2,27 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 const initialState = {
-  value: { email: null, photos: [] },
+  value: { name: null, token: null, photos: [] },
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-     connexion: (state, action)=>{
-         console.log('connexion')
-     },
-     inscription: (state, action)=>{
-         console.log('inscription')
-     }
+    updateName: (state, action) => {
+      state.value.name = action.payload;
+    },
+    token: (state, action) => {
+      state.value.name = action.payload;
+    },
+    addPhoto: (state, action) => {
+      state.value.photos.push(action.payload)
+    },
+    removePhoto: (state, action) => {
+      state.value.photos = state.value.photos.filter((data) => data !== action.payload);
+    },
   },
 });
 
-export const { connexion, inscription } = userSlice.actions;
+export const { updateName, token, addPhoto, removePhoto } = userSlice.actions;
 export default userSlice.reducer;

@@ -4,11 +4,12 @@ import { Camera, CameraType, FlashMode } from 'expo-camera';
 import { useDispatch, useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useIsFocused } from "@react-navigation/native";
+import { addPhoto } from '../reducers/user';
 
 
 export default function Photo(navigation) {
 
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
     const [hasPermission, setHasPermission] = useState(false);
@@ -42,7 +43,7 @@ export default function Photo(navigation) {
             .then((data) => {
             });
 
-        //dispatch(addPhoto(photo.uri));
+        dispatch(addPhoto(photo.uri));
     }
 
     if (!hasPermission || !isFocused) {
