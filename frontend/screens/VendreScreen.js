@@ -1,6 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import Header from '../components/Header';
+import { useState } from 'react';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 export default function Vendre({ navigation }) {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [locations, setLocations] = useState('');
     return (
         <View style={styles.container}>
 
