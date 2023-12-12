@@ -1,30 +1,38 @@
 var express = require('express');
 var router = express.Router();
-
+const User  = require('./../models/user')
 const Offer = require("../models/offer");
 const { checkBody } = require('../modules/checkBody');
 const uniqid = require('uniqid');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
-router.post('/addOffer', (req, res) => {
-    if (!checkBody(req.body, ['name', 'description', 'price', 'locations'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
+router.post('/addOffer', async(req, res) => {
+    if (!checkBody(req.body, ['name', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
         res.json({ result: false, error: 'Missing or empty fields' });
         return;
     }
+    const potentielUser = await User.findOne({
+        // username: req.body.seller,
+        token: req.body.token
+    });
+    if(!potentielUser){
+        console.log(potentielUser)
+        return 
+    }
+    const potentielId = potentielUser._id
     Offer.findOne({ name: req.body.name }).then(data => { // seller: req.body.username  verification de si l'offre existe deja dans la bdd avec l'id du vendeur et le nom de l'offre
         if (data === null) {
             const newOffer = new Offer({
-                seller: 'req.body.seller',//le req.body.seller sera  prit dans le reducer (id)
+                seller: potentielId,//le req.body.seller sera  prit dans le reducer (id)
                 sold: false,
                 name: req.body.name,
-                images: 'req.body.images',
+                images: req.body.images,
                 description: req.body.description,
                 category: req.body.category,
                 price: req.body.price,
                 dateOfCreation: req.body.date, //la donnée sera donnée dans le front
                 locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
-
             })
             newOffer.save()
                 .then(offer => {
