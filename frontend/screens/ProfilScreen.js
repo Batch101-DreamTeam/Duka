@@ -6,8 +6,6 @@ export default function Profil({ navigation }) {
 
             <Text style={styles.titleAc}>Welcome to Profil</Text>
 
-
-
         </View>
     );
 }
