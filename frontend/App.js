@@ -9,6 +9,7 @@ import FavorisScreen from './screens/FavorisScreen';
 import VendreScreen from './screens/VendreScreen.js';
 import MessageScreen from './screens/MessageScreen.js';
 import ProfilScreen from './screens/ProfilScreen.js';
+import Photo from './components/Photo.js';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createNativeStackNavigator();
@@ -59,6 +60,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        <Stack.Screen name="Photo" component={Photo} />
       </Stack.Navigator>
     </NavigationContainer>
   );

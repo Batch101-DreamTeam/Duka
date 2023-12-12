@@ -1,12 +1,16 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Modal, Pressable } from 'react-native';
 import Header from '../components/Header';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectDropdown from 'react-native-select-dropdown'
+import { MaterialIcons } from '@expo/vector-icons';
+import { Camera, CameraType, FlashMode } from 'expo-camera';
+import { Foundation } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Vendre({ navigation }) {
     const [name, setName] = useState('');
@@ -17,10 +21,14 @@ export default function Vendre({ navigation }) {
     const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
     const [fillField, setFillField] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false);
+    const [hasPermission, setHasPermission] = useState(false);
+    const isFocused = useIsFocused();
 
     //const user = useSelector((state) => state.user.value);
 
     let date = new Date().toJSON();
+
 
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
@@ -60,6 +68,9 @@ export default function Vendre({ navigation }) {
         }
     }
 
+    const takePicture = () => {
+        navigation.navigate('Photo')
+    }
 
     return (
         //mettre condition pour savoir si la personne est connecté
@@ -74,6 +85,36 @@ export default function Vendre({ navigation }) {
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.inputSearch} placeholder=" Nom" maxLength={200} />
                 </View>
+                <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
+                    <Text>Ajoutez des photos</Text>
+                    <MaterialIcons name="add-a-photo" size={55} color="black" />
+                </TouchableOpacity>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setModalVisible(!modalVisible);
+                        console.log(modalVisible)
+                    }}>
+                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
+                        <View style={styles.modalView}>
+                            <TouchableOpacity style={styles.send}>
+                                <Foundation name="photo" size={24} color="white" style={styles.iconModal} />
+                                <Text style={styles.whiteSmall}>
+                                    A partir de la bibliothèque
+                                </Text>
+                            </TouchableOpacity >
+                            <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
+                                <FontAwesome name="camera" size={24} color="white" style={styles.iconModal} />
+                                <Text style={styles.whiteSmall}>
+                                    Prendre une photo
+                                </Text>
+                            </TouchableOpacity >
+                        </View>
+                    </Pressable>
+                </Modal>
                 <View style={styles.SearchRow} >
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.inputSearch} placeholder=" Description" maxLength={200} />
@@ -139,7 +180,6 @@ export default function Vendre({ navigation }) {
             </View>
 
 
-
         </View>
     );
 }
@@ -154,6 +194,7 @@ const styles = StyleSheet.create({
     containerContent: {
         flex: 1,
         backgroundColor: '',
+        alignItems: 'center'
 
     },
     box: {
@@ -198,6 +239,11 @@ const styles = StyleSheet.create({
         fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
+    whiteSmall: {
+        color: 'white',
+        fontFamily: 'MontserratMedium',
+        fontSize: 12,
+    },
     send: {
         flexDirection: "row",
         padding: 18,
@@ -207,8 +253,48 @@ const styles = StyleSheet.create({
         backgroundColor: "#60935D",
         fontFamily: 'MontserratMedium',
         fontSize: 20,
+        width: '85%',
+        marginBottom: 10
+    },
+    addPicture: {
+        width: '50%',
+        height: '30%',
+        borderWidth: 1,
+        margin: 8,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    ModalAcceuil: {
+        backgroundColor: 'transparent',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+        marginBottom: 48,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconModal: {
+        marginRight: 10
     }
-
-
 
 });
