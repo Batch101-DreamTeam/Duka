@@ -85,13 +85,18 @@ router.get('/:offerId', async(req, res, next)=>{
       }
 })
 
-router.post('/search', (req, res, next)=>{
-    const allOffers = Offer.find({
-        // category: req.body.category / 
-        // place: req.body.places
-        // name: req.body.name
+router.post('/search', async(req, res, next)=>{
+    const allOffers = await Offer.find({
+        name: req.body.name,
+        locations: req.body.locations[0]
     })
+    if(!allOffers.length){
+        res.status(400).json({result: false, message: 'no offers founded'})
+        return 
+    }
+    else{
     res.status(200).json({result: true, allOffers})
+    }
 })
 // trop de params pas définis :en pause
 
