@@ -42,7 +42,7 @@ export default function Vendre({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
     const token = user.token
-    console.log(token)
+    console.log(user)
 
     let date = new Date().toJSON();
 
@@ -94,7 +94,7 @@ export default function Vendre({ navigation }) {
         <View style={styles.container}>
 
             <Header />
-            {token ? <View style={styles.containerContent}>
+            {token != undefined ? <View style={styles.containerContent}>
                 <View style={styles.box}>
                     <Text style={styles.textBox}>Ajouter une vente</Text>
                 </View>
@@ -111,7 +111,6 @@ export default function Vendre({ navigation }) {
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
                         setModalVisible(!modalVisible);
                         console.log(modalVisible)
                     }}>

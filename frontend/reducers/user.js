@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
@@ -15,7 +15,7 @@ export const userSlice = createSlice({
     updateMail: (state, action) => {
       state.value.mail = action.payload;
     },
-    token: (state, action) => {
+    updateToken: (state, action) => {
       state.value.token = action.payload;
     },
     addPhoto: (state, action) => {
@@ -27,5 +27,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { updateName, updateMail, token, addPhoto, removePhoto } = userSlice.actions;
+export const { updateName, updateMail, updateToken, addPhoto, removePhoto } = userSlice.actions;
 export default userSlice.reducer;

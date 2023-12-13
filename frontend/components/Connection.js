@@ -2,7 +2,7 @@ import { StyleSheet, ImageBackground, Text, View, TouchableOpacity, SafeAreaView
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateName, token, updateMail } from '../reducers/user'
+import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 
 
@@ -54,8 +54,8 @@ export default function Connection(navigation) {
                     console.log(data)
                     if (data.result) {
                         dispatch(updateName(data.data.username))
-                        dispatch(token(data.data.token))
-                        dispatch(updateMail(data.data.mail))
+                        dispatch(updateToken(data.data.token))
+                        dispatch(updateMail(data.data.mail)) // ajouter la photo de profil
                     } else {
                         if (data.message === "no user found") {
                             setUserNotFound(false)

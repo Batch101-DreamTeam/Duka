@@ -2,7 +2,7 @@ import { StyleSheet, ImageBackground, Text, View, TouchableOpacity, SafeAreaView
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateName, token, updateMail } from '../reducers/user'
+import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 
 
@@ -22,8 +22,8 @@ export default function Inscription(navigation) {
 
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const user = useSelector((state) => state.user.value);
-    const token = user.token
-    //console.log(user)
+    const tokens = user.token
+    console.log('oui', user.name)
 
     useEffect(() => {
         if (isFocused) {
@@ -63,11 +63,11 @@ export default function Inscription(navigation) {
                         console.log(data)
                         if (data.result) {
                             dispatch(updateName(data.data.username))
-                            dispatch(token(data.data.token))
-                            dispatch(updateMail(data.data.mail))
+                            dispatch(updateToken(data.data.token))
+                            dispatch(updateMail(data.data.mail)) // ajouter la photo de profil
                         } else {
                             if (data.message === "user already exists") {
-                                setUserNotFound(false)
+                                setUserExist(false)
                             } else if (data.message === "Missing or empty fields") {
                                 setMissingField(false)
                             }
@@ -90,7 +90,6 @@ export default function Inscription(navigation) {
                 visible={modalVisible}
                 onRequestClose={() => {
                     setModalVisible(!modalVisible);
-                    console.log(modalVisible)
                 }}>
                 <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}></Pressable>
                 <View style={styles.modalView}>
@@ -102,7 +101,7 @@ export default function Inscription(navigation) {
                     {!wrong ? < Text style={styles.erreur} > Veuillez entre une adresse mail</Text> : <></>}
                     <TextInput onChangeText={(value) => setPassword(value)} value={password} style={styles.input} placeholder=" Password" maxLength={200} secureTextEntry={true} />
                     <TextInput onChangeText={(value) => setConfirmPassword(value)} value={confirmPassword} style={styles.input} placeholder=" Confirm Password" maxLength={200} secureTextEntry={true} />
-                    {!userExist ? < Text style={styles.erreur} > Adresse Mail non valide</Text> : <></>}
+                    {!userExist ? < Text style={styles.erreur} > Adresse Mail dejà existante</Text> : <></>}
                     {!missingField ? < Text style={styles.erreur} > Veuillez remplir tout les champs</Text> : <></>}
                     {!passwordDifferent ? < Text style={styles.erreur} >Veuillez entrer le même mot de passe</Text> : <></>}
                     <TouchableOpacity onPress={() => checkConnection()} style={styles.btnConnexion} >
