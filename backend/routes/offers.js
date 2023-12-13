@@ -53,7 +53,6 @@ router.post('/addOffer', async (req, res) => {
 
 router.post('/upload', async (req, res) => {
     const photoPath = `./tmp/${uniqid()}.jpg`;
-    console.log(req.files)
     const resultMove = await req.files.photoFromFront.mv(photoPath);
     const resultCloudinary = await cloudinary.uploader.upload(photoPath);
 

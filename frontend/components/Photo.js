@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 
+
 export default function Photo({ navigation }) {
 
     const dispatch = useDispatch();
@@ -21,6 +22,16 @@ export default function Photo({ navigation }) {
     const formData = new FormData();
 
     let cameraRef = useRef(null);
+
+    useEffect(() => {
+        if (isFocused) {
+            //Update the state you want to be updated
+            setPhotoTake('')
+
+        }
+
+    }, [isFocused]);
+
 
     useEffect(() => {
         (async () => {
@@ -40,7 +51,7 @@ export default function Photo({ navigation }) {
         });
         setPhotoTake(photo.uri)
     }
-    const savePhoto = () => {
+    const savePhoto = () => { // a deplacer dans VendreScreen (dans le fetchde la route backend: va permettre de sauvegarder également ls photos du repertoir dans cloudinary)
         fetch('http://192.168.0.23:3000/offers/upload', { //http://172.16.0.153:3000/offers/upload
             method: 'POST',
             body: formData,
@@ -48,8 +59,8 @@ export default function Photo({ navigation }) {
             .then((data) => {
             });
         console.log('oui')
-        dispatch(addPhoto(photoTake));
-        navigation.navigate('VendreScreen')
+        dispatch(addPhoto(photoTake)); // reste ici
+        navigation.navigate('VendreScreen')// reste ici
     }
 
     if (!hasPermission || !isFocused) {

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Modal, Pressable, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Modal, Pressable, Image, Alert, ImageBackground } from 'react-native';
 import Header from '../components/Header';
 import { useState, useEffect } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -12,8 +12,12 @@ import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import Connection from '../components/Connection';
 import Inscription from '../components/Inscription';
+import { AntDesign } from '@expo/vector-icons';
+import { removePhoto, addPhoto } from '../reducers/user'
 
 export default function Vendre({ navigation }) {
+    const dispatch = useDispatch();
+
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -35,16 +39,19 @@ export default function Vendre({ navigation }) {
         });
 
         if (!result.canceled) {
+            console.log(result.assets)
             setImage(result.assets[0].uri);
+            dispatch(addPhoto(result.assets[0].uri))
+            setModalVisible(false)
         }
     };
 
     const user = useSelector((state) => state.user.value);
     const token = user.token
-    console.log(user)
+    const photoReducer = user.photos
+    console.log("reducer:", photoReducer)
 
-    let date = new Date().toJSON();
-
+    let date = new Date().toJSON(); // obtenir la date du jour
 
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
@@ -62,7 +69,7 @@ export default function Vendre({ navigation }) {
                 body: JSON.stringify({
                     seller: 'id',//prendre valeur reducer (id)
                     name: name,
-                    images: 'image',// recup dans le reducer
+                    images: photoReducer,// recup dans le reducer
                     category: category,
                     description: description,
                     price: price,
@@ -87,6 +94,19 @@ export default function Vendre({ navigation }) {
     const takePicture = () => {
         navigation.navigate('Photo')
     }
+
+    const deletePhotoDisplay = (picture) => {
+        dispatch(removePhoto(picture))
+    }
+    const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une mite max?)
+        return (
+            <ImageBackground key={i} source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
+                <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
+                    <AntDesign name="closecircle" size={30} color="black" style={{ marginLeft: '75%', marginTop: 10 }} />
+                </TouchableOpacity>
+            </ImageBackground>
+        );
+    });
 
     return (
         <View style={styles.container}>
@@ -128,8 +148,11 @@ export default function Vendre({ navigation }) {
                             </TouchableOpacity >
                         </View>
                     </Pressable>
-                    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                    {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
                 </Modal>
+                <View style={styles.photoReducer}>
+                    {photos}
+                </View>
                 <View style={styles.SearchRow} >
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.inputSearch} placeholder=" Description" maxLength={200} />
@@ -277,8 +300,8 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     addPicture: {
-        width: '50%',
-        height: '30%',
+        width: '40%',
+        height: '15%',
         borderWidth: 1,
         margin: 8,
         justifyContent: 'center',
@@ -322,6 +345,9 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center',
         marginTop: 5
+    },
+    photoReducer: {
+        flexDirection: 'row'
     }
 
 });
