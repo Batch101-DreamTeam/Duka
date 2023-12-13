@@ -1,7 +1,18 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { AntDesign } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateName, updateToken, updateMail } from '../reducers/user'
+
 
 export default function Header({ navigation }) {
+    const dispatch = useDispatch();
+    const logout = () => {
+        dispatch(updateName(null))
+        dispatch(updateToken(null))
+        dispatch(updateMail(null))
+    }
+
     return (
         <>
 
@@ -12,6 +23,9 @@ export default function Header({ navigation }) {
                 <View style={styles.topRightHeader} >
                     <TouchableOpacity style={styles.iconRightHeader}>
                         <FontAwesome name="bell" size={30} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
+                        <AntDesign name="logout" size={24} color="black" />
                     </TouchableOpacity>
 
                 </View>
