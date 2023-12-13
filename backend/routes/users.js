@@ -18,12 +18,12 @@ router.post('/connexion', async (req, res, next) => {
     return;
   }
   const alreadyFound = await User.findOne({ mail: req.body.mail })
+  console.log(req.body.password)
   if (!alreadyFound) {
     res.status(400).json({ result: false, message: "no user found" })
     return
   }
   if (alreadyFound && bcrypt.compareSync(req.body.password, alreadyFound.password)) {
-    // console.log(alreadyFound)
     res.status(200).json({
       result: true, data: {
         username: alreadyFound.username,
@@ -48,7 +48,7 @@ router.post('/inscription', async (req, res, next) => {
   }
   const alreadyFound = await User.findOne({ mail: req.body.mail })
   if (!alreadyFound) {
-    const hash = bcrypt.hashSync('password', 10);
+    const hash = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
       token: uid2(32),
       username: req.body.username,
@@ -84,22 +84,22 @@ router.post('/inscription', async (req, res, next) => {
 });
 
 
-router.get('/:token', async (req, res, next)=>{
-      const argument = req.params.token;
-      if(!argument){
-        res.status(400).json({result: false, message: "wrong request"});
-        return 
-      }
-      else{
-        const target = await User.findOne({token: argument});
-        if(!target){
-          res.status(400).json({result: false, message:'wrong token'})
-          return 
-        }
-        else{
-          res.status(200).json({result: true, target});
-        }
-      }
+router.get('/:token', async (req, res, next) => {
+  const argument = req.params.token;
+  if (!argument) {
+    res.status(400).json({ result: false, message: "wrong request" });
+    return
+  }
+  else {
+    const target = await User.findOne({ token: argument });
+    if (!target) {
+      res.status(400).json({ result: false, message: 'wrong token' })
+      return
+    }
+    else {
+      res.status(200).json({ result: true, target });
+    }
+  }
 })
 
 
