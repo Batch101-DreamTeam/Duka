@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const User  = require('./../models/user')
+const User = require('./../models/user')
 const Offer = require("../models/offer");
 const { checkBody } = require('../modules/checkBody');
 const uniqid = require('uniqid');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
-router.post('/addOffer', async(req, res) => {
+router.post('/addOffer', async (req, res) => {
 
     // verif de l'existence du produit dans la db
     if (!checkBody(req.body, ['name', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
@@ -18,9 +18,9 @@ router.post('/addOffer', async(req, res) => {
         // username: req.body.seller,
         token: req.body.token
     });
-    if(!potentielUser){
+    if (!potentielUser) {
         console.log(potentielUser)
-        return 
+        return
     }
     const potentielId = potentielUser._id
     const sellerName = potentielUser.username
@@ -67,35 +67,37 @@ router.post('/upload', async (req, res) => {
 
 });
 
-router.get('/:offerId', async(req, res, next)=>{
-      const argument = req.params.offerId;
-      if(!argument){
-        res.status(400).json({result: false, message: "wrong request"})
-        return 
-      }
-      else {
-        const targettedOffer = await Offer.findOne({_id: argument})
-        if(!targettedOffer){
-            res.status(400).json({result: false, message: "no offer founded"})
-            return 
+router.get('/:offerId', async (req, res, next) => {
+    const argument = req.params.offerId;
+    if (!argument) {
+        res.status(400).json({ result: false, message: "wrong request" })
+        return
+    }
+    else {
+        const targettedOffer = await Offer.findOne({ _id: argument })
+        if (!targettedOffer) {
+            res.status(400).json({ result: false, message: "no offer founded" })
+            return
         }
-        else{
-            res.status(200).json({result: true, message: targettedOffer})
+        else {
+            res.status(200).json({ result: true, message: targettedOffer })
         }
-      }
+    }
 })
 
-router.post('/search', async(req, res, next)=>{
+
+
+router.post('/search', async (req, res, next) => {
     const allOffers = await Offer.find({
         name: req.body.name,
-        locations: req.body.locations[0]
+
     })
-    if(!allOffers.length){
-        res.status(400).json({result: false, message: 'no offers founded'})
-        return 
+    if (!allOffers.length) {
+        res.status(400).json({ result: false, message: 'no offers founded' })
+        return
     }
-    else{
-    res.status(200).json({result: true, allOffers})
+    else {
+        res.status(200).json({ result: true, allOffers })
     }
 })
 // trop de params pas définis :en pause

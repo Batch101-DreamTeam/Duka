@@ -2,6 +2,7 @@ import { StyleSheet, ImageBackground, Text, View, TouchableOpacity, SafeAreaView
 
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
+import ResultSearch from '../components/ResultSearch';
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function AcceuilScreen({ navigation }) {
@@ -14,7 +15,7 @@ export default function AcceuilScreen({ navigation }) {
             <Header />
             <InputSearch />
             <View style={styles.containerContent}>
-
+                <ResultSearch />
             </View>
 
 
