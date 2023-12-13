@@ -36,6 +36,10 @@ export default function Connection(navigation) {
     }, [isFocused]);
 
     const checkConnection = () => {
+        setWrong(true)
+        setUserNotFound(true)
+        setMissingField(true)
+        setAuthentification(true)
         if (EMAIL_REGEX.test(email)) {
             fetch('http://192.168.0.23:3000/users/connexion', { //'http://172.16.0.153:3000/users/connexion'
                 method: 'POST',

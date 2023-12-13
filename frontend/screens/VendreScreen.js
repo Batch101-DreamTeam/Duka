@@ -12,6 +12,7 @@ import { Camera, CameraType, FlashMode } from 'expo-camera';
 import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import Connection from '../components/Connection';
+import Inscription from '../components/Inscription';
 
 export default function Vendre({ navigation }) {
     const [name, setName] = useState('');
@@ -194,7 +195,11 @@ export default function Vendre({ navigation }) {
                 {!fillField ? <Text>Veuillez remplir les champs correctement</Text> : <></>}
 
 
-            </View> : <Connection />}
+            </View> :
+                <View style={styles.container}>
+                    <Connection />
+                    <Inscription />
+                </View>}
 
 
         </View>
