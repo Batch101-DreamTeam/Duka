@@ -11,6 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Camera, CameraType, FlashMode } from 'expo-camera';
 import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import Connection from '../components/Connection';
 
 export default function Vendre({ navigation }) {
     const [name, setName] = useState('');
@@ -37,7 +38,10 @@ export default function Vendre({ navigation }) {
             setImage(result.assets[0].uri);
         }
     };
-    //const user = useSelector((state) => state.user.value);
+
+    const user = useSelector((state) => state.user.value);
+    const token = user.token
+    console.log(token)
 
     let date = new Date().toJSON();
 
@@ -89,7 +93,7 @@ export default function Vendre({ navigation }) {
         <View style={styles.container}>
 
             <Header />
-            <View style={styles.containerContent}>
+            {token ? <View style={styles.containerContent}>
                 <View style={styles.box}>
                     <Text style={styles.textBox}>Ajouter une vente</Text>
                 </View>
@@ -190,7 +194,7 @@ export default function Vendre({ navigation }) {
                 {!fillField ? <Text>Veuillez remplir les champs correctement</Text> : <></>}
 
 
-            </View>
+            </View> : <Connection />}
 
 
         </View>

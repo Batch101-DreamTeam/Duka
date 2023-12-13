@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 const initialState = {
-  value: { name: null, token: null, photos: [] },
+  value: { name: null, mail: null, token: null, photos: [] },
 };
 
 export const userSlice = createSlice({
@@ -12,8 +12,11 @@ export const userSlice = createSlice({
     updateName: (state, action) => {
       state.value.name = action.payload;
     },
+    updateMail: (state, action) => {
+      state.value.mail = action.payload;
+    },
     token: (state, action) => {
-      state.value.name = action.payload;
+      state.value.token = action.payload;
     },
     addPhoto: (state, action) => {
       state.value.photos.push(action.payload)
@@ -24,5 +27,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { updateName, token, addPhoto, removePhoto } = userSlice.actions;
+export const { updateName, updateMail, token, addPhoto, removePhoto } = userSlice.actions;
 export default userSlice.reducer;
