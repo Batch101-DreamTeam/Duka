@@ -90,6 +90,7 @@ export default function App() {
             {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="Photo" component={Photo} />
+            <Stack.Screen name="VendreScreen" component={VendreScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

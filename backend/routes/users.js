@@ -18,7 +18,7 @@ router.post('/connexion', async (req, res, next) => {
     return;
   }
   const alreadyFound = await User.findOne({ mail: req.body.mail })
-  console.log(req.body.password)
+  //console.log(req.body.password)
   if (!alreadyFound) {
     res.status(400).json({ result: false, message: "no user found" })
     return

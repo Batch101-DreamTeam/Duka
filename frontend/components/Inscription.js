@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function Inscription(navigation) {
@@ -19,6 +20,8 @@ export default function Inscription(navigation) {
     const [missingField, setMissingField] = useState(true);
     const [passwordDifferent, setPasswordDifferent] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
+    const [eye, setEye] = useState(true)
+    const [eyeTwo, setEyeTwo] = useState(true)
 
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const user = useSelector((state) => state.user.value);
@@ -36,6 +39,7 @@ export default function Inscription(navigation) {
             setConfirmPassword("")
             setUsername("")
             setPasswordDifferent(true)
+            setEye(true)
         }
 
     }, [isFocused]);
@@ -78,9 +82,18 @@ export default function Inscription(navigation) {
             setWrong(false)
         }
     }
+    const showPassword = () => {
+        setEye(!eye)
+    }
+    const showPasswordTwo = () => {
+        setEyeTwo(!eyeTwo)
+    }
 
     return (
         <View style={styles.container}>
+            <View style={styles.box}>
+                <Text style={styles.textBox}>   Inscription</Text>
+            </View>
             <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.btnConnexion}>
                 <Text style={styles.white}>Inscription par mail</Text>
             </TouchableOpacity>
@@ -93,14 +106,21 @@ export default function Inscription(navigation) {
                 }}>
                 <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}></Pressable>
                 <View style={styles.modalView}>
-                    <View style={styles.box}>
-                        <Text style={styles.textBox}>   Inscription</Text>
-                    </View>
                     <TextInput onChangeText={(value) => setUsername(value)} value={username} style={styles.input} placeholder=" Nom utilisateur" />
                     <TextInput onChangeText={(value) => setEmail(value)} value={email} style={styles.input} placeholder=" email" keyboardType="email-address" />
                     {!wrong ? < Text style={styles.erreur} > Veuillez entre une adresse mail</Text> : <></>}
-                    <TextInput onChangeText={(value) => setPassword(value)} value={password} style={styles.input} placeholder=" Password" maxLength={200} secureTextEntry={true} />
-                    <TextInput onChangeText={(value) => setConfirmPassword(value)} value={confirmPassword} style={styles.input} placeholder=" Confirm Password" maxLength={200} secureTextEntry={true} />
+                    <View style={styles.password}>
+                        <TextInput onChangeText={(value) => setPassword(value)} value={password} placeholder=" Password" maxLength={200} secureTextEntry={eye ? true : false} />
+                        <TouchableOpacity onPress={() => showPassword()}>
+                            <Ionicons name={eye ? "eye" : 'eye-off'} size={34} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.password}>
+                        <TextInput onChangeText={(value) => setConfirmPassword(value)} value={confirmPassword} placeholder=" Password" maxLength={200} secureTextEntry={eyeTwo ? true : false} />
+                        <TouchableOpacity onPress={() => showPasswordTwo()}>
+                            <Ionicons name={eyeTwo ? "eye" : 'eye-off'} size={34} color="black" />
+                        </TouchableOpacity>
+                    </View>
                     {!userExist ? < Text style={styles.erreur} > Adresse Mail dejà existante</Text> : <></>}
                     {!missingField ? < Text style={styles.erreur} > Veuillez remplir tout les champs</Text> : <></>}
                     {!passwordDifferent ? < Text style={styles.erreur} >Veuillez entrer le même mot de passe</Text> : <></>}
@@ -135,8 +155,9 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: '#60935D',
         width: '80%',
-        height: '6%',
+        height: '10%',
         borderRadius: 5,
+        marginBottom: 20
     },
 
     textBox: {
@@ -196,7 +217,18 @@ const styles = StyleSheet.create({
     },
     iconModal: {
         marginRight: 10
-    }
+    },
+    password: {
+        margin: 8,
+        borderWidth: 2,
+        height: 40,
+        width: 300,
+        borderRadius: 10,
+        fontFamily: 'MontserratMedium',
+        fontSize: 14,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
 
 
 });

@@ -24,8 +24,11 @@ export const userSlice = createSlice({
     removePhoto: (state, action) => {
       state.value.photos = state.value.photos.filter((data) => data !== action.payload);
     },
+    deleteAllPhoto: (state, action) => {
+      state.value.photos = []
+    },
   },
 });
 
-export const { updateName, updateMail, updateToken, addPhoto, removePhoto } = userSlice.actions;
+export const { updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
 export default userSlice.reducer;

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function Connection(navigation) {
@@ -16,6 +17,7 @@ export default function Connection(navigation) {
     const [userNotFound, setUserNotFound] = useState(true);
     const [missingField, setMissingField] = useState(true);
     const [authentification, setAuthentification] = useState(true);
+    const [eye, setEye] = useState(true)
 
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const user = useSelector((state) => state.user.value);
@@ -31,6 +33,7 @@ export default function Connection(navigation) {
             setAuthentification(true)
             setEmail("")
             setPassword("")
+            setEye(true)
         }
 
     }, [isFocused]);
@@ -71,15 +74,24 @@ export default function Connection(navigation) {
         }
     }
 
+    const showPassword = () => {
+        setEye(!eye)
+    }
     return (
 
         <View style={styles.container}>
             <View style={styles.box}>
-                <Text style={styles.textBox}>   Connection</Text>
+                <Text style={styles.textBox}> Connexion</Text>
             </View>
             <TextInput onChangeText={(value) => setEmail(value)} value={email} style={styles.input} placeholder=" email" keyboardType="email-address" />
             {!wrong ? < Text style={styles.erreur} > Veuillez entre une adresse mail</Text> : <></>}
-            <TextInput onChangeText={(value) => setPassword(value)} value={password} style={styles.input} placeholder=" Password" maxLength={200} secureTextEntry={true} />
+            <View style={styles.password}>
+                <TextInput onChangeText={(value) => setPassword(value)} value={password} placeholder=" Password" maxLength={200} secureTextEntry={eye ? true : false} />
+                <TouchableOpacity onPress={() => showPassword()}>
+                    <Ionicons name={eye ? "eye" : 'eye-off'} size={34} color="black" />
+                </TouchableOpacity>
+            </View>
+
             {!userNotFound ? < Text style={styles.erreur} > Adresse Mail non valide</Text> : <></>}
             {!missingField ? < Text style={styles.erreur} > Veuillez remplir tout les champs</Text> : <></>}
             {!authentification ? < Text style={styles.erreur} > Mot de passe invalide</Text> : <></>}
@@ -109,11 +121,24 @@ const styles = StyleSheet.create({
         fontFamily: 'MontserratMedium',
         fontSize: 14,
     },
+    password: {
+        margin: 8,
+        borderWidth: 2,
+        height: 40,
+        width: 300,
+        borderRadius: 10,
+        fontFamily: 'MontserratMedium',
+        fontSize: 14,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+
     box: {
         backgroundColor: '#60935D',
         width: '80%',
-        height: '6%',
+        height: '10%',
         borderRadius: 5,
+        marginTop: 20
     },
 
     textBox: {

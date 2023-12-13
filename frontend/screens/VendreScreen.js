@@ -8,7 +8,6 @@ import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectDropdown from 'react-native-select-dropdown'
 import { MaterialIcons } from '@expo/vector-icons';
-import { Camera, CameraType, FlashMode } from 'expo-camera';
 import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import Connection from '../components/Connection';
@@ -90,7 +89,6 @@ export default function Vendre({ navigation }) {
     }
 
     return (
-        //mettre condition pour savoir si la personne est connecté
         <View style={styles.container}>
 
             <Header />
@@ -196,6 +194,7 @@ export default function Vendre({ navigation }) {
 
             </View> :
                 <View style={styles.container}>
+                    <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
                     <Connection />
                     <Inscription />
                 </View>}
@@ -316,6 +315,13 @@ const styles = StyleSheet.create({
     },
     iconModal: {
         marginRight: 10
+    },
+    h3: {
+        fontFamily: 'MontserratRegular',
+        fontSize: 16,
+        color: 'black',
+        textAlign: 'center',
+        marginTop: 5
     }
 
 });
