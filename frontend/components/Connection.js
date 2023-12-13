@@ -49,9 +49,9 @@ export default function Connection(navigation) {
                 .then(data => {
                     console.log(data)
                     if (data.result) {
-                        dispatch(updateName(data.username))
-                        dispatch(token(data.token))
-                        dispatch(updateMail(data.mail))
+                        dispatch(updateName(data.data.username))
+                        dispatch(token(data.data.token))
+                        dispatch(updateMail(data.data.mail))
                     } else {
                         if (data.message === "no user found") {
                             setUserNotFound(false)
