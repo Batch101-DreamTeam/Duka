@@ -82,6 +82,23 @@ else{
 });
 
 
+router.get('/:token', async (req, res, next)=>{
+      const argument = req.params.token;
+      if(!argument){
+        res.status(400).json({result: false, message: "wrong request"});
+      }
+      else{
+        const target = await User.findOne({token: argument});
+        if(!target){
+          res.status(400).json({result: false, message:'wrong token'})
+        }
+        else{
+          res.status(200).json({result: true, target});
+        }
+      }
+})
+
+
 
 
 
