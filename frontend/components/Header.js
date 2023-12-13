@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateName, updateToken, updateMail } from '../reducers/user'
+import { updateName, updateToken, updateMail, deleteAllPhoto } from '../reducers/user'
 
 
 export default function Header({ navigation }) {
@@ -11,6 +11,7 @@ export default function Header({ navigation }) {
         dispatch(updateName(null))
         dispatch(updateToken(null))
         dispatch(updateMail(null))
+        dispatch(deleteAllPhoto())
     }
 
     return (
