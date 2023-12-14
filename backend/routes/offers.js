@@ -9,7 +9,8 @@ const fs = require('fs');
 
 router.post('/addOffer', async (req, res) => {
     // verif de l'existence du produit dans la db
-    if (!checkBody(req.body, ['name', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
+    console.log(req.body)
+    if (!checkBody(req.body, ['offerTitle', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
         res.json({ result: false, error: 'Missing or empty fields' });
         return;
     }
@@ -18,16 +19,17 @@ router.post('/addOffer', async (req, res) => {
         token: req.body.token
     });
     if (!potentielUser) {
-        console.log(potentielUser)
+        //console.log(potentielUser)
         return
     }
     const potentielId = potentielUser._id
     const sellerName = potentielUser.username
-    Offer.findOne({ name: req.body.name }).then(data => { // seller: req.body.username  verification de si l'offre existe deja dans la bdd avec l'id du vendeur et le nom de l'offre
+    Offer.findOne({ offerTitle: req.body.offerTitle }).then(data => { // seller: req.body.username  verification de si l'offre existe deja dans la bdd avec l'id du vendeur et le nom de l'offre
+        console.log(data)
         if (data === null) {
             const newOffer = new Offer({
                 sellerName,
-                seller: potentielId,//le req.body.seller sera  prit dans le reducer (id)
+                seller: potentielId,//pris dans la bdd
                 sold: false,
                 offerTitle: req.body.offerTitle,
                 images: req.body.images,
@@ -50,6 +52,7 @@ router.post('/addOffer', async (req, res) => {
 
 router.post('/upload', async (req, res) => {
     const photoPath = `./tmp/${uniqid()}.jpg`;
+    console.log('req.files', req.files)
     const resultMove = await req.files.photoFromFront.mv(photoPath);
     const resultCloudinary = await cloudinary.uploader.upload(photoPath);
 

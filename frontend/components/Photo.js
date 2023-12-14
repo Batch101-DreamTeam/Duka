@@ -19,6 +19,7 @@ export default function Photo({ navigation }) {
     const [type, setType] = useState(CameraType.back);
     const [flashMode, setFlashMode] = useState(FlashMode.off);
     const [photoTake, setPhotoTake] = useState('')
+    const [saveFormData, setSaveFormData] = useState('')
     const formData = new FormData();
 
     let cameraRef = useRef(null);
@@ -49,18 +50,24 @@ export default function Photo({ navigation }) {
             name: 'photo.jpg',
             type: 'image/jpeg',
         });
-        setPhotoTake(photo.uri)
+        //console.log(formData)
+        setPhotoTake(photo.uri)// enregistre la photo prise dans une variable d'état: permet de demander si on garde la photo ou non
+        setSaveFormData(formData)
     }
-    const savePhoto = () => { // a deplacer dans VendreScreen (dans le fetchde la route backend: va permettre de sauvegarder également ls photos du repertoir dans cloudinary)
-        fetch('http://172.16.0.153:3000/offers/upload', { //http://172.16.0.153:3000/offers/upload
-            method: 'POST',
-            body: formData,
-        }).then((response) => response.json())
-            .then((data) => {
-            });
-        console.log('oui')
-        dispatch(addPhoto(photoTake)); // reste ici
-        navigation.navigate('VendreScreen')// reste ici
+    const savePhoto = () => {
+        dispatch(addPhoto(photoTake))
+        navigation.navigate('VendreScreen')
+        // fetch('http://172.16.0.153:3000/offers/upload', {
+        //     method: 'POST',
+        //     body: saveFormData,
+        // }).then((response) => response.json())
+        //     .then(data => {
+        //         console.log(data)
+        //         dispatch(addPhoto(data.url)); //enregistre photo dans le reducer
+        //         setSaveFormData("")
+        //         setPhotoTake("")
+        //         navigation.navigate('VendreScreen')
+        //     });
     }
 
     if (!hasPermission || !isFocused) {

@@ -7,16 +7,18 @@ import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectDropdown from 'react-native-select-dropdown'
+import { SelectList } from 'react-native-dropdown-select-list'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import Connection from '../components/Connection';
 import Inscription from '../components/Inscription';
 import { AntDesign } from '@expo/vector-icons';
-import { removePhoto, addPhoto } from '../reducers/user'
+import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user'
 
 export default function Vendre({ navigation }) {
     const dispatch = useDispatch();
+
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -27,7 +29,17 @@ export default function Vendre({ navigation }) {
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
     const [fillField, setFillField] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
-    const [image, setImage] = useState(null); // image cherché depuis la bibliothèque du téléphone
+    const [offerRegister, setOfferRegister] = useState(false);
+    const [selected, setSelected] = useState("")
+    const [openPhoto, setOpenPhoto] = useState(false);
+
+    console.log(selected)
+
+
+    useEffect(() => {
+        setModalVisible(false);
+    }, []);
+
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -40,7 +52,12 @@ export default function Vendre({ navigation }) {
 
         if (!result.canceled) {
             //console.log(result.assets)
-            setImage(result.assets[0].uri);
+            const formData = new FormData();
+            formData.append('photoFromFront', {
+                uri: result.assets[0].uri,
+                name: 'photo.jpg',
+                type: 'image/jpeg',
+            })
             dispatch(addPhoto(result.assets[0].uri))
             setModalVisible(false)
         }
@@ -49,9 +66,9 @@ export default function Vendre({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
-    console.log("reducer:", photoReducer)
 
-    let date = new Date().toJSON(); // obtenir la date du jour
+
+    let dateOfTheDay = new Date(); // obtenir la date du jour
 
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
@@ -61,27 +78,56 @@ export default function Vendre({ navigation }) {
     if (!fontsLoaded) {
         return null;
     }
-    const Validate = () => {
-        if (name != "" & description != "" & price != "") {
-            fetch('http://172.16.0.153:3000/offers/addOffer', {
+
+    const Validate = async () => {
+        if (name != "" && description != "" && price != "") {
+            const photos = []
+            for (let i = 0; i < photoReducer.length; i++) { // boucle pour sauvegarder toutes les photos du reducer dns le backend
+                const formData = new FormData();
+                formData.append('photoFromFront', {
+                    uri: photoReducer[i],
+                    name: 'photo.jpg',
+                    type: 'image/jpeg',
+                });
+
+                const response = await fetch('http://192.168.166.47:3000/offers/upload', { // http://172.16.0.153:3000/offers/upload
+                    method: 'POST',
+                    body: formData,
+                })
+                const photoSaveCloudinaty = await response.json()
+
+                console.log('response trouvée : ', photoSaveCloudinaty)
+
+                photos.push(photoSaveCloudinaty.url) // stock les url cloudinary dans variable d'état
+                console.log('photos', photos)
+
+            }
+
+            fetch('http://192.168.166.47:3000/offers/addOffer', {// http://172.16.0.153:3000/offers/addOffer
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    seller: 'id',//prendre valeur reducer (id)
+                    token: token,// recup dans le reducer
                     offerTitle: name,
-                    images: photoReducer,// recup dans le reducer
+                    images: photos,// recup dans la variable d'état qui stock les url cloudinary
                     category: category,
                     description: description,
                     price: price,
-                    dateOfCreation: date,
+                    dateOfCreation: dateOfTheDay,
                     locations: locations,
                 }),
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("oui")
+                    console.log('reponse du back addoffer', data)
                     if (data.result) {
-
+                        setName("")
+                        setDescription("")
+                        setPrice("")
+                        dispatch(deleteAllPhoto())
+                        setCategory("")
+                        setLocations("")
+                        setOfferRegister(!offerRegister)
                     } else {
 
                     }
@@ -94,17 +140,22 @@ export default function Vendre({ navigation }) {
     const takePicture = () => {
         navigation.navigate('Photo')
     }
+    const refresh = () => { // ne fonctionne pas
+        navigation.replace('VendreScreen')
+    }
 
     const deletePhotoDisplay = (picture) => {
         dispatch(removePhoto(picture))
     }
-    const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une mite max?)
+    const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une limite max?)
         return (
-            <ImageBackground key={i} source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
-                <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
-                    <AntDesign name="closecircle" size={30} color="black" style={{ marginLeft: '75%', marginTop: 10 }} />
-                </TouchableOpacity>
-            </ImageBackground>
+            <TouchableOpacity onPress={() => setOpenPhoto(true)}>
+                <ImageBackground key={i} source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
+                    <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
+                        <AntDesign name="closecircle" size={30} color="black" style={{ marginLeft: '75%', marginTop: 10 }} />
+                    </TouchableOpacity>
+                </ImageBackground>
+            </TouchableOpacity>
         );
     });
 
@@ -130,7 +181,7 @@ export default function Vendre({ navigation }) {
                     visible={modalVisible}
                     onRequestClose={() => {
                         setModalVisible(!modalVisible);
-                        console.log(modalVisible)
+                        //console.log(modalVisible)
                     }}>
                     <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
                         <View style={styles.modalView}>
@@ -161,52 +212,23 @@ export default function Vendre({ navigation }) {
                     <FontAwesome name="tag" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric" />
                 </View>
-                <SelectDropdown
-                    data={store}
-                    onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index);
-                        setCategory(selectedItem)
-                    }}
-                    defaultButtonText={'Catégorie'}
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                        return selectedItem;
-                    }}
-                    rowTextForSelection={(item, index) => {
-                        return item;
-                    }}
-                    buttonStyle={styles.dropdown1BtnStyle}
-                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                    renderDropdownIcon={isOpened => {
-                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                    }}
-                    dropdownIconPosition={'right'}
-                    dropdownStyle={styles.dropdown1DropdownStyle}
-                    rowStyle={styles.dropdown1RowStyle}
-                    rowTextStyle={styles.dropdown1RowTxtStyle}
-                />
-                <SelectDropdown
-                    data={citiesData}
-                    onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index);
-                        setLocations(selectedItem)
-                    }}
-                    defaultButtonText={'Ville'}
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                        return selectedItem;
-                    }}
-                    rowTextForSelection={(item, index) => {
-                        return item;
-                    }}
-                    buttonStyle={styles.dropdown1BtnStyle}
-                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                    renderDropdownIcon={isOpened => {
-                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                    }}
-                    dropdownIconPosition={'right'}
-                    dropdownStyle={styles.dropdown1DropdownStyle}
-                    rowStyle={styles.dropdown1RowStyle}
-                    rowTextStyle={styles.dropdown1RowTxtStyle}
-                />
+                <View style={styles.slectlist}>
+                    <SelectList
+                        setSelected={(val) => setSelected(val)}
+                        data={store}
+                        save="value"
+                        placeholder='Catégorie'
+                        search={false}
+                        maxHeight={150}
+                    />
+                    <SelectList
+                        setSelected={(val) => setLocations(val)}
+                        data={citiesData}
+                        save="value"
+                        placeholder='Ville'
+                        search={false}
+                    />
+                </View>
                 <TouchableOpacity onPress={() => Validate()} style={styles.send}>
                     <Text style={styles.white}>
                         Ajouter
@@ -221,7 +243,41 @@ export default function Vendre({ navigation }) {
                     <Connection />
                     <Inscription />
                 </View>}
-
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={offerRegister}
+                onRequestClose={() => {
+                    setOfferRegister(!offerRegister);
+                    //console.log(modalVisible)
+                }}>
+                <Pressable onPress={() => setOfferRegister(!offerRegister)} style={styles.ModalAcceuil}>
+                    <View style={styles.modalView}>
+                        <Text>Vottre offre a bien été enregistré</Text>
+                        <TouchableOpacity style={styles.send} onPress={() => refresh()}>
+                            <Text style={styles.whiteSmall}>Ajouter une nouvelle offre</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.send}>
+                            {/* // ajouter onPress vers tableau de bord */}
+                            <Text style={styles.whiteSmall}>Consulter mon Tableau de bord</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Pressable>
+            </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openPhoto}
+                onRequestClose={() => {
+                    setOpenPhoto(!openPhoto);
+                    //console.log(modalVisible)
+                }}>
+                <Pressable onPress={() => setOpenPhoto(!openPhoto)} style={styles.ModalAcceuil}>
+                    <View style={styles.modalView}>
+                        <Text>Vottre offre a bien été enregistré</Text>
+                    </View>
+                </Pressable>
+            </Modal>
 
         </View>
     );
@@ -348,6 +404,11 @@ const styles = StyleSheet.create({
     },
     photoReducer: {
         flexDirection: 'row'
+    },
+    slectlist: {
+        flexDirection: 'row',
+        margin: 10,
+
     }
 
 });

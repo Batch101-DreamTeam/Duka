@@ -3,19 +3,50 @@ import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInpu
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
+import React, { useEffect, useState, Dispatch, } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Import des fichiers de police
 import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
-import MontserratBold from '../res/fonts/Montserrat-Bold.ttf'
-import MontserratBlack from '../res/fonts/Montserrat-Black.ttf'
+
 
 export default function Profil({ navigation }) {
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
         MontserratMedium: MontserratMedium,
-      });
+    });
 
+    if (!fontsLoaded) {
+        return null;
+    }
+
+      const[username,setUsername]=useState("");
+      const[contact,setContact]=useState("");
+      const[description,setDescription]=useState("");
+      const[mail, setMail]=useState("");
+      const[location, setLocation]=useState("");
+      const[favorites, setFavorites]=useState("");
+      const[avatar,setAvatar]=useState("");
+
+      
+const fetchProfilInfos = (profileToken) => {
+    fetch(`http://172.16.0.22:3000/users/getProfilInfos/${profileToken}`)
+    .then(response => response.json())
+    .then(profileInfos=>{
+        console.log(profileInfos)
+        if (profileInfos.result){
+            setUsername(profileInfos.username)
+            setContact(profileInfos.contact)
+            setDescription(profileInfos.description)
+            setMail(profileInfos.mail)
+            setAvatar(profileInfos.avatar)
+            setLocation(profileInfos.location)
+            setFavorites(profileInfos.favorites)
+        }
+    })
+}
+// appeler fetchProfileInfo au démarrage de la page (avec useffect) et choper le token ds le reducer (une fois connecté à l'appli) puis on mettra le tout dans un if
     return (
         <View style={styles.container}>
 
@@ -29,9 +60,10 @@ export default function Profil({ navigation }) {
 
             <View style={styles.userBlock}>
                 {/* <View style={styles.blockNamePpContact}> */}
-                        <Text style={styles.name}>Thomas Labassa</Text>
-                        <Text style={styles.tel}>06 07 08 09 10</Text>
-                    <Image source={require('../assets/idiot.webp')} style={styles.pictureProfile} />
+                        <Text style={styles.name}>{username}</Text>
+                        <Text style={styles.tel}>{contact}</Text>
+                        <Text style={styles.tel}>{mail}</Text>
+                    <Image source={avatar} style={styles.pictureProfile} />
                     <View style={styles.nameContact}>
                     </View>
                 {/* </View> */}
@@ -45,29 +77,34 @@ export default function Profil({ navigation }) {
 
             
             <View style={styles.descriptionBloc}>
-                <Text style={styles.whiteText}>"Bonjour, je vis à Moroni sud. Spécialiste des produits de salle de bain et WC, pensez à me joindre avant de vous déplacer afin de vérifier la disponibilité. A bientôt. Thomas. "</Text>
+                <Text style={styles.whiteText}>{description}</Text>
                 <TouchableOpacity>
                     <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
                 </TouchableOpacity>
             </View>
             
-
-
             <Text style={styles.h2}>Lieux favoris</Text>
 
       <View style={styles.localisationContainer}>
 
+
 <TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>Moroni-Sud</Text>
+<Text style={styles.whiteText}>{location}</Text>
 </TouchableOpacity >
 
 <TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>Malé-Est</Text>
+<Text style={styles.whiteText}>{location}</Text>
 </TouchableOpacity >
 
 <TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>Sima</Text>
+<Text style={styles.whiteText}>{location}</Text>
 </TouchableOpacity >
+
+      <TouchableOpacity>
+      <FontAwesome name="plus" style={styles.plusButton} size={20} />
+</TouchableOpacity >
+
+
 </View>
 
 <Text style={styles.h2}>Offres en cours</Text>
@@ -75,15 +112,15 @@ export default function Profil({ navigation }) {
 <View style={styles.localisationContainer}>
 
 <TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>Fait-tout</Text>
+<Text style={styles.whiteText}>{favorites}</Text>
 </TouchableOpacity >
 
 <TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>Vélo adulte</Text>
+<Text style={styles.whiteText}>{favorites}</Text>
 </TouchableOpacity >
 
 <TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>Filet depêche</Text>
+<Text style={styles.whiteText}>{favorites}</Text>
 </TouchableOpacity >
 </View>
 
@@ -112,6 +149,11 @@ const styles = StyleSheet.create({
         backgroundColor: '',
     },
     
+    plusButton: {
+        marginLeft:40,
+        color: 'white',
+    },
+
     locationRow:{
         backgroundColor: 'orange',
         width: '70%',
@@ -244,6 +286,7 @@ const styles = StyleSheet.create({
         fontFamily: 'MontserratMedium', 
         fontSize: 28,
         color: '#14342B', 
+        marginTop:20,
       },
       h2: {
         marginTop: 25,
