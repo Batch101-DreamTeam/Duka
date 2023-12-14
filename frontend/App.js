@@ -13,7 +13,8 @@ import ProfilScreen from "./screens/ProfilScreen.js";
 import Photo from "./components/Photo.js";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-
+// navigation.goBack() (pour le retour en arriere (stack) pour le bouton dans le header)
+// redirection automatique si utilisateur non connecté:  return <Redirect to="/Message" />
 
 // reducer
 import { persistStore, persistReducer } from "redux-persist";
@@ -89,6 +90,7 @@ export default function App() {
             {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="Photo" component={Photo} />
+            <Stack.Screen name="VendreScreen" component={VendreScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
