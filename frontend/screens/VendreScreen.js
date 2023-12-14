@@ -31,6 +31,7 @@ export default function Vendre({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [offerRegister, setOfferRegister] = useState(false);
     const [selected, setSelected] = useState("")
+    const [openPhoto, setOpenPhoto] = useState(false);
 
     console.log(selected)
 
@@ -140,7 +141,7 @@ export default function Vendre({ navigation }) {
         navigation.navigate('Photo')
     }
     const refresh = () => { // ne fonctionne pas
-        navigation.navigate('VendreScreen')
+        navigation.replace('VendreScreen')
     }
 
     const deletePhotoDisplay = (picture) => {
@@ -148,11 +149,13 @@ export default function Vendre({ navigation }) {
     }
     const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une limite max?)
         return (
-            <ImageBackground key={i} source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
-                <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
-                    <AntDesign name="closecircle" size={30} color="black" style={{ marginLeft: '75%', marginTop: 10 }} />
-                </TouchableOpacity>
-            </ImageBackground>
+            <TouchableOpacity onPress={() => setOpenPhoto(true)}>
+                <ImageBackground key={i} source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
+                    <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
+                        <AntDesign name="closecircle" size={30} color="black" style={{ marginLeft: '75%', marginTop: 10 }} />
+                    </TouchableOpacity>
+                </ImageBackground>
+            </TouchableOpacity>
         );
     });
 
@@ -251,7 +254,7 @@ export default function Vendre({ navigation }) {
                 <Pressable onPress={() => setOfferRegister(!offerRegister)} style={styles.ModalAcceuil}>
                     <View style={styles.modalView}>
                         <Text>Vottre offre a bien été enregistré</Text>
-                        <TouchableOpacity style={styles.send} onPress={() => setOfferRegister(!offerRegister)}>
+                        <TouchableOpacity style={styles.send} onPress={() => refresh()}>
                             <Text style={styles.whiteSmall}>Ajouter une nouvelle offre</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.send}>
@@ -260,7 +263,20 @@ export default function Vendre({ navigation }) {
                         </TouchableOpacity>
                     </View>
                 </Pressable>
-                {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
+            </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openPhoto}
+                onRequestClose={() => {
+                    setOpenPhoto(!openPhoto);
+                    //console.log(modalVisible)
+                }}>
+                <Pressable onPress={() => setOpenPhoto(!openPhoto)} style={styles.ModalAcceuil}>
+                    <View style={styles.modalView}>
+                        <Text>Vottre offre a bien été enregistré</Text>
+                    </View>
+                </Pressable>
             </Modal>
 
         </View>
