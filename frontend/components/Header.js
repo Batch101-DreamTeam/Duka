@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import * as React from 'react';
+import { useFonts } from 'expo-font';
 
 export default function Header({ navigation }) {
     return (
@@ -11,7 +13,7 @@ export default function Header({ navigation }) {
                 <Text style={styles.duka} >dUka</Text>
                 <View style={styles.topRightHeader} >
                     <TouchableOpacity style={styles.iconRightHeader}>
-                        <FontAwesome name="bell" size={30} />
+                        <FontAwesome name="bell" size={15} />
                     </TouchableOpacity>
 
                 </View>
@@ -47,11 +49,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderBottomWidth: 1,
         marginBottom: 0,
-        backgroundColor: 'white',
+        backgroundColor: '#60935D',
         marginTop: 30,
     },
     duka: {
         marginTop: 10,
+        fontSize: 28,
 
     },
     topRightHeader: {
