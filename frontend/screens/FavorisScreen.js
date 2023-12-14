@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-export default function Favoris({ navigation }) {
+export default function FavorisScreen({ navigation }) {
     return (
         <View style={styles.container}>
 

@@ -11,7 +11,7 @@ import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
 
-export default function Profil({ navigation }) {
+export default function ProfilScreen({ navigation }) {
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
         MontserratMedium: MontserratMedium,
