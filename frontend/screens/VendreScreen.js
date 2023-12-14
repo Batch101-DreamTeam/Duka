@@ -64,14 +64,6 @@ export default function Vendre({ navigation }) {
     if (!fontsLoaded) {
         return null;
     }
-    // console.log('name', name)
-    // console.log('photoReducer', photoReducer)
-    // console.log('category', category)
-    // console.log('description', description)
-    // console.log('price', price)
-    // console.log('dateOfTheDay', dateOfTheDay)
-    // console.log('locations', locations)
-    console.log('name', name)
 
     const Validate = () => {
         if (name != "" & description != "" & price != "") {

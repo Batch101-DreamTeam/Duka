@@ -61,8 +61,8 @@ export default function Photo({ navigation }) {
             body: saveFormData,
         }).then((response) => response.json())
             .then(data => {
-                //console.log(data.result)
-                dispatch(addPhoto(photoTake)); //enregistre photo dans le reducer
+                console.log(data)
+                dispatch(addPhoto(data.url)); //enregistre photo dans le reducer
                 setSaveFormData("")
                 setPhotoTake("")
                 navigation.navigate('VendreScreen')
