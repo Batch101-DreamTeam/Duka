@@ -28,6 +28,7 @@ export default function Vendre({ navigation }) {
     const [fillField, setFillField] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
     const [image, setImage] = useState(null); // image cherché depuis la bibliothèque du téléphone
+    const [offerRegister, setOfferRegister] = useState(false);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -49,9 +50,11 @@ export default function Vendre({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
-    console.log("reducer:", photoReducer)
+    //console.log("reducer:", photoReducer)
 
-    let date = new Date().toJSON(); // obtenir la date du jour
+
+    let dateOfTheDay = new Date().toJSON(); // obtenir la date du jour
+    console.log(price)
 
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
@@ -63,25 +66,27 @@ export default function Vendre({ navigation }) {
     }
     const Validate = () => {
         if (name != "" & description != "" & price != "") {
+
             fetch('http://172.16.0.153:3000/offers/addOffer', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     seller: 'id',//prendre valeur reducer (id)
                     name: name,
+                    token: token,
                     images: photoReducer,// recup dans le reducer
                     category: category,
                     description: description,
                     price: price,
-                    dateOfCreation: date,
+                    dateOfCreation: dateOfTheDay,
                     locations: locations,
                 }),
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("oui")
+                    console.log(data.error)
                     if (data.result) {
-
+                        setOfferRegister(true)
                     } else {
 
                     }
@@ -130,7 +135,7 @@ export default function Vendre({ navigation }) {
                     visible={modalVisible}
                     onRequestClose={() => {
                         setModalVisible(!modalVisible);
-                        console.log(modalVisible)
+                        //console.log(modalVisible)
                     }}>
                     <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
                         <View style={styles.modalView}>
@@ -164,7 +169,7 @@ export default function Vendre({ navigation }) {
                 <SelectDropdown
                     data={store}
                     onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index);
+                        // console.log(selectedItem, index);
                         setCategory(selectedItem)
                     }}
                     defaultButtonText={'Catégorie'}
@@ -187,7 +192,7 @@ export default function Vendre({ navigation }) {
                 <SelectDropdown
                     data={citiesData}
                     onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index);
+                        //console.log(selectedItem, index);
                         setLocations(selectedItem)
                     }}
                     defaultButtonText={'Ville'}

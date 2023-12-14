@@ -52,13 +52,12 @@ export default function Photo({ navigation }) {
         setPhotoTake(photo.uri)
     }
     const savePhoto = () => { // a deplacer dans VendreScreen (dans le fetchde la route backend: va permettre de sauvegarder également ls photos du repertoir dans cloudinary)
-        fetch('http://172.16.0.153:3000/offers/upload', { //http://172.16.0.153:3000/offers/upload
+        fetch('http://172.16.0.153:3000/offers/upload', {
             method: 'POST',
             body: formData,
         }).then((response) => response.json())
             .then((data) => {
             });
-        console.log('oui')
         dispatch(addPhoto(photoTake)); // reste ici
         navigation.navigate('VendreScreen')// reste ici
     }
