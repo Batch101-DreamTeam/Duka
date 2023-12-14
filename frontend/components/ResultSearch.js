@@ -28,7 +28,7 @@ export default function ResultSearch({ navigation }) {
                             <FontAwesome name='heart' size={20} />
                         </View>
                     </View>
-                    <View style={styles.product}>
+                    {/* <View style={styles.product}>
                         <Image style={styles.image} source={require('../assets/toilet.jpg')} />
                         <View style={styles.descProd}>
                             <Text >Nom produit</Text>
@@ -82,6 +82,15 @@ export default function ResultSearch({ navigation }) {
                             <FontAwesome name='heart' size={20} />
                         </View>
                     </View>
+                    <View style={styles.product}>
+                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
+                        <View style={styles.descProd}>
+                            <Text >Nom produit</Text>
+                            <Text >brève description du produit</Text>
+                            <Text >500 CFA</Text>
+                            <FontAwesome name='heart' size={20} />
+                        </View>
+                    </View> */}
 
 
                 </View>
@@ -99,8 +108,8 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
     },
     scrollView: {
-        backgroundColor: 'white',
-        padding: 5,
+        backgroundColor: 'red',
+        padding: 3,
         // marginHorizontal: 2,
         // marginVertical: 2,
         // minHeight: '40%',
@@ -108,23 +117,32 @@ const styles = StyleSheet.create({
     },
     productList: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
         flexWrap: 'wrap',
-        minHeight: '45%',
-        padding: 3,
+        width: '100%',
+        // minHeight: '45%',
+        padding: 0,
         paddingBottom: '1%',
-        backgroundColor: 'white',
+        backgroundColor: 'black',
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     product: {
+        flex: 1,
+        flexDirection: 'row',
         margin: 1,
-        padding: 5,
-        width: '49%',
-        backgroundColor: 'white',
+        padding: 2,
+        // width: '120',
+        // height: '50%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'green',
     },
     image: {
-
-        width: 190,
-        height: 200,
+        margin: 1,
+        padding: 1,
+        width: 160,
+        height: 165,
     },
     descProd: {
         width: 190,
