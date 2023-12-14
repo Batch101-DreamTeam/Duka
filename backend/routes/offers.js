@@ -9,7 +9,7 @@ const fs = require('fs');
 
 router.post('/addOffer', async (req, res) => {
     // verif de l'existence du produit dans la db
-    //console.log(req.body)
+    console.log(req.body)
     if (!checkBody(req.body, ['offerTitle', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
         res.json({ result: false, error: 'Missing or empty fields' });
         return;
@@ -52,6 +52,7 @@ router.post('/addOffer', async (req, res) => {
 
 router.post('/upload', async (req, res) => {
     const photoPath = `./tmp/${uniqid()}.jpg`;
+    console.log('req.files', req.files)
     const resultMove = await req.files.photoFromFront.mv(photoPath);
     const resultCloudinary = await cloudinary.uploader.upload(photoPath);
 

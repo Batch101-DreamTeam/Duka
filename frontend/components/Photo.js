@@ -55,18 +55,19 @@ export default function Photo({ navigation }) {
         setSaveFormData(formData)
     }
     const savePhoto = () => {
-
-        fetch('http://172.16.0.153:3000/offers/upload', {
-            method: 'POST',
-            body: saveFormData,
-        }).then((response) => response.json())
-            .then(data => {
-                console.log(data)
-                dispatch(addPhoto(data.url)); //enregistre photo dans le reducer
-                setSaveFormData("")
-                setPhotoTake("")
-                navigation.navigate('VendreScreen')
-            });
+        dispatch(addPhoto(photoTake))
+        navigation.navigate('VendreScreen')
+        // fetch('http://172.16.0.153:3000/offers/upload', {
+        //     method: 'POST',
+        //     body: saveFormData,
+        // }).then((response) => response.json())
+        //     .then(data => {
+        //         console.log(data)
+        //         dispatch(addPhoto(data.url)); //enregistre photo dans le reducer
+        //         setSaveFormData("")
+        //         setPhotoTake("")
+        //         navigation.navigate('VendreScreen')
+        //     });
     }
 
     if (!hasPermission || !isFocused) {

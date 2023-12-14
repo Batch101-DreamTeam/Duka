@@ -44,7 +44,7 @@ export default function Connection(navigation) {
         setMissingField(true)
         setAuthentification(true)
         if (EMAIL_REGEX.test(email)) {
-            fetch('http://172.16.0.153:3000/users/connexion', {
+            fetch('http://192.168.166.47:3000/users/connexion', {//    http://172.16.0.153:3000/users/connexion
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
