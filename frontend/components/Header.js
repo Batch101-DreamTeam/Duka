@@ -62,11 +62,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderBottomWidth: 1,
         marginBottom: 0,
-        backgroundColor: 'white',
+        backgroundColor: '#60935D',
         marginTop: 30,
     },
     duka: {
         marginTop: 10,
+        fontSize: 28,
 
     },
     topRightHeader: {
