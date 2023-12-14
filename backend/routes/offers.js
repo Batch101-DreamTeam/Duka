@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const User = require('./../models/user')
+const User = require('../models/user')
 const Offer = require("../models/offer");
 const { checkBody } = require('../modules/checkBody');
 const uniqid = require('uniqid');
@@ -65,7 +65,7 @@ router.post('/upload', async (req, res) => {
     }
 });
 
-router.get('/:offerId', async (req, res, next) => {
+router.get('/search/:offerId', async (req, res, next) => {
     const argument = req.params.offerId;
     if (!argument) {
         res.status(400).json({ result: false, message: "wrong request" })
@@ -85,19 +85,41 @@ router.get('/:offerId', async (req, res, next) => {
 
 
 
-router.post('/search', async (req, res, next) => {
-    const allOffers = await Offer.find({
-        offerTitle: req.body.offerTitle,
-
-    })
-    if (!allOffers.length) {
-        res.status(400).json({ result: false, message: 'no offers founded' })
-        return
-    }
-    else {
-        res.status(200).json({ result: true, allOffers })
-    }
+router.post('/search', async (req, res) => {
+    const searchOnWord = req.body.offerTitle;
+    Offer.find({
+        offerTitle: searchOnWord,
+    }).then(data => {
+        if (data) {
+            res.status(200).json({ result: true, searchOnWord: data })
+        }
+        else {
+            res.status(400).json({ result: false, message: 'no offers founded' })
+        }
+    });
 })
+
+router.get('/allOffers', async (req, res) => {
+    const data = await Offer.find()
+    console.log(data)
+    res.json({ offers: data });
+});
+
+
+
+// router.post('/search', async (req, res, next) => {
+//     const allOffers = await Offer.find({
+//         offerTitle: req.body.offerTitle,
+//     }).then(data => {
+//         if (!allOffers.length) {
+//             res.status(400).json({ result: false, message: 'no offers founded' })
+//             return
+//         }
+//         else {
+//             res.status(200).json({ result: true, allOffers })
+//         }
+//     });
+// })
 // trop de params pas définis :en pause
 
 module.exports = router;

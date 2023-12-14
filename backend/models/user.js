@@ -23,7 +23,7 @@ const userShema = mongoose.Schema({
       // ou moyenne des notes
       conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'chatChannels' }],
       dateOfCreation: Date,
-      location: [String]
+      location: [String],
 });
 
 const User = mongoose.model('users', userShema);

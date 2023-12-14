@@ -1,23 +1,70 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
-import Header from '../components/Header';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-export default function Message({ navigation }) {
-    return (
-        <View style={styles.container}>
+import { View, StyleSheet, Text, ScrollView,
+} from 'react-native'
+import InfoContainer from '../components/messagesElements/InfoContainer';
+import SingleMessage from '../components/messagesElements/SingleMessage';
+import Header from '../components/Header';export default function MessageScreen() {
 
-            <Header />
-            <View style={styles.containerContent}>
-                <View style={styles.SearchRow} >
-                    <FontAwesome name="search" style={styles.iconSearch} size={20} />
-                    <TextInput style={styles.inputSearch} placeholder=" Search" maxLength={200} />
-                </View>
+    const data = [
+        { 
+            userId: 1,
+            online: true,
+            messageContent: "message 1",
+            dateOfCreation: Date
+        },
+        { 
+            userId: 2,
+            online: true,
+            messageContent: "message 2",
+            dateOfCreation: Date
+        },
+        { 
+            userId: 2,
+            online: true,
+            messageContent: "message 3",
+            dateOfCreation: Date
+        },
+        { 
+            userId: 1,
+            online: true,
+            messageContent: "message 4",
+            dateOfCreation: Date
+        },
+        { 
+            userId: 1,
+            online: true,
+            messageContent: "message 5",
+            dateOfCreation: Date
+        },
+        { 
+            userId: 2,
+            online: true,
+            messageContent: "message 6",
+            dateOfCreation: Date
+        },
+        { 
+            userId: 1,
+            online: false,
+            messageContent: "message 7",
+            dateOfCreation: Date
+        },
+    ];
 
-            </View>
+    const displayMessages = data
+        .filter(message => message.online) 
+        .map((singleMessage, i) => (
+            <SingleMessage key={i} {...singleMessage} />
+          ));
 
-
-
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+        <Header/>
+        <ScrollView>
+        <InfoContainer/>
+        <Text>messagePage</Text>
+        {data && displayMessages}
+        </ScrollView>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -25,15 +72,5 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
-
     },
-    containerContent: {
-        flex: 1,
-
-        backgroundColor: '',
-
-    },
-
-
-
-});
+})
