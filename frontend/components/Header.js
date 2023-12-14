@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateName, updateToken, updateMail } from '../reducers/user'
+import { updateName, updateToken, updateMail, deleteAllPhoto } from '../reducers/user'
 
 
 export default function Header({ navigation }) {
@@ -11,6 +11,7 @@ export default function Header({ navigation }) {
         dispatch(updateName(null))
         dispatch(updateToken(null))
         dispatch(updateMail(null))
+        dispatch(deleteAllPhoto())
     }
 
     return (
@@ -61,11 +62,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderBottomWidth: 1,
         marginBottom: 0,
-        backgroundColor: 'white',
+        backgroundColor: '#60935D',
         marginTop: 30,
     },
     duka: {
         marginTop: 10,
+        fontSize: 28,
 
     },
     topRightHeader: {

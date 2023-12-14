@@ -8,7 +8,6 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
 router.post('/addOffer', async (req, res) => {
-
     // verif de l'existence du produit dans la db
     if (!checkBody(req.body, ['name', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
         res.json({ result: false, error: 'Missing or empty fields' });
@@ -30,7 +29,7 @@ router.post('/addOffer', async (req, res) => {
                 sellerName,
                 seller: potentielId,//le req.body.seller sera  prit dans le reducer (id)
                 sold: false,
-                name: req.body.name,
+                offerTitle: req.body.offerTitle,
                 images: req.body.images,
                 description: req.body.description,
                 category: req.body.category,
@@ -49,11 +48,8 @@ router.post('/addOffer', async (req, res) => {
 });
 
 
-
-
 router.post('/upload', async (req, res) => {
     const photoPath = `./tmp/${uniqid()}.jpg`;
-    console.log(req.files)
     const resultMove = await req.files.photoFromFront.mv(photoPath);
     const resultCloudinary = await cloudinary.uploader.upload(photoPath);
 
@@ -64,7 +60,6 @@ router.post('/upload', async (req, res) => {
     } else {
         res.json({ result: false, error: resultMove });
     }
-
 });
 
 router.get('/:offerId', async (req, res, next) => {
@@ -89,7 +84,7 @@ router.get('/:offerId', async (req, res, next) => {
 
 router.post('/search', async (req, res, next) => {
     const allOffers = await Offer.find({
-        name: req.body.name,
+        offerTitle: req.body.offerTitle,
 
     })
     if (!allOffers.length) {

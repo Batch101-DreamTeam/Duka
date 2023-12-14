@@ -19,7 +19,7 @@ export default function InputSearch(navigation) {
         fetch(`${BACKEND_ADDRESS}/offers/search`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: searchWord }),
+            body: JSON.stringify({ offerTitle: searchWord }),
         }).then(response => response.json())
             .then(data => {
                 if (data) {
@@ -27,7 +27,6 @@ export default function InputSearch(navigation) {
                     console.log(data)
 
                     setSearchWord('');
-
                     setModalVisible(false);
                 }
             });
