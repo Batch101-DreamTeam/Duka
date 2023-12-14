@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import AcceuilScreen from "./screens/AcceuilScreen.js";
-import FavorisScreen from "./screens/FavorisScreen";
+import FavorisScreen from "./screens/FavorisScreen.js";
 import VendreScreen from "./screens/VendreScreen.js";
 import MessageScreen from "./screens/MessageScreen.js";
 import ProfilScreen from "./screens/ProfilScreen.js";
@@ -22,7 +22,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { Provider } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import user from './reducers/user';
+import user from './reducers/user.js';
 
 
 const persistConfig = {

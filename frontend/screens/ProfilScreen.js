@@ -10,7 +10,7 @@ import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 import MontserratBold from '../res/fonts/Montserrat-Bold.ttf'
 import MontserratBlack from '../res/fonts/Montserrat-Black.ttf'
 
-export default function Profil({ navigation }) {
+export default function ProfilScreen({ navigation }) {
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
         MontserratMedium: MontserratMedium,

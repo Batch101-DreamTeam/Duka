@@ -15,7 +15,7 @@ import Inscription from '../components/Inscription';
 import { AntDesign } from '@expo/vector-icons';
 import { removePhoto, addPhoto } from '../reducers/user'
 
-export default function Vendre({ navigation }) {
+export default function VendreScreen({ navigation }) {
     const dispatch = useDispatch();
 
     const [name, setName] = useState('');

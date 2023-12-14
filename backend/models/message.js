@@ -5,7 +5,7 @@ const messageShema = mongoose.Schema({
     online: Boolean,
     messageContent: String,
     dateOfCreation: Date
-})
+});
 
 const Message = mongoose.model('messages', messageShema);
 
