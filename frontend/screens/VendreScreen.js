@@ -13,7 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Connection from '../components/Connection';
 import Inscription from '../components/Inscription';
 import { AntDesign } from '@expo/vector-icons';
-import { removePhoto, addPhoto } from '../reducers/user'
+import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user'
 
 export default function Vendre({ navigation }) {
     const dispatch = useDispatch();
@@ -54,7 +54,7 @@ export default function Vendre({ navigation }) {
 
 
     let dateOfTheDay = new Date().toJSON(); // obtenir la date du jour
-    console.log(price)
+    //console.log(price)
 
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
@@ -64,6 +64,15 @@ export default function Vendre({ navigation }) {
     if (!fontsLoaded) {
         return null;
     }
+    // console.log('name', name)
+    // console.log('photoReducer', photoReducer)
+    // console.log('category', category)
+    // console.log('description', description)
+    // console.log('price', price)
+    // console.log('dateOfTheDay', dateOfTheDay)
+    // console.log('locations', locations)
+    console.log('name', name)
+
     const Validate = () => {
         if (name != "" & description != "" & price != "") {
 
@@ -71,7 +80,7 @@ export default function Vendre({ navigation }) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    seller: 'id',//prendre valeur reducer (id)
+                    token: token,
                     offerTitle: name,
                     images: photoReducer,// recup dans le reducer
                     category: category,
@@ -83,9 +92,15 @@ export default function Vendre({ navigation }) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.error)
+                    console.log(data)
                     if (data.result) {
-                        setOfferRegister(true)
+                        setName("")
+                        setDescription("")
+                        setPrice("")
+                        dispatch(deleteAllPhoto())
+                        setCategory("")
+                        setLocations("")
+                        setOfferRegister(!offerRegister)
                     } else {
 
                     }
@@ -225,7 +240,27 @@ export default function Vendre({ navigation }) {
                     <Connection />
                     <Inscription />
                 </View>}
-
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={offerRegister}
+                onRequestClose={() => {
+                    setOfferRegister(!offerRegister);
+                    //console.log(modalVisible)
+                }}>
+                <Pressable onPress={() => setOfferRegister(!offerRegister)} style={styles.ModalAcceuil}>
+                    <View style={styles.modalView}>
+                        <Text>Vottre offre a bien été enregistré</Text>
+                        <TouchableOpacity>
+                            <Text>Ajouter une nouvelle offre</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text>Consulter mon Tableau de bord</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Pressable>
+                {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
+            </Modal>
 
         </View>
     );
