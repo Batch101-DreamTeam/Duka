@@ -68,7 +68,7 @@ export default function Vendre({ navigation }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     seller: 'id',//prendre valeur reducer (id)
-                    name: name,
+                    offerTitle: name,
                     images: photoReducer,// recup dans le reducer
                     category: category,
                     description: description,

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const offerShema = mongoose.Schema({
   seller: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
   sellerName: String,
-  name: String,
+  offerTitle: String,
   sold: Boolean,
   images: [String],
   description: String,
@@ -12,8 +12,8 @@ const offerShema = mongoose.Schema({
   category: String,
   dateOfCreation: Date,
   locations: [String],
-  category: [String],
-  // cateories déja définies
+  categories: [String],
+  // categories déja définies
 });
 
 

@@ -15,13 +15,12 @@ export default function InputSearch(navigation) {
         fetch('http://192.168.43.46:3000/offers/search', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: searchWord }),
+            body: JSON.stringify({ offerTitle: searchWord }),
         }).then(response => response.json())
             .then(data => {
                 if (data) {
                     console.log(data)
                     setSearchWord('');
-
                     setModalVisible(false);
                 }
             });
