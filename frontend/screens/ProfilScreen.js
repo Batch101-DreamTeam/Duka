@@ -57,6 +57,7 @@ export default function Profil({ navigation }) {
 
       <View style={styles.localisationContainer}>
 
+
 <TouchableOpacity style={styles.altBtn}>
 <Text style={styles.whiteText}>Moroni-Sud</Text>
 </TouchableOpacity >
@@ -68,6 +69,12 @@ export default function Profil({ navigation }) {
 <TouchableOpacity style={styles.altBtn}>
 <Text style={styles.whiteText}>Sima</Text>
 </TouchableOpacity >
+
+      <TouchableOpacity>
+      <FontAwesome name="plus" style={styles.plusButton} size={20} />
+</TouchableOpacity >
+
+
 </View>
 
 <Text style={styles.h2}>Offres en cours</Text>
@@ -83,7 +90,7 @@ export default function Profil({ navigation }) {
 </TouchableOpacity >
 
 <TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>Filet depêche</Text>
+<Text style={styles.whiteText}>Filet de pêche</Text>
 </TouchableOpacity >
 </View>
 
@@ -112,6 +119,11 @@ const styles = StyleSheet.create({
         backgroundColor: '',
     },
     
+    plusButton: {
+        marginLeft:40,
+        color: 'white',
+    },
+
     locationRow:{
         backgroundColor: 'orange',
         width: '70%',
@@ -244,6 +256,7 @@ const styles = StyleSheet.create({
         fontFamily: 'MontserratMedium', 
         fontSize: 28,
         color: '#14342B', 
+        marginTop:20,
       },
       h2: {
         marginTop: 25,
