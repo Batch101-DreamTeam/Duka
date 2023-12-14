@@ -44,7 +44,7 @@ export default function Connection(navigation) {
         setMissingField(true)
         setAuthentification(true)
         if (EMAIL_REGEX.test(email)) {
-            fetch('http://192.168.0.23:3000/users/connexion', { //'http://172.16.0.153:3000/users/connexion'
+            fetch('http://172.16.0.153:3000/users/connexion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -54,7 +54,7 @@ export default function Connection(navigation) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
+                    //console.log(data)
                     if (data.result) {
                         dispatch(updateName(data.data.username))
                         dispatch(updateToken(data.data.token))

@@ -39,7 +39,7 @@ export default function Vendre({ navigation }) {
         });
 
         if (!result.canceled) {
-            console.log(result.assets)
+            //console.log(result.assets)
             setImage(result.assets[0].uri);
             dispatch(addPhoto(result.assets[0].uri))
             setModalVisible(false)

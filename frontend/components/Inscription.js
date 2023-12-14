@@ -53,7 +53,7 @@ export default function Inscription(navigation) {
             if (password != confirmPassword) {
                 setPasswordDifferent(false)
             } else {
-                fetch('http://192.168.0.23:3000/users/inscription', { //'http://172.16.0.153:3000/users/inscription': adresse ip Hemera
+                fetch('http://172.16.0.153:3000/users/inscription', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
