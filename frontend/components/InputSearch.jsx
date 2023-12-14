@@ -1,7 +1,11 @@
 import { StyleSheet, Alert, ImageBackground, Text, View, Pressable, Modal, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// const backendAddress = process.env.BACKEND_ADDRESS;
+// const BACKEND_ADDRESS = 'http://192.168.43.46:3000';
 // import ModalScreen from './ModalScreen';
+// BACKEND_ADDRESS='http://192.168.43.46:3000'
+BACKEND_ADDRESS = 'http://192.168.1.7:3000'
 export default function InputSearch(navigation) {
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -12,14 +16,16 @@ export default function InputSearch(navigation) {
             return;
         }
 
-        fetch('http://192.168.43.46:3000/offers/search', {
+        fetch(`${BACKEND_ADDRESS}/offers/search`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ offerTitle: searchWord }),
         }).then(response => response.json())
             .then(data => {
                 if (data) {
+
                     console.log(data)
+
                     setSearchWord('');
                     setModalVisible(false);
                 }
@@ -124,7 +130,7 @@ export default function InputSearch(navigation) {
 const styles = StyleSheet.create({
 
     moduleSearch: {
-        // backgroundColor: 'red',
+        backgroundColor: 'red',
         marginTop: 0,
         height: '25%',
         justifyContent: 'center',

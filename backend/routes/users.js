@@ -5,6 +5,36 @@ const User = require('./../models/user')
 const uid2 = require('uid2');
 const bcrypt = require('bcrypt');
 
+// route get params req.params.token puis findOne ds dbb  pour choper id
+// puis avec user.findOne choper infos affichee ds profil
+
+//ROUTE POUR RECUPERER DEPUIS BACK LES INFOS DE PROFIL DANS LA BDD (nom, prenom, tel, photo, annonces favorites)
+
+router.get('/getProfilInfos/:token', async (req, res) => {
+
+  const potentielUser = await User.findOne({
+    token: req.params.token
+  });
+  if (!potentielUser) {
+    console.log(potentielUser)
+    return
+  }
+  const potentielId = potentielUser._id
+  //ajouter contact et description au modele users!
+  User.findOne({ _id: potentielId }).then(data => {
+    res.json({
+      result: true,
+      username: data.username,
+      contact: data.contact,
+      description: data.description,
+      mail: data.mail,
+      avatar: data.avatarUrl,
+      location: data.location,
+      favorites: data.favorites,
+
+    });
+  })
+});
 
 
 /* GET users listing. */

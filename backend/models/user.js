@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 //host et traveller sont des clés liées à pusher (système de chat)
 const userShema = mongoose.Schema({
       username: String,
+      contact:String, 
       isAdmin: Boolean,
+      description:String,
       onSale: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers'}],
       // defaullt false
       mail: {
@@ -21,7 +23,7 @@ const userShema = mongoose.Schema({
       // ou moyenne des notes
       conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'chatChannels' }],
       dateOfCreation: Date,
-      location: [String]
+      location: [String],
 });
 
 const User = mongoose.model('users', userShema);
