@@ -1,101 +1,25 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
-export default function ResultSearch({ navigation }) {
+export default function ResultSearch(props) {
     return (
 
-        <>
-            <ScrollView style={styles.scrollView}>
-                <View style={styles.productList}>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    {/* <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View>
-                    <View style={styles.product}>
-                        <Image style={styles.image} source={require('../assets/toilet.jpg')} />
-                        <View style={styles.descProd}>
-                            <Text >Nom produit</Text>
-                            <Text >brève description du produit</Text>
-                            <Text >500 CFA</Text>
-                            <FontAwesome name='heart' size={20} />
-                        </View>
-                    </View> */}
 
 
-                </View>
-            </ScrollView>
-        </>
+        <View style={styles.product}>
+            <Image style={styles.image} source={{ uri: props.images }} />
+
+            <View style={styles.descProd}>
+                <Text >{props.offerTitle}</Text>
+                <Text >{props.description}</Text>
+                <Text >{props.price} CFA</Text>
+                <FontAwesome name='heart' size={20} />
+            </View>
+        </View>
+
     );
 }
 
@@ -107,47 +31,31 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         // justifyContent: 'center',
     },
-    scrollView: {
-        backgroundColor: 'red',
-        padding: 3,
-        // marginHorizontal: 2,
-        // marginVertical: 2,
-        // minHeight: '40%',
-        maxHeight: '100%',
-    },
-    productList: {
-        flex: 1,
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        width: '100%',
-        // minHeight: '45%',
-        padding: 0,
-        paddingBottom: '1%',
-        backgroundColor: 'black',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-    },
+
     product: {
         flex: 1,
         flexDirection: 'row',
         margin: 1,
-        padding: 2,
-        // width: '120',
-        // height: '50%',
+        padding: 5,
+        width: '100%',
+        height: 180,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'green',
+        // backgroundColor: 'green',
     },
     image: {
         margin: 1,
         padding: 1,
-        width: 160,
-        height: 165,
+        width: 170,
+        height: 170,
+        borderRadius: 10,
     },
     descProd: {
-        width: 190,
+        width: '50%',
+        height: '100%',
         padding: 5,
-        backgroundColor: 'gold',
+        // backgroundColor: 'gold',
+        margin: 1,
     },
 
 

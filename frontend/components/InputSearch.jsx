@@ -1,12 +1,21 @@
 import { StyleSheet, Alert, ImageBackground, Text, View, Pressable, Modal, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import SelectDropdown from 'react-native-select-dropdown'
+import { BACKEND_ADDRESS } from "@env"
+const backendAddress = BACKEND_ADDRESS;
 // const backendAddress = process.env.BACKEND_ADDRESS;
 // const BACKEND_ADDRESS = 'http://192.168.43.46:3000';
 // import ModalScreen from './ModalScreen';
-// BACKEND_ADDRESS='http://192.168.43.46:3000'
-BACKEND_ADDRESS = 'http://192.168.1.7:3000'
+// BACKEND_ADDRESS = 'http://192.168.43.46:3000'
+// BACKEND_ADDRESS = 'http://192.168.1.7:3000';
+
+
 export default function InputSearch(navigation) {
+
+    const price = ["Prix croissant", "Prix décroisssant"]
+    const place = ["Par produit le plus proche", "Par prix décroisssant"]
+    const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
 
     const [modalVisible, setModalVisible] = useState(false);
     const [searchWord, setSearchWord] = useState('');
@@ -16,7 +25,7 @@ export default function InputSearch(navigation) {
             return;
         }
 
-        fetch(`${BACKEND_ADDRESS}/offers/search`, {
+        fetch(`${backendAddress}/offers/search`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ offerTitle: searchWord }),
@@ -24,7 +33,7 @@ export default function InputSearch(navigation) {
             .then(data => {
                 if (data) {
 
-                    console.log(data)
+                    console.log(data.searchOnWord)
 
                     setSearchWord('');
                     setModalVisible(false);
@@ -60,9 +69,54 @@ export default function InputSearch(navigation) {
                     />
                 </View>
                 <View style={styles.SearchRow} >
-                    <FontAwesome name="search" style={styles.iconSearch} size={20} />
+                    <FontAwesome name="map-marker" style={styles.iconSearch} size={20} />
                     <TextInput style={styles.inputSearch} placeholder=" Où ?" maxLength={200} />
                 </View>
+                <SelectDropdown
+                    data={price}
+                    onSelect={(selectedItem, index) => {
+                        console.log(selectedItem, index);
+                    }}
+                    defaultButtonText={'Select country'}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                        return selectedItem;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                        return item;
+                    }}
+                    buttonStyle={styles.dropdown1BtnStyle}
+                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                    renderDropdownIcon={isOpened => {
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                    }}
+                    dropdownIconPosition={'right'}
+                    dropdownStyle={styles.dropdown1DropdownStyle}
+                    rowStyle={styles.dropdown1RowStyle}
+                    rowTextStyle={styles.dropdown1RowTxtStyle}
+                />
+                <SelectDropdown
+                    data={store}
+                    onSelect={(selectedItem, index) => {
+                        console.log(selectedItem, index);
+                    }}
+                    defaultButtonText={'Catégorie'}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                        return selectedItem;
+                    }}
+                    rowTextForSelection={(item, index) => {
+                        return item;
+                    }}
+                    buttonStyle={styles.dropdown1BtnStyle}
+                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                    renderDropdownIcon={isOpened => {
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                    }}
+                    dropdownIconPosition={'right'}
+                    dropdownStyle={styles.dropdown1DropdownStyle}
+                    rowStyle={styles.dropdown1RowStyle}
+                    rowTextStyle={styles.dropdown1RowTxtStyle}
+                />
+
                 <TouchableOpacity onPress={() => handleSubmit()} style={styles.btnConnexion} >
                     <Text style={styles.white}>
                         Recherche
@@ -84,20 +138,9 @@ export default function InputSearch(navigation) {
                     backgroundColor: '#fc0',
                     width: '100%', // applied to Image
                     height: '100%',
-                    justifyContent: 'center',
+                    // justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                {/* <View style={styles.SearchRow} >
-                    <FontAwesome name="search" style={styles.iconSearch} size={20} />
-                    <TextInput style={styles.inputSearch} placeholder="Que cherchez vous ?" maxLength={200} />
-                </View>
-
-
-
-                <View style={styles.SearchRow} >
-                    <FontAwesome name="search" style={styles.iconSearch} size={20} />
-                    <TextInput style={styles.inputSearch} placeholder="Ou êtes-vous ?" maxLength={200} />
-                </View> */}
                 <Text style={styles.inputTextSearch}  >
 
                     <Pressable
@@ -119,8 +162,56 @@ export default function InputSearch(navigation) {
                         <Text style={styles.textStyle}> Où ?</Text>
                     </Pressable>
 
-                </Text>
 
+                </Text>
+                <View style={styles.selectFilter}>
+                    <SelectDropdown
+                        style={styles.selectDrop}
+                        data={price}
+                        onSelect={(selectedItem, index) => {
+                            console.log(selectedItem, index);
+                        }}
+                        defaultButtonText={'Prix'}
+                        buttonTextAfterSelection={(selectedItem, index) => {
+                            return selectedItem;
+                        }}
+                        rowTextForSelection={(item, index) => {
+                            return item;
+                        }}
+                        buttonStyle={styles.dropdown1BtnStyle}
+                        buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                        renderDropdownIcon={isOpened => {
+                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
+                        }}
+                        dropdownIconPosition={'right'}
+                        dropdownStyle={styles.dropdown1DropdownStyle}
+                        rowStyle={styles.dropdown1RowStyle}
+                        rowTextStyle={styles.dropdown1RowTxtStyle}
+                    />
+                    <SelectDropdown
+                        style={styles.selectDrop}
+                        data={store}
+                        onSelect={(selectedItem, index) => {
+                            console.log(selectedItem, index);
+                        }}
+                        defaultButtonText={'Catégorie'}
+                        buttonTextAfterSelection={(selectedItem, index) => {
+                            return selectedItem;
+                        }}
+                        rowTextForSelection={(item, index) => {
+                            return item;
+                        }}
+                        buttonStyle={styles.dropdown1BtnStyle}
+                        buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                        renderDropdownIcon={isOpened => {
+                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
+                        }}
+                        dropdownIconPosition={'right'}
+                        dropdownStyle={styles.dropdown1DropdownStyle}
+                        rowStyle={styles.dropdown1RowStyle}
+                        rowTextStyle={styles.dropdown1RowTxtStyle}
+                    />
+                </View>
             </ImageBackground>
             {modal}
         </View>
@@ -133,8 +224,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         marginTop: 0,
         height: '25%',
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
 
     SearchRow: {
@@ -149,7 +240,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: '80%',
         borderRadius: 10,
-        marginBottom: 15,
+        marginTop: 10,
         backgroundColor: 'white',
 
     },
@@ -212,23 +303,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 3,
     },
-    // inputSearch: {
-    //     height: 40,
-    //     width: 300,
-    //     borderRadius: 10,
-
-    // },
-
-    // SearchRow: {
-    //     flexDirection: 'row',
-    //     borderWidth: 2,
-    //     borderRadius: 10,
-    //     marginBottom: 10
-    // },
-    // iconSearch: {
-    //     alignSelf: 'flex-start',
-    //     padding: 10
-    // },
     btnConnexion: {
         flexDirection: "row",
         padding: 18,
@@ -249,6 +323,24 @@ const styles = StyleSheet.create({
         color: 'white',
         // fontFamily: 'MontserratMedium',
         fontSize: 20,
+    },
+    selectFilter: {
+        // flex: 1,
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        // height: 20,
+        width: '80%',
+        // borderRadius: 10,
+        marginTop: 15,
+        // padding: 3,
+
+    },
+    selectDrop: {
+        backgroundColor: 'white',
+        // height: 10,
     },
 
 
