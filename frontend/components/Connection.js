@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
+import { BACKEND_ADDRESS } from "@env"
+const backendAddress = BACKEND_ADDRESS;
 
 
 export default function Connection(navigation) {
@@ -44,7 +46,7 @@ export default function Connection(navigation) {
         setMissingField(true)
         setAuthentification(true)
         if (EMAIL_REGEX.test(email)) {
-            fetch('http://172.16.0.153:3000/users/connexion', {//   
+            fetch(`${backendAddress}/users/connexion`, {//   
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

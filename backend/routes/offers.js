@@ -50,7 +50,7 @@ router.post('/addOffer', async (req, res) => {
 });
 
 
-router.post('/upload', async (req, res) => {
+router.post('/upload', async (req, res) => { // envoie des photos dans cloudinary (utilisé dans VendreScreen)
     const photoPath = `./tmp/${uniqid()}.jpg`;
     console.log('req.files', req.files)
     const resultMove = await req.files.photoFromFront.mv(photoPath);
@@ -65,7 +65,7 @@ router.post('/upload', async (req, res) => {
     }
 });
 
-router.get('/search/:offerId', async (req, res, next) => {
+router.get('/search/:offerId', async (req, res, next) => { // route pour accéder à un produit
     const argument = req.params.offerId;
     if (!argument) {
         res.status(400).json({ result: false, message: "wrong request" })
@@ -101,7 +101,7 @@ router.post('/search', async (req, res) => {
 
 router.get('/allOffers', async (req, res) => {
     const data = await Offer.find()
-    console.log(data)
+    // console.log(data)
     res.json({ offers: data });
 });
 
@@ -121,5 +121,58 @@ router.get('/allOffers', async (req, res) => {
 //     });
 // })
 // trop de params pas définis :en pause
+
+router.put('/modifyOffer/:idOffer', async (req, res) => {
+    const produit = req.params.idOffer;
+    if (!produit) {
+        res.status(400).json({ result: false, message: "wrong request" })
+        return
+    } else {
+        const targettedOffer = await Offer.findOne({ _id: produit })
+        //console.log(targettedOffer)
+        if (!targettedOffer) {
+            res.status(400).json({ result: false, message: "no offer founded" })
+            return
+        }
+        else {
+            const infos = {
+                sellerName: targettedOffer.sellerName,
+                seller: targettedOffer.seller,
+                sold: false,
+                offerTitle: req.body.offerTitle,
+                images: req.body.images,
+                description: req.body.description,
+                category: req.body.category,
+                price: req.body.price,
+                dateOfCreation: targettedOffer.dateOfCreation, // la donnée sera donnée dans le front
+                locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
+            }
+            const modifyOffer = await Offer.findOneAndUpdate({ _id: produit }, infos, { new: true })
+            res.status(200).json({ result: true, message: modifyOffer })
+        }
+    }
+
+}),
+
+    router.get('/allOffersBySeller/:tokenSeller', async (req, res) => {
+        const idSeller = await User.find({ token: req.params.tokenSeller })
+        if (!idSeller) {
+            res.status(400).json({ result: false, message: "user doesn't exist" })
+        } else {
+            const data = await Offer.find({ seller: idSeller })
+            //console.log(data)
+            res.json({ result: true, offers: data });
+        }
+    });
+
+router.delete('/deleteOffer/:idProduct', async (req, res) => {
+    const result = await Offer.find({ _id: req.params.idProduct })
+    if (!result) {
+        res.status(400).json({ result: false, message: "product doesn't exist" })
+    } else {
+        const deleteOffer = await Offer.deleteOne({ _id: req.params.idProduct })
+        res.json({ result: true });
+    }
+})
 
 module.exports = router;

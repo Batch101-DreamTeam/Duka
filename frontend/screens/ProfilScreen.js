@@ -1,141 +1,138 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useFonts } from 'expo-font';
+import Inscription from '../components/Inscription';
 import React, { useEffect, useState, Dispatch, } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 
 // Import des fichiers de police
-import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
-import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
+import { useFonts } from 'expo-font';
+// import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
+// import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
+import { BACKEND_ADDRESS } from "@env";
+import Connection from '../components/Connection';
+const backendAddress = BACKEND_ADDRESS;
+
+<<<<<<< HEAD
     
 
 
 export default function ProfilScreen({ navigation }) {
-    let [fontsLoaded] = useFonts({
-        MontserratRegular: MontserratRegular,
-        MontserratMedium: MontserratMedium,
+    const [profileData, setProfileData] = useState({
+        username: "",
+        contact: "",
+        description: "",
+        mail: "",
+        location: "",
+        favorites: "",
+        avatar: "",
     });
 
-    if (!fontsLoaded) {
-        return null;
-    }
+const [modifyField, setModifyField] = useState(false);
 
-      const[username,setUsername]=useState("");
-      const[contact,setContact]=useState("");
-      const[description,setDescription]=useState("");
-      const[mail, setMail]=useState("");
-      const[location, setLocation]=useState("");
-      const[favorites, setFavorites]=useState("");
-      const[avatar,setAvatar]=useState("");
+    
+    const user = useSelector((state) => state.user.value);
+    const token = user.token;
 
-      
-const fetchProfilInfos = (profileToken) => {
-    fetch(`http://172.16.0.22:3000/users/getProfilInfos/${profileToken}`)
-    .then(response => response.json())
-    .then(profileInfos=>{
-        console.log(profileInfos)
-        if (profileInfos.result){
-            setUsername(profileInfos.username)
-            setContact(profileInfos.contact)
-            setDescription(profileInfos.description)
-            setMail(profileInfos.mail)
-            setAvatar(profileInfos.avatar)
-            setLocation(profileInfos.location)
-            setFavorites(profileInfos.favorites)
-        }
-    })
-}
-useEffect(() => {
-    fetchProfilInfos(token);
-}, []);
-// appeler fetchProfileInfo au démarrage de la page (avec useffect) et choper le token ds le reducer (une fois connecté à l'appli) puis on mettra le tout dans un if
+
+
+    useEffect(() => {
+        fetch(`${backendAddress}/users/getProfilInfos/${token}`)
+            .then(response => response.json())
+            .then(profileInfos => {
+                console.log(profileInfos);
+                if (profileInfos.result) {
+                    setProfileData({
+                        username: profileInfos.username,
+                        contact: profileInfos.contact,
+                        description: profileInfos.description,
+                        mail: profileInfos.mail,
+                        avatar: profileInfos.avatar,
+                        location: profileInfos.location,
+                        favorites: profileInfos.favorites,
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching profile information:", error);
+                // Handle error gracefully
+            });
+    }, [token]);
+
     return (
+        <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
         <View style={styles.container}>
-
             <Header />
+            {token ? (
+                <View style={styles.containerContent}>
+                    <SafeAreaView style={styles.container}>
+                        <Text style={styles.h1}>Mon profil</Text>
+                        <View style={styles.userBlock}>
+                        {/* ={() => handleSubmit()} */}
+                        
+                            <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={()=>setModifyField(true)}>
+                                <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
+                            </TouchableOpacity>
+                            {!modifyField?<Text style={styles.name}>{profileData.username}</Text>:<TextInput style={styles.textInput}/>}
+                            {!modifyField?<Text style={styles.tel}>{profileData.contact}</Text>:<TextInput style={styles.textInput}/>}
+                            <Text style={styles.mail}>{profileData.mail}</Text>
+                            <Image source={{ uri: profileData.avatar }} style={styles.pictureProfile} />
+                            <View style={styles.nameContact}></View>
+                        </View>
+                        <Text style={styles.h2}>Description</Text>
+                        <View style={styles.descriptionBloc}>
+                            {!modifyField?<Text style={styles.whiteText}>{profileData.description}</Text>:<TextInput style={styles.textInput}/>}
+                            <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={()=>setModifyField(true)}>
+                                <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.h2}>Lieux favoris</Text>
+                        <View style={styles.localisationContainer}>
+                            {[1, 2, 3].map((item) => (
+                                <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
+                                    <Text style={styles.whiteText}>{profileData.location}</Text>
+                                </TouchableOpacity>
+                            ))}
+                            <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                                <FontAwesome name="plus" style={styles.plusButton} size={20} />
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.h2}>Offres en cours</Text>
+                        <View style={styles.localisationContainer}>
+                            {[1, 2, 3].map((item) => (
+                                <TouchableOpacity activeOpacity={0.8}key={item} style={styles.altBtn}>
+                                    <Text style={styles.whiteText}>{profileData.favorites}</Text>
+                                </TouchableOpacity>    
+                            )
+                            
+                            )}
+                        </View>
+                        <View>
+                            <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
 
-            <View style={styles.containerContent}>
-            <SafeAreaView style={styles.container}>
+        <Text style={styles.white}>
+            Enregistrer les modifications
+        </Text>
+      </TouchableOpacity >
 
-
-            <Text style={styles.h1}>Mon profil</Text>
-
-            <View style={styles.userBlock}>
-                {/* <View style={styles.blockNamePpContact}> */}
-                        <Text style={styles.name}>{username}</Text>
-                        <Text style={styles.tel}>{contact}</Text>
-                        <Text style={styles.tel}>{mail}</Text>
-                    <Image source={avatar} style={styles.pictureProfile} />
-                    <View style={styles.nameContact}>
-                    </View>
-                {/* </View> */}
-                <TouchableOpacity>
-                    <FontAwesome style={styles.modifyPen} name="pencil" size={20} color={'white'} />
-                </TouchableOpacity>
-            </View>
-
-
-            <Text style={styles.h2}>Description</Text>
-
-            
-            <View style={styles.descriptionBloc}>
-                <Text style={styles.whiteText}>{description}</Text>
-                <TouchableOpacity>
-                    <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
-                </TouchableOpacity>
-            </View>
-            
-            <Text style={styles.h2}>Lieux favoris</Text>
-
-      <View style={styles.localisationContainer}>
-
-
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{location}</Text>
-</TouchableOpacity >
-
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{location}</Text>
-</TouchableOpacity >
-
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{location}</Text>
-</TouchableOpacity >
-
-      <TouchableOpacity>
-      <FontAwesome name="plus" style={styles.plusButton} size={20} />
-</TouchableOpacity >
-
-
-</View>
-
-<Text style={styles.h2}>Offres en cours</Text>
-
-<View style={styles.localisationContainer}>
-
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{favorites}</Text>
-</TouchableOpacity >
-
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{favorites}</Text>
-</TouchableOpacity >
-
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{favorites}</Text>
-</TouchableOpacity >
-</View>
-
-        </SafeAreaView >
-
-
-            </View>
-
+                        </View>
+                    </SafeAreaView>
+                </View>
+            ) : (
+                <View style={styles.container}>
+                    <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+                    <Connection />
+                    <Inscription />
+                </View>
+            )}
         </View>
-    );
+    </KeyboardAvoidingView>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -146,30 +143,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: 'white'
-        
+
     },
 
     containerContent: {
         flex: 1,
         backgroundColor: '',
     },
-    
-    plusButton: {
-        marginLeft:40,
-        color: 'white',
-    },
 
-    locationRow:{
-        backgroundColor: 'orange',
-        width: '70%',
-        height: 60,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginTop: 20,
+    plusButton: {
+        marginLeft: 230,
+        color: '#BAB700',
     },
 
     localisationContainer: {
-        flexDirection:'row',
+        flexDirection: 'row',
         backgroundColor: '#60935D',
         width: '98%',
         height: 50,
@@ -188,36 +176,18 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: '#60935D'
     },
-    duka: {
-        marginTop: 10,
-    },
-
-    topRightHeader: {
-        flexDirection: 'row',
-        marginTop: 10,
-        marginRight: 10
-    },
-
-    iconRightHeader: {
-        marginLeft: 10,
-    },
-    
-    bars: {
-        marginLeft: 10,
-        marginTop: 10
-    },
 
     userBlock: {
         backgroundColor: '#60935D',
-        width: '98%',
-        height: 140,
+        width: '100%',
+        height: '20%',
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 0,
     },
-    
+
     pictureProfile: {
-        // backgroundColor: 'black',
+        backgroundColor: 'purple',
         width: 100,
         height: 100,
         borderRadius: 80,
@@ -226,35 +196,48 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        height: 35,
-        marginTop: 40,
+        // height: 35,
+        marginTop: -30,
         borderRadius: 5,
         justifyContent: 'center',
         fontSize: 18,
         color: 'white',
         borderBottomWidth: 1,
-        fontFamily: 'MontserratMedium',
-        marginLeft: 100
+        // fontFamily: 'MontserratMedium',
+        marginLeft: 100,
+        // backgroundColor:'#BAB700'
     },
 
     tel: {
         width: 200,
         height: 35,
-        marginTop: 0,
+        marginTop: -10,
         borderRadius: 5,
         fontSize: 18,
         color: 'white',
         borderBottomWidth: 5,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         marginLeft: 165
     },
 
-    blockNamePpContact: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'yellow',
-       
+    mail: {
+        width: 200,
+        height: 35,
+        marginTop: -10,
+        borderRadius: 5,
+        fontSize: 18,
+        color: 'white',
+        borderBottomWidth: 5,
+        // fontFamily: 'MontserratMedium',
+        marginLeft: 165
     },
+
+    // blockNamePpContact: {
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     backgroundColor: 'yellow',
+    // },
+
     descriptionBloc: {
         backgroundColor: '#60935D',
         width: '98%',
@@ -262,89 +245,69 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop: 20,
-
     },
-    descriptionRow: {
-        // height: 40,
-        marginTop: 0,
-        // backgroundColor: 'red',
-        borderRadius:0,
 
-        width: '100%',
-        height: 130,
-        borderRadius: 10,
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    modifyPen: {
-        marginLeft: 250,
-        marginBottom: 120
+    modifyContactSlidePen: {
+        marginLeft: 300,
+        marginBottom: 0,
+        marginTop: 20,
+        width:50,
+        height:50,
+        color: '#BAB700',
 
     },
     modifyPenDescription: {
-        marginTop: 55,
-        marginLeft: 87
+        marginTop: -30,
+        marginLeft: 300,
+        color: '#BAB700'
     },
 
 
     h1: {
-        fontFamily: 'MontserratMedium', 
+        // fontFamily: 'MontserratMedium',
         fontSize: 28,
-        color: '#14342B', 
-        marginTop:20,
-      },
-      h2: {
+        color: '#BAB700',
+        marginTop: 20,
+        fontWeight: 'bold'
+    },
+    h2: {
         marginTop: 25,
-        fontFamily: 'MontserratRegular', 
+        // fontFamily: 'MontserratRegular',
         fontSize: 24,
-        color: '#60935D',
-      },
-      h3: {
-        fontFamily: 'MontserratMedium', 
+        color: '#BAB700',
+    },
+    h3: {
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
         color: '#14342B',
-      },
-      text: {
-        fontFamily: 'MontserratRegular', 
+    },
+    text: {
+        // fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'black',
-      },
+    },
 
-      whiteText: {
-        fontFamily: 'MontserratRegular', 
+    whiteText: {
+        // fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'white',
-        margin : 15,
-      },
-
-      topBar: {
-        flexDirection: 'row', 
-        flexWrap: 'wrap',
-        marginTop: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: 210,
-        backgroundColor: '#60935D',
-        width: 400,
-        height: 50,
-        borderRadius: 10,
+        margin: 15,
     },
 
-    icon: {
-        width:35,
-        height: 35,
-        color:'white', 
-        margin: 8,
+    textInput: {
+backgroundColor:'#BBDFC5',
+width:200,
+height:10,
+marginLeft:130,
     },
-
-    returnToHome: {
-        marginLeft:110,
-    },
-
-    green: {
-        color: "#BAB700",
-        fontFamily: 'MontserratMedium', 
+    btn: {
+        flexDirection: "row",
+        padding: 18, 
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        backgroundColor: "#BAB700",
+        // fontFamily: 'MontserratMedium', 
         fontSize: 20,
       },
-
 });

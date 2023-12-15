@@ -15,6 +15,8 @@ import Connection from '../components/Connection';
 import Inscription from '../components/Inscription';
 import { AntDesign } from '@expo/vector-icons';
 import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user'
+import { BACKEND_ADDRESS } from "@env"
+const backendAddress = BACKEND_ADDRESS;
 
 export default function VendreScreen({ navigation }) {
     const dispatch = useDispatch();
@@ -91,7 +93,7 @@ export default function VendreScreen({ navigation }) {
                     type: 'image/jpeg',
                 });
 
-                const response = await fetch('http://192.168.166.47:3000/offers/upload', { // http://172.16.0.153:3000/offers/upload
+                const response = await fetch(`${backendAddress}/offers/upload`, { // http://172.16.0.153:3000/offers/upload
                     method: 'POST',
                     body: formData,
                 })
@@ -104,7 +106,7 @@ export default function VendreScreen({ navigation }) {
 
             }
 
-            fetch('http://192.168.166.47:3000/offers/addOffer', {// http://172.16.0.153:3000/offers/addOffer
+            fetch(`${backendAddress}/offers/addOffer`, {// http://172.16.0.153:3000/offers/addOffer
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
