@@ -34,7 +34,7 @@ export default function ProfilScreen({ navigation }) {
 
 
     const fetchProfilInfos = (profileToken) => {
-        fetch(`http://172.16.0.22:3000/users/getProfilInfos/${profileToken}`)
+        fetch(`${backendAddress}/getProfilInfos/${profileToken}`)
             .then(response => response.json())
             .then(profileInfos => {
                 console.log(profileInfos)
