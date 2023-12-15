@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity,Image } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,8 @@ export default function Header({ navigation }) {
             {/* <SafeAreaView style={styles.safeTop}> */}
             <View style={styles.header}>
                 <Text ></Text>
-                <Text style={styles.duka} >dUka</Text>
+                <Image style={styles.logo} source={require('../assets/Logo_DUKA.png')} />
+                {/* <Text style={styles.duka} >dUka</Text> */}
                 <View style={styles.topRightHeader} >
                     <TouchableOpacity style={styles.iconRightHeader}>
                         <FontAwesome name="bell" size={30} />
@@ -77,6 +78,14 @@ const styles = StyleSheet.create({
     },
     iconRightHeader: {
         marginLeft: 10,
+    },
+
+    logo: {
+        width: '25%',
+        height: '25%',
+        marginRight:-30,
+        marginLeft:55,
+        padding:25
     },
 
 });
