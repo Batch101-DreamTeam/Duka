@@ -1,48 +1,51 @@
-import { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import Header from '../components/Header';
-import InputSearch from '../components/InputSearch';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ResultSearch from '../components/ResultSearch';
 
-import { BACKEND_ADDRESS } from "@env";
+import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
-// console.log(backendAddress)
-//console.log(backendAddress)
-// const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
-// BACKEND_ADDRESS = 'http://192.168.43.46:3000'
-export default function AcceuilScreen({ navigation }) {
+
+export default function MesVentes({ navigation }) {
 
     const [offersData, setOffersData] = useState([]);
+    const user = useSelector((state) => state.user.value);
+    const token = user.token
 
     useEffect(() => {
-        fetch(`${backendAddress}/offers/allOffers`)
+        fetch(`${backendAddress}/offers/allOffersBySeller/${token}`)
             .then(response => response.json())
             .then(data => {
-                // console.log(data.offers)
                 setOffersData(data.offers);
-                // setArticlesData(data.articles.filter((data, i) => i > 0));
             });
     }, []);
 
+    const handleNavigate = (data) => {
+        navigation.navigate("FicheVente", { offerData: data });
+    };
+
+
     const offers = offersData.map((data, i) => {
-        // const isLiked = likedMovies.some(movie => movie === data.title);
-        return <ResultSearch
-            key={i}
-            offerTitle={data.offerTitle}
-            images={data.images[0]}
-            description={data.description}
-            price={data.price}
-            category={data.category}
-        />;
+        return (
+            <TouchableOpacity key={i} data={data} onPress={() => handleNavigate(data)}>
+                <ResultSearch
+                    offerTitle={data.offerTitle}
+                    images={data.images[0]}
+                    description={data.description}
+                    price={data.price}
+                    category={data.category}
+                />
+            </TouchableOpacity>
+        )
     });
+
+
     return (
-
-
-
         <View style={styles.container}>
 
-            <Header navigation={navigation} />
-            <InputSearch />
+            <Header />
+
             <View style={styles.containerContent}>
                 <ScrollView style={styles.scrollView}>
 
@@ -51,12 +54,6 @@ export default function AcceuilScreen({ navigation }) {
                     </View>
                 </ScrollView>
             </View>
-
-
-
-
-
-
         </View>
     );
 }
