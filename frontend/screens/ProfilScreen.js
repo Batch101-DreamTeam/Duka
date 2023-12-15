@@ -16,6 +16,9 @@ import { BACKEND_ADDRESS } from "@env";
 import Connection from '../components/Connection';
 const backendAddress = BACKEND_ADDRESS;
 
+<<<<<<< HEAD
+    
+
 
 export default function ProfilScreen({ navigation }) {
     const [profileData, setProfileData] = useState({
