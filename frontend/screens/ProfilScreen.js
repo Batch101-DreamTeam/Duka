@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
+import { BACKEND_ADDRESS } from "@env";
+const backendAddress = BACKEND_ADDRESS;
+
 
 export default function ProfilScreen({ navigation }) {
     let [fontsLoaded] = useFonts({
