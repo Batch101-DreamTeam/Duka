@@ -7,7 +7,7 @@ import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 import { useDispatch, useSelector } from 'react-redux';
 // import SelectDropdown from 'react-native-select-dropdown'
-// import { SelectList } from 'react-native-dropdown-select-list'
+import { SelectList } from 'react-native-dropdown-select-list'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -93,7 +93,7 @@ export default function VendreScreen({ navigation }) {
                     type: 'image/jpeg',
                 });
 
-                const response = await fetch(`{backendAddress}/offers/upload`, { // http://172.16.0.153:3000/offers/upload
+                const response = await fetch(`${backendAddress}/offers/upload`, { // http://172.16.0.153:3000/offers/upload
                     method: 'POST',
                     body: formData,
                 })
@@ -106,7 +106,7 @@ export default function VendreScreen({ navigation }) {
 
             }
 
-            fetch(`{backendAddress}/offers/addOffer`, {// http://172.16.0.153:3000/offers/addOffer
+            fetch(`${backendAddress}/offers/addOffer`, {// http://172.16.0.153:3000/offers/addOffer
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

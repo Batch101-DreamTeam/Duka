@@ -3,9 +3,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail, deleteAllPhoto } from '../reducers/user'
+import React, { useState, useEffect, useRef } from 'react';
 
 
 export default function Header({ navigation }) {
+
     const dispatch = useDispatch();
     const logout = () => {
         dispatch(updateName(null))
@@ -16,7 +18,6 @@ export default function Header({ navigation }) {
 
     return (
         <>
-
             {/* <SafeAreaView style={styles.safeTop}> */}
             <View style={styles.header}>
                 <Text ></Text>
@@ -28,7 +29,9 @@ export default function Header({ navigation }) {
                     <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
                         <AntDesign name="logout" size={24} color="black" />
                     </TouchableOpacity>
-
+                    <TouchableOpacity onPress={() => navigation.navigate('MesVentes')} style={styles.iconRightHeader}>
+                        <AntDesign name="infocirlce" size={24} color="black" />
+                    </TouchableOpacity>
                 </View>
 
             </View>

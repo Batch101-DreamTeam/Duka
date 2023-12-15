@@ -7,6 +7,7 @@ import ResultSearch from '../components/ResultSearch';
 import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
 // console.log(backendAddress)
+//console.log(backendAddress)
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 // BACKEND_ADDRESS = 'http://192.168.43.46:3000'
 export default function AcceuilScreen({ navigation }) {
@@ -40,7 +41,7 @@ export default function AcceuilScreen({ navigation }) {
 
         <View style={styles.container}>
 
-            <Header />
+            <Header navigation={navigation} />
             <InputSearch />
             <View style={styles.containerContent}>
                 <ScrollView style={styles.scrollView}>
