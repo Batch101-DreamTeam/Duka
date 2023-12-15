@@ -6,7 +6,7 @@ import ResultSearch from '../components/ResultSearch';
 
 import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
-console.log(backendAddress)
+// console.log(backendAddress)
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 // BACKEND_ADDRESS = 'http://192.168.43.46:3000'
 export default function AcceuilScreen({ navigation }) {
@@ -17,7 +17,7 @@ export default function AcceuilScreen({ navigation }) {
         fetch(`${backendAddress}/offers/allOffers`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.offers)
+                // console.log(data.offers)
                 setOffersData(data.offers);
                 // setArticlesData(data.articles.filter((data, i) => i > 0));
             });
