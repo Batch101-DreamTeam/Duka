@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
+import { BACKEND_ADDRESS } from "@env";
+const backendAddress = BACKEND_ADDRESS;
+
 
 export default function ProfilScreen({ navigation }) {
     let [fontsLoaded] = useFonts({
@@ -31,7 +34,7 @@ export default function ProfilScreen({ navigation }) {
 
 
     const fetchProfilInfos = (profileToken) => {
-        fetch(`http://172.16.0.22:3000/users/getProfilInfos/${profileToken}`)
+        fetch(`${backendAddress}/users/getProfilInfos/${profileToken}`)
             .then(response => response.json())
             .then(profileInfos => {
                 console.log(profileInfos)
