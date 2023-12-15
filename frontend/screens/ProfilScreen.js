@@ -2,27 +2,30 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions } from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useFonts } from 'expo-font';
+import Inscription from '../components/Inscription';
 import React, { useEffect, useState, Dispatch, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+
 // Import des fichiers de police
+import { useFonts } from 'expo-font';
 import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
 import { BACKEND_ADDRESS } from "@env";
+import Connection from '../components/Connection';
 const backendAddress = BACKEND_ADDRESS;
 
 
 export default function ProfilScreen({ navigation }) {
-    let [fontsLoaded] = useFonts({
-        MontserratRegular: MontserratRegular,
-        MontserratMedium: MontserratMedium,
-    });
+    // let [fontsLoaded] = useFonts({
+    //     MontserratRegular: MontserratRegular,
+    //     MontserratMedium: MontserratMedium,
+    // });
 
-    if (!fontsLoaded) {
-        return null;
-    }
+    // if (!fontsLoaded) {
+    //     return null;
+    // }
 
       const[username,setUsername]=useState("");
       const[contact,setContact]=useState("");
@@ -33,8 +36,13 @@ export default function ProfilScreen({ navigation }) {
       const[avatar,setAvatar]=useState("");
 
       
-const fetchProfilInfos = (profileToken) => {
-    fetch(`${backendAddress}/users/getProfilInfos/${profileToken}`)
+const fetchProfilInfos = (profileToken) => {}
+
+const user = useSelector((state) => state.user.value);
+const token = user.token
+
+useEffect(() => {
+    fetch(`${backendAddress}/users/getProfilInfos/${token}`)
     .then(response => response.json())
     .then(profileInfos=>{
         console.log(profileInfos)
@@ -48,16 +56,14 @@ const fetchProfilInfos = (profileToken) => {
             setFavorites(profileInfos.favorites)
         }
     })
-}
-useEffect(() => {
-    fetchProfilInfos(token);
 }, []);
 // appeler fetchProfileInfo au démarrage de la page (avec useffect) et choper le token ds le reducer (une fois connecté à l'appli) puis on mettra le tout dans un if
     return (
-        <View style={styles.container}>
+  
+       <View style={styles.container}>
 
             <Header />
-
+{token ?
             <View style={styles.containerContent}>
             <SafeAreaView style={styles.container}>
 
@@ -134,9 +140,15 @@ useEffect(() => {
 
 
             </View>
+: <View style={styles.container}>
+<Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+<Connection />
+<Inscription />
+</View>}
 
         </View>
-    );
+        
+     );
 }
 
 const styles = StyleSheet.create({
