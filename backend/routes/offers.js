@@ -50,7 +50,7 @@ router.post('/addOffer', async (req, res) => {
 });
 
 
-router.post('/upload', async (req, res) => {
+router.post('/upload', async (req, res) => { // envoie des photos dans cloudinary (utilisé dans VendreScreen)
     const photoPath = `./tmp/${uniqid()}.jpg`;
     console.log('req.files', req.files)
     const resultMove = await req.files.photoFromFront.mv(photoPath);
@@ -101,7 +101,7 @@ router.post('/search', async (req, res) => {
 
 router.get('/allOffers', async (req, res) => {
     const data = await Offer.find()
-    console.log(data)
+    // console.log(data)
     res.json({ offers: data });
 });
 
@@ -152,6 +152,27 @@ router.put('/modifyOffer/:idOffer', async (req, res) => {
         }
     }
 
+}),
+
+    router.get('/allOffersBySeller/:tokenSeller', async (req, res) => {
+        const idSeller = await User.find({ token: req.params.tokenSeller })
+        if (!idSeller) {
+            res.status(400).json({ result: false, message: "user doesn't exist" })
+        } else {
+            const data = await Offer.find({ seller: idSeller })
+            //console.log(data)
+            res.json({ result: true, offers: data });
+        }
+    });
+
+router.delete('/deleteOffer/:idProduct', async (req, res) => {
+    const result = await Offer.find({ _id: req.params.idProduct })
+    if (!result) {
+        res.status(400).json({ result: false, message: "product doesn't exist" })
+    } else {
+        const deleteOffer = await Offer.deleteOne({ _id: req.params.idProduct })
+        res.json({ result: true });
+    }
 })
 
 module.exports = router;

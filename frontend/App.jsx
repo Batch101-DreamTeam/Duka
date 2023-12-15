@@ -13,6 +13,7 @@ import ProfilScreen from "./screens/ProfilScreen.js";
 import Header from "./components/Header.js";
 import Photo from "./components/Photo.js";
 import MesVentes from "./screens/MesVentes.js";
+import FicheVente from "./components/FicheVente.js";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 // navigation.goBack() (pour le retour en arriere (stack) pour le bouton dans le header)
@@ -95,6 +96,7 @@ export default function App() {
             <Stack.Screen name="Header" component={Header} />
             <Stack.Screen name="VendreScreen" component={VendreScreen} />
             <Stack.Screen name="MesVentes" component={MesVentes} />
+            <Stack.Screen name="FicheVente" component={FicheVente} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
