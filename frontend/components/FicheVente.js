@@ -9,6 +9,7 @@ const backendAddress = BACKEND_ADDRESS;
 export default function FicheVente({ route }) {
     const { offerData } = route.params; // recuperation des infos du parent
     const offerTitle = offerData.offerTitle
+    const idProduct = offerData._id
     const description = offerData.description
     const price = offerData.price
     const images = offerData.images[0] // mapper les photos pour toutes les afficher par la suite
@@ -22,7 +23,13 @@ export default function FicheVente({ route }) {
         setModalVisible(true)
     }
     const deleteOffer = () => {
-
+        fetch(`${backendAddress}/offers/deleteOffer/${idProduct}`,
+            // method: Delete
+        )
+            .then(response => response.json())
+            .then(data => {
+                setOffersData(data.offers);
+            });
     }
     return (
         <View style={styles.container}>
@@ -67,10 +74,10 @@ export default function FicheVente({ route }) {
                             <Text>Etes vous sur de vouloir supprimer cette offre ? </Text>
                         </View>
                         <View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => deleteOffer()}>
                                 <Text>Oui</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
                                 <Text>Non</Text>
                             </TouchableOpacity>
                         </View>
