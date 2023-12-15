@@ -122,4 +122,6 @@ router.get('/allOffers', async (req, res) => {
 // })
 // trop de params pas définis :en pause
 
+router.get('./')
+
 module.exports = router;
