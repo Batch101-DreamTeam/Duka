@@ -3,34 +3,34 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 const SingleMessage = (props) => {
   console.log(props.userId);
   return (
-      <View style={styles.cont}>
-        
-        { props.userId == 1 ? ( 
-        <TouchableOpacity  style={styles.me}>
-            <Text
-             style={styles.myText}
-             >{props.messageContent}</Text>
-         </TouchableOpacity> 
-         ) : (
-           <TouchableOpacity style={styles.else}> 
-            <Text
-             style={styles.otherText}
-             >{props.messageContent}</Text>
-           </TouchableOpacity> 
-        )}
-      </View>
+    <View style={styles.cont}>
+
+      {props.userId == 1 ? (
+        <TouchableOpacity style={styles.me}>
+          <Text
+            style={styles.myText}
+          >{props.messageContent}</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.else}>
+          <Text
+            style={styles.otherText}
+          >{props.messageContent}</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 export default SingleMessage;
 
 const styles = StyleSheet.create({
- lo:{
-      padding: 20,
-      borderWidth: 2,
-      flexDirection: "row",
-      width: '100%'
+  lo: {
+    padding: 20,
+    borderWidth: 2,
+    flexDirection: "row",
+    width: '100%'
   },
-  myText:{
+  myText: {
     padding: 20,
     borderWidth: 2,
     flexDirection: "row",
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "red",
 
-  }, 
-  otherText:{
+  },
+  otherText: {
     padding: 20,
     borderWidth: 2,
     flexDirection: "row",

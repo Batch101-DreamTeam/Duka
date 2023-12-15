@@ -6,6 +6,7 @@ import ResultSearch from '../components/ResultSearch';
 
 import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
+// console.log(backendAddress)
 //console.log(backendAddress)
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 // BACKEND_ADDRESS = 'http://192.168.43.46:3000'
