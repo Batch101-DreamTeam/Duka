@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-  value: { name: null, mail: null, token: null, photos: [] },
+  value: { name: null, mail: null, token: null, photos: [], favorites: [] },
 };
 
 export const userSlice = createSlice({
@@ -27,8 +27,23 @@ export const userSlice = createSlice({
     deleteAllPhoto: (state, action) => {
       state.value.photos = []
     },
+
+
+
+    addFavorites: (state, action) => {
+      // console.log('addfav')
+      // console.log(state.value.favorites)
+      state.value.favorites.push(action.payload)
+    },
+    suppFavorites: (state, action) => {
+      state.value.favorites = state.value.favorites.filter((data) => data !== action.payload);
+    },
+    getFavorites: (state, action) => {
+      state.value.favorites = action.payload;
+    },
+
   },
 });
 
-export const { updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
+export const { addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
 export default userSlice.reducer;

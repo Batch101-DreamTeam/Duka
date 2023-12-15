@@ -1,22 +1,34 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-
+import { useSelector, useDispatch } from 'react-redux';
+import { addFavorites, suppFavorites } from '../reducers/user';
+// const user = useSelector((state) => state.user.value);
+// const token = user.token
+// const Favorites = user.favorites;
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function ResultSearch(props) {
+    
+    const dispatch = useDispatch();
+
     return (
-
-
-
         <View style={styles.product}>
             <Image style={styles.image} source={{ uri: props.images }} />
-
+ 
             <View style={styles.descProd}>
                 <Text >{props.offerTitle}</Text>
                 <Text >{props.description}</Text>
                 <Text >{props.price} CFA</Text>
+              { !props.isLiked ? (
+                <TouchableOpacity onPress={()=> dispatch(suppFavorites(props))}>
+                <FontAwesome style={styles.red} name='heart' size={20} />
+                </TouchableOpacity>
+               ) : (
+                <TouchableOpacity onPress={()=> dispatch(addFavorites(props))}>
                 <FontAwesome name='heart' size={20} />
+                </TouchableOpacity>
+              )
+               }
             </View>
         </View>
 
@@ -24,6 +36,9 @@ export default function ResultSearch(props) {
 }
 
 const styles = StyleSheet.create({
+    red:{
+        color: 'red'
+    },
     container: {
         flex: 1,
         flexDirection: 'column',

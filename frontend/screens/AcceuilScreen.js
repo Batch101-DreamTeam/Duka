@@ -4,12 +4,16 @@ import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
 import { BACKEND_ADDRESS } from "@env"
+import { useSelector, useDispatch } from 'react-redux';
 const backendAddress = BACKEND_ADDRESS;
 console.log(backendAddress)
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 // BACKEND_ADDRESS = 'http://192.168.43.46:3000'
 export default function AcceuilScreen({ navigation }) {
-
+    const user = useSelector((state) => state.user.value);
+    const token = user.token
+    const Favorites = user.favorites;
+    
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
@@ -23,7 +27,7 @@ export default function AcceuilScreen({ navigation }) {
     }, []);
 
     const offers = offersData.map((data, i) => {
-        // const isLiked = likedMovies.some(movie => movie === data.title);
+        const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -31,6 +35,8 @@ export default function AcceuilScreen({ navigation }) {
             description={data.description}
             price={data.price}
             category={data.category}
+            id={data._id}
+            isLiked={isLiked}
         />;
     });
     return (

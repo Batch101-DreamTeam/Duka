@@ -24,11 +24,9 @@ import { Provider } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import user from './reducers/user.js';
 
-
 const persistConfig = {
   key: 'duka',
   storage: AsyncStorage,
-
 };
 
 const reducers = combineReducers({ user });
