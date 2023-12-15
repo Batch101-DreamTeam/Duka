@@ -65,7 +65,7 @@ router.post('/upload', async (req, res) => {
     }
 });
 
-router.get('/search/:offerId', async (req, res, next) => {
+router.get('/search/:offerId', async (req, res, next) => { // route pour accéder à un produit
     const argument = req.params.offerId;
     if (!argument) {
         res.status(400).json({ result: false, message: "wrong request" })
@@ -122,6 +122,36 @@ router.get('/allOffers', async (req, res) => {
 // })
 // trop de params pas définis :en pause
 
-router.get('./')
+router.put('/modifyOffer/:idOffer', async (req, res) => {
+    const produit = req.params.idOffer;
+    if (!produit) {
+        res.status(400).json({ result: false, message: "wrong request" })
+        return
+    } else {
+        const targettedOffer = await Offer.findOne({ _id: produit })
+        console.log(targettedOffer)
+        if (!targettedOffer) {
+            res.status(400).json({ result: false, message: "no offer founded" })
+            return
+        }
+        else {
+            const infos = {
+                sellerName: targettedOffer.sellerName,
+                seller: targettedOffer.seller,
+                sold: false,
+                offerTitle: req.body.offerTitle,
+                images: req.body.images,
+                description: req.body.description,
+                category: req.body.category,
+                price: req.body.price,
+                dateOfCreation: targettedOffer.dateOfCreation, // la donnée sera donnée dans le front
+                locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
+            }
+            const modifyOffer = await Offer.findOneAndUpdate({ _id: produit }, infos, { new: true })
+            res.status(200).json({ result: true, message: modifyOffer })
+        }
+    }
+
+})
 
 module.exports = router;
