@@ -3,7 +3,8 @@ import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, 
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
-import { BACKEND_ADDRESS } from "@env"
+
+import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
 console.log(backendAddress)
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
@@ -43,8 +44,8 @@ export default function AcceuilScreen({ navigation }) {
             <InputSearch />
             <View style={styles.containerContent}>
                 <ScrollView style={styles.scrollView}>
+
                     <View style={styles.productList}>
-                        {/* <ResultSearch /> */}
                         {offers}
                     </View>
                 </ScrollView>

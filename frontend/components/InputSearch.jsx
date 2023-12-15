@@ -1,7 +1,11 @@
 import { StyleSheet, Alert, ImageBackground, Text, View, Pressable, Modal, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { useState } from 'react';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
+import { RemoteDataSetExample2 } from '../components/autodrop';
+// import RNPickerSelect from 'react-native-picker-select';
+// import { Dropdown } from './Dropdown';
 import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 // const backendAddress = process.env.BACKEND_ADDRESS;
@@ -12,7 +16,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function InputSearch(navigation) {
-
+    const [selectedItem, setSelectedItem] = useState(null);
     const price = ["Prix croissant", "Prix décroisssant"]
     const place = ["Par produit le plus proche", "Par prix décroisssant"]
     const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
@@ -72,50 +76,28 @@ export default function InputSearch(navigation) {
                     <FontAwesome name="map-marker" style={styles.iconSearch} size={20} />
                     <TextInput style={styles.inputSearch} placeholder=" Où ?" maxLength={200} />
                 </View>
-                <SelectDropdown
-                    data={price}
-                    onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index);
+
+
+                <AutocompleteDropdown
+                    style={{
+                        color: '#fc0',
+                        backgroundColor: 'yellow',
                     }}
-                    defaultButtonText={'Select country'}
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                        return selectedItem;
-                    }}
-                    rowTextForSelection={(item, index) => {
-                        return item;
-                    }}
-                    buttonStyle={styles.dropdown1BtnStyle}
-                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                    renderDropdownIcon={isOpened => {
-                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                    }}
-                    dropdownIconPosition={'right'}
-                    dropdownStyle={styles.dropdown1DropdownStyle}
-                    rowStyle={styles.dropdown1RowStyle}
-                    rowTextStyle={styles.dropdown1RowTxtStyle}
+                    clearOnFocus={false}
+                    closeOnBlur={true}
+                    closeOnSubmit={false}
+                    initialValue={{ id: '2' }} // or just '2'
+                    onSelectItem={setSelectedItem}
+                    dataSet={[
+                        { id: '1', title: 'Alpha' },
+                        { id: '2', title: 'Beta' },
+                        { id: '3', title: 'Gamma' },
+                    ]}
                 />
-                <SelectDropdown
-                    data={store}
-                    onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index);
-                    }}
-                    defaultButtonText={'Catégorie'}
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                        return selectedItem;
-                    }}
-                    rowTextForSelection={(item, index) => {
-                        return item;
-                    }}
-                    buttonStyle={styles.dropdown1BtnStyle}
-                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                    renderDropdownIcon={isOpened => {
-                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                    }}
-                    dropdownIconPosition={'right'}
-                    dropdownStyle={styles.dropdown1DropdownStyle}
-                    rowStyle={styles.dropdown1RowStyle}
-                    rowTextStyle={styles.dropdown1RowTxtStyle}
-                />
+
+                <RemoteDataSetExample2 />
+
+                {/* <Dropdown /> */}
 
                 <TouchableOpacity onPress={() => handleSubmit()} style={styles.btnConnexion} >
                     <Text style={styles.white}>
@@ -164,54 +146,9 @@ export default function InputSearch(navigation) {
 
 
                 </Text>
-                <View style={styles.selectFilter}>
-                    <SelectDropdown
-                        style={styles.selectDrop}
-                        data={price}
-                        onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index);
-                        }}
-                        defaultButtonText={'Prix'}
-                        buttonTextAfterSelection={(selectedItem, index) => {
-                            return selectedItem;
-                        }}
-                        rowTextForSelection={(item, index) => {
-                            return item;
-                        }}
-                        buttonStyle={styles.dropdown1BtnStyle}
-                        buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                        renderDropdownIcon={isOpened => {
-                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
-                        }}
-                        dropdownIconPosition={'right'}
-                        dropdownStyle={styles.dropdown1DropdownStyle}
-                        rowStyle={styles.dropdown1RowStyle}
-                        rowTextStyle={styles.dropdown1RowTxtStyle}
-                    />
-                    <SelectDropdown
-                        style={styles.selectDrop}
-                        data={store}
-                        onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index);
-                        }}
-                        defaultButtonText={'Catégorie'}
-                        buttonTextAfterSelection={(selectedItem, index) => {
-                            return selectedItem;
-                        }}
-                        rowTextForSelection={(item, index) => {
-                            return item;
-                        }}
-                        buttonStyle={styles.dropdown1BtnStyle}
-                        buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                        renderDropdownIcon={isOpened => {
-                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
-                        }}
-                        dropdownIconPosition={'right'}
-                        dropdownStyle={styles.dropdown1DropdownStyle}
-                        rowStyle={styles.dropdown1RowStyle}
-                        rowTextStyle={styles.dropdown1RowTxtStyle}
-                    />
-                </View>
+                {/* <View style={styles.selectFilter}>
+
+                </View> */}
             </ImageBackground>
             {modal}
         </View>
