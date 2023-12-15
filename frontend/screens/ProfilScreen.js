@@ -11,17 +11,7 @@ import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
 import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
 
-<<<<<<< HEAD
-export default function Profil({ navigation }) {
-
-    const user = useSelector((state) => state.user.value);
-    const token = user.token
-    
-
-
-=======
 export default function ProfilScreen({ navigation }) {
->>>>>>> 3a5bfd4654f23aa787d48af351f8ff6b0f6f742c
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
         MontserratMedium: MontserratMedium,
@@ -31,113 +21,113 @@ export default function ProfilScreen({ navigation }) {
         return null;
     }
 
-      const[username,setUsername]=useState("");
-      const[contact,setContact]=useState("");
-      const[description,setDescription]=useState("");
-      const[mail, setMail]=useState("");
-      const[location, setLocation]=useState("");
-      const[favorites, setFavorites]=useState("");
-      const[avatar,setAvatar]=useState("");
+    const [username, setUsername] = useState("");
+    const [contact, setContact] = useState("");
+    const [description, setDescription] = useState("");
+    const [mail, setMail] = useState("");
+    const [location, setLocation] = useState("");
+    const [favorites, setFavorites] = useState("");
+    const [avatar, setAvatar] = useState("");
 
-      
-const fetchProfilInfos = (profileToken) => {
-    fetch(`http://172.16.0.22:3000/users/getProfilInfos/${profileToken}`)
-    .then(response => response.json())
-    .then(profileInfos=>{
-        console.log(profileInfos)
-        if (profileInfos.result){
-            setUsername(profileInfos.username)
-            setContact(profileInfos.contact)
-            setDescription(profileInfos.description)
-            setMail(profileInfos.mail)
-            setAvatar(profileInfos.avatar)
-            setLocation(profileInfos.location)
-            setFavorites(profileInfos.favorites)
-        }
-    })
-}
-useEffect(() => {
-    fetchProfilInfos(token);
-}, []);
-// appeler fetchProfileInfo au démarrage de la page (avec useffect) et choper le token ds le reducer (une fois connecté à l'appli) puis on mettra le tout dans un if
+
+    const fetchProfilInfos = (profileToken) => {
+        fetch(`http://172.16.0.22:3000/users/getProfilInfos/${profileToken}`)
+            .then(response => response.json())
+            .then(profileInfos => {
+                console.log(profileInfos)
+                if (profileInfos.result) {
+                    setUsername(profileInfos.username)
+                    setContact(profileInfos.contact)
+                    setDescription(profileInfos.description)
+                    setMail(profileInfos.mail)
+                    setAvatar(profileInfos.avatar)
+                    setLocation(profileInfos.location)
+                    setFavorites(profileInfos.favorites)
+                }
+            })
+    }
+    useEffect(() => {
+        fetchProfilInfos(token);
+    }, []);
+    // appeler fetchProfileInfo au démarrage de la page (avec useffect) et choper le token ds le reducer (une fois connecté à l'appli) puis on mettra le tout dans un if
     return (
         <View style={styles.container}>
 
             <Header />
 
             <View style={styles.containerContent}>
-            <SafeAreaView style={styles.container}>
+                <SafeAreaView style={styles.container}>
 
 
-            <Text style={styles.h1}>Mon profil</Text>
+                    <Text style={styles.h1}>Mon profil</Text>
 
-            <View style={styles.userBlock}>
-                {/* <View style={styles.blockNamePpContact}> */}
+                    <View style={styles.userBlock}>
+                        {/* <View style={styles.blockNamePpContact}> */}
                         <Text style={styles.name}>{username}</Text>
                         <Text style={styles.tel}>{contact}</Text>
                         <Text style={styles.tel}>{mail}</Text>
-                    <Image source={avatar} style={styles.pictureProfile} />
-                    <View style={styles.nameContact}>
+                        <Image source={avatar} style={styles.pictureProfile} />
+                        <View style={styles.nameContact}>
+                        </View>
+                        {/* </View> */}
+                        <TouchableOpacity>
+                            <FontAwesome style={styles.modifyPen} name="pencil" size={20} color={'white'} />
+                        </TouchableOpacity>
                     </View>
-                {/* </View> */}
-                <TouchableOpacity>
-                    <FontAwesome style={styles.modifyPen} name="pencil" size={20} color={'white'} />
-                </TouchableOpacity>
-            </View>
 
 
-            <Text style={styles.h2}>Description</Text>
-
-            
-            <View style={styles.descriptionBloc}>
-                <Text style={styles.whiteText}>{description}</Text>
-                <TouchableOpacity>
-                    <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
-                </TouchableOpacity>
-            </View>
-            
-            <Text style={styles.h2}>Lieux favoris</Text>
-
-      <View style={styles.localisationContainer}>
+                    <Text style={styles.h2}>Description</Text>
 
 
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{location}</Text>
-</TouchableOpacity >
+                    <View style={styles.descriptionBloc}>
+                        <Text style={styles.whiteText}>{description}</Text>
+                        <TouchableOpacity>
+                            <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
+                        </TouchableOpacity>
+                    </View>
 
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{location}</Text>
-</TouchableOpacity >
+                    <Text style={styles.h2}>Lieux favoris</Text>
 
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{location}</Text>
-</TouchableOpacity >
-
-      <TouchableOpacity>
-      <FontAwesome name="plus" style={styles.plusButton} size={20} />
-</TouchableOpacity >
+                    <View style={styles.localisationContainer}>
 
 
-</View>
+                        <TouchableOpacity style={styles.altBtn}>
+                            <Text style={styles.whiteText}>{location}</Text>
+                        </TouchableOpacity >
 
-<Text style={styles.h2}>Offres en cours</Text>
+                        <TouchableOpacity style={styles.altBtn}>
+                            <Text style={styles.whiteText}>{location}</Text>
+                        </TouchableOpacity >
 
-<View style={styles.localisationContainer}>
+                        <TouchableOpacity style={styles.altBtn}>
+                            <Text style={styles.whiteText}>{location}</Text>
+                        </TouchableOpacity >
 
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{favorites}</Text>
-</TouchableOpacity >
+                        <TouchableOpacity>
+                            <FontAwesome name="plus" style={styles.plusButton} size={20} />
+                        </TouchableOpacity >
 
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{favorites}</Text>
-</TouchableOpacity >
 
-<TouchableOpacity style={styles.altBtn}>
-<Text style={styles.whiteText}>{favorites}</Text>
-</TouchableOpacity >
-</View>
+                    </View>
 
-        </SafeAreaView >
+                    <Text style={styles.h2}>Offres en cours</Text>
+
+                    <View style={styles.localisationContainer}>
+
+                        <TouchableOpacity style={styles.altBtn}>
+                            <Text style={styles.whiteText}>{favorites}</Text>
+                        </TouchableOpacity >
+
+                        <TouchableOpacity style={styles.altBtn}>
+                            <Text style={styles.whiteText}>{favorites}</Text>
+                        </TouchableOpacity >
+
+                        <TouchableOpacity style={styles.altBtn}>
+                            <Text style={styles.whiteText}>{favorites}</Text>
+                        </TouchableOpacity >
+                    </View>
+
+                </SafeAreaView >
 
 
             </View>
@@ -154,20 +144,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: 'white'
-        
+
     },
 
     containerContent: {
         flex: 1,
         backgroundColor: '',
     },
-    
+
     plusButton: {
-        marginLeft:40,
+        marginLeft: 40,
         color: 'white',
     },
 
-    locationRow:{
+    locationRow: {
         backgroundColor: 'orange',
         width: '70%',
         height: 60,
@@ -177,7 +167,7 @@ const styles = StyleSheet.create({
     },
 
     localisationContainer: {
-        flexDirection:'row',
+        flexDirection: 'row',
         backgroundColor: '#60935D',
         width: '98%',
         height: 50,
@@ -209,7 +199,7 @@ const styles = StyleSheet.create({
     iconRightHeader: {
         marginLeft: 10,
     },
-    
+
     bars: {
         marginLeft: 10,
         marginTop: 10
@@ -223,7 +213,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 20,
     },
-    
+
     pictureProfile: {
         // backgroundColor: 'black',
         width: 100,
@@ -261,7 +251,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'yellow',
-       
+
     },
     descriptionBloc: {
         backgroundColor: '#60935D',
@@ -276,7 +266,7 @@ const styles = StyleSheet.create({
         // height: 40,
         marginTop: 0,
         // backgroundColor: 'red',
-        borderRadius:0,
+        borderRadius: 0,
 
         width: '100%',
         height: 130,
@@ -296,37 +286,37 @@ const styles = StyleSheet.create({
 
 
     h1: {
-        fontFamily: 'MontserratMedium', 
+        fontFamily: 'MontserratMedium',
         fontSize: 28,
-        color: '#14342B', 
-        marginTop:20,
-      },
-      h2: {
+        color: '#14342B',
+        marginTop: 20,
+    },
+    h2: {
         marginTop: 25,
-        fontFamily: 'MontserratRegular', 
+        fontFamily: 'MontserratRegular',
         fontSize: 24,
         color: '#60935D',
-      },
-      h3: {
-        fontFamily: 'MontserratMedium', 
+    },
+    h3: {
+        fontFamily: 'MontserratMedium',
         fontSize: 20,
         color: '#14342B',
-      },
-      text: {
-        fontFamily: 'MontserratRegular', 
+    },
+    text: {
+        fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'black',
-      },
+    },
 
-      whiteText: {
-        fontFamily: 'MontserratRegular', 
+    whiteText: {
+        fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'white',
-        margin : 15,
-      },
+        margin: 15,
+    },
 
-      topBar: {
-        flexDirection: 'row', 
+    topBar: {
+        flexDirection: 'row',
         flexWrap: 'wrap',
         marginTop: 0,
         alignItems: 'center',
@@ -339,20 +329,20 @@ const styles = StyleSheet.create({
     },
 
     icon: {
-        width:35,
+        width: 35,
         height: 35,
-        color:'white', 
+        color: 'white',
         margin: 8,
     },
 
     returnToHome: {
-        marginLeft:110,
+        marginLeft: 110,
     },
 
     green: {
         color: "#BAB700",
-        fontFamily: 'MontserratMedium', 
+        fontFamily: 'MontserratMedium',
         fontSize: 20,
-      },
+    },
 
 });
