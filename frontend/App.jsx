@@ -10,7 +10,9 @@ import FavorisScreen from "./screens/FavorisScreen.js";
 import VendreScreen from "./screens/VendreScreen.js";
 import MessageScreen from "./screens/MessageScreen.js";
 import ProfilScreen from "./screens/ProfilScreen.js";
+import Header from "./components/Header.js";
 import Photo from "./components/Photo.js";
+import MesVentes from "./screens/MesVentes.js";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 // navigation.goBack() (pour le retour en arriere (stack) pour le bouton dans le header)
@@ -90,7 +92,9 @@ export default function App() {
             {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="Photo" component={Photo} />
+            <Stack.Screen name="Header" component={Header} />
             <Stack.Screen name="VendreScreen" component={VendreScreen} />
+            <Stack.Screen name="MesVentes" component={MesVentes} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

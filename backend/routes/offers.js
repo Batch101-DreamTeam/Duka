@@ -129,7 +129,7 @@ router.put('/modifyOffer/:idOffer', async (req, res) => {
         return
     } else {
         const targettedOffer = await Offer.findOne({ _id: produit })
-        console.log(targettedOffer)
+        //console.log(targettedOffer)
         if (!targettedOffer) {
             res.status(400).json({ result: false, message: "no offer founded" })
             return

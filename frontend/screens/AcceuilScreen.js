@@ -40,7 +40,7 @@ export default function AcceuilScreen({ navigation }) {
 
         <View style={styles.container}>
 
-            <Header />
+            <Header navigation={navigation} />
             <InputSearch />
             <View style={styles.containerContent}>
                 <ScrollView style={styles.scrollView}>
