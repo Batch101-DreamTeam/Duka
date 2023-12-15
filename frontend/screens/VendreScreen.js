@@ -32,6 +32,7 @@ export default function VendreScreen({ navigation }) {
     const [offerRegister, setOfferRegister] = useState(false);
     const [selected, setSelected] = useState("")
     const [openPhoto, setOpenPhoto] = useState(false);
+    const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
 
     console.log(selected)
 
@@ -94,7 +95,7 @@ export default function VendreScreen({ navigation }) {
                     method: 'POST',
                     body: formData,
                 })
-                const photoSaveCloudinaty = await response.json()
+                const photoSaveCloudinaty = await response.json() // pas du TOUT opti car toute les photos sont saves avant de savoir si la requete pour save va passer
 
                 console.log('response trouvée : ', photoSaveCloudinaty)
 
@@ -147,12 +148,16 @@ export default function VendreScreen({ navigation }) {
     const deletePhotoDisplay = (picture) => {
         dispatch(removePhoto(picture))
     }
+    const openModalPhoto = (data) => {
+        setOpenPhoto(true)
+        setDisplayOpenPhoto(data)
+    }
     const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une limite max?)
         return (
-            <TouchableOpacity onPress={() => setOpenPhoto(true)}>
-                <ImageBackground key={i} source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
+            <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} >
+                <ImageBackground source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
                     <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
-                        <AntDesign name="closecircle" size={30} color="black" style={{ marginLeft: '75%', marginTop: 10 }} />
+                        <AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />
                     </TouchableOpacity>
                 </ImageBackground>
             </TouchableOpacity>
@@ -272,10 +277,12 @@ export default function VendreScreen({ navigation }) {
                     setOpenPhoto(!openPhoto);
                     //console.log(modalVisible)
                 }}>
-                <Pressable onPress={() => setOpenPhoto(!openPhoto)} style={styles.ModalAcceuil}>
-                    <View style={styles.modalView}>
-                        <Text>Vottre offre a bien été enregistré</Text>
-                    </View>
+                <Pressable onPress={() => setOpenPhoto(!openPhoto)} style={styles.ModalAcceuil} >
+                    <ImageBackground source={{ uri: displayOpenPhoto }} style={{ width: 400, height: 400, margin: 20 }} >
+                        <TouchableOpacity onPress={() => { deletePhotoDisplay(displayOpenPhoto); setOpenPhoto(!openPhoto) }}>
+                            <AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />
+                        </TouchableOpacity>
+                    </ImageBackground>
                 </Pressable>
             </Modal>
 
