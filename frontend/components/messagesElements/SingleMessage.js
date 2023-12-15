@@ -8,13 +8,13 @@ const SingleMessage = (props) => {
         { props.userId == 1 ? ( 
         <TouchableOpacity  style={styles.me}>
             <Text
-             style={styles.lo}
+             style={styles.myText}
              >{props.messageContent}</Text>
          </TouchableOpacity> 
          ) : (
            <TouchableOpacity style={styles.else}> 
             <Text
-             style={styles.lo}
+             style={styles.otherText}
              >{props.messageContent}</Text>
            </TouchableOpacity> 
         )}
@@ -28,26 +28,36 @@ const styles = StyleSheet.create({
       padding: 20,
       borderWidth: 2,
       flexDirection: "row",
-      width: '50%'
+      width: '100%'
   },
-  cont: {
+  myText:{
+    padding: 20,
+    borderWidth: 2,
+    flexDirection: "row",
+    width: '50%',
+    color: 'white',
+    borderRadius: 20,
     backgroundColor: "red",
-  },
-  MessageRange: {
-    // width: "100%",
+
+  }, 
+  otherText:{
+    padding: 20,
+    borderWidth: 2,
+    flexDirection: "row",
+    width: '50%',
+    color: 'white',
+    borderRadius: 20,
+    width: '100%',
     backgroundColor: "blue",
-    // display: "flex",
-    // flexDirection: "row",
-    // position: "relative",
   },
   me: {
-    backgroundColor: "red",
+    marginTop: 10,
     left: '50%'
   },
   else: {
     left: 0,
-    backgroundColor: "blue",
-    width: "auto"
+    width: "50%",
+    marginTop: 10,
   },
   MessageAppearence: {
     backgroundColor: "black",
