@@ -12,6 +12,12 @@ import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
 
 export default function Profil({ navigation }) {
+
+    const user = useSelector((state) => state.user.value);
+    const token = user.token
+    
+
+
     let [fontsLoaded] = useFonts({
         MontserratRegular: MontserratRegular,
         MontserratMedium: MontserratMedium,
@@ -46,6 +52,9 @@ const fetchProfilInfos = (profileToken) => {
         }
     })
 }
+useEffect(() => {
+    fetchProfilInfos(token);
+}, []);
 // appeler fetchProfileInfo au démarrage de la page (avec useffect) et choper le token ds le reducer (une fois connecté à l'appli) puis on mettra le tout dans un if
     return (
         <View style={styles.container}>
