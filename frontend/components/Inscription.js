@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
+import { BACKEND_ADDRESS } from "@env"
+const backendAddress = BACKEND_ADDRESS;
 
 
 export default function Inscription(navigation) {
@@ -53,7 +55,7 @@ export default function Inscription(navigation) {
             if (password != confirmPassword) {
                 setPasswordDifferent(false)
             } else {
-                fetch('http://172.16.0.153:3000/users/inscription', {
+                fetch(`${backendAddress}/users/inscription`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
