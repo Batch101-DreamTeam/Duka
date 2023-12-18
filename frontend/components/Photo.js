@@ -10,7 +10,10 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 
-export default function Photo({ navigation }) {
+export default function Photo(props) {
+    // const { from } = route.params
+    // console.log(navigation.navigate)
+    console.log(route.props)
 
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
@@ -54,21 +57,17 @@ export default function Photo({ navigation }) {
         setPhotoTake(photo.uri)// enregistre la photo prise dans une variable d'état: permet de demander si on garde la photo ou non
         setSaveFormData(formData)
     }
+
     const savePhoto = () => {
         dispatch(addPhoto(photoTake))
-        navigation.navigate('VendreScreen')
-        // fetch('http://172.16.0.153:3000/offers/upload', {
-        //     method: 'POST',
-        //     body: saveFormData,
-        // }).then((response) => response.json())
-        //     .then(data => {
-        //         console.log(data)
-        //         dispatch(addPhoto(data.url)); //enregistre photo dans le reducer
-        //         setSaveFormData("")
-        //         setPhotoTake("")
-        //         navigation.navigate('VendreScreen')
-        //     });
+        props.closeModal()
+        // if (from === 'VendreScreen') {
+        //     navigation.navigate("VendreScreen")
+        // } else if (from === 'FicheVente') {
+        //     navigation.navigate("FicheVente")
+        // }
     }
+
 
     if (!hasPermission || !isFocused) {
         return <View />;

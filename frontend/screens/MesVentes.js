@@ -10,12 +10,10 @@ const backendAddress = BACKEND_ADDRESS;
 export default function MesVentes({ navigation }) {
 
     const [offersData, setOffersData] = useState([]);
-    const [count, setCount] = useState(0);
     const user = useSelector((state) => state.user.value);
     const token = user.token
 
     useFocusEffect(
-
         React.useCallback(() => {
             const fetchData = async () => {
                 const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
@@ -28,7 +26,7 @@ export default function MesVentes({ navigation }) {
 
 
     const handleNavigate = (data) => {
-        navigation.navigate("FicheVente", { offerData: data });
+        navigation.navigate("FicheVente", { dataOffers: data });
     };
 
 
