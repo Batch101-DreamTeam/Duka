@@ -36,7 +36,7 @@ export default function VendreScreen({ navigation }) {
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
 
-    console.log(selected)
+    //console.log(locations)
 
 
     useEffect(() => {
@@ -65,7 +65,6 @@ export default function VendreScreen({ navigation }) {
             setModalVisible(false)
         }
     };
-
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos

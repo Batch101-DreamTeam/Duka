@@ -37,7 +37,7 @@ router.post('/addOffer', async (req, res) => {
                 category: req.body.category,
                 price: req.body.price,
                 dateOfCreation: req.body.date, // la donnée sera donnée dans le front
-                locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
+                locations: req.body.locations, // à récupérer sous forme de liste déroulante dans le front
             })
             newOffer.save()
                 .then(offer => {
@@ -136,15 +136,11 @@ router.put('/modifyOffer/:idOffer', async (req, res) => {
         }
         else {
             const infos = {
-                sellerName: targettedOffer.sellerName,
-                seller: targettedOffer.seller,
-                sold: false,
                 offerTitle: req.body.offerTitle,
-                images: req.body.images,
+                // images: req.body.images,
                 description: req.body.description,
                 category: req.body.category,
                 price: req.body.price,
-                dateOfCreation: targettedOffer.dateOfCreation, // la donnée sera donnée dans le front
                 locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
             }
             const modifyOffer = await Offer.findOneAndUpdate({ _id: produit }, infos, { new: true })
