@@ -13,7 +13,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { Foundation } from '@expo/vector-icons';
-import Photo from '../components/Photo';
+import Photo from './Photo';
 
 export default function FicheVente({ route, navigation }) {
     const dispatch = useDispatch()
@@ -35,6 +35,8 @@ export default function FicheVente({ route, navigation }) {
     const [modalAddPhoto, setmMdalAddPhoto] = useState(false)
     const [emptyField, setEmptyField] = useState(false)
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
+    const [openPhoto, setOpenPhoto] = useState(false);
+    const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -83,16 +85,37 @@ export default function FicheVente({ route, navigation }) {
     const changeOffer = () => {
         setModify(true)
     }
-    const confirmChange = () => {
+    const confirmChange = async () => {
         if (name === "" || description === '' || price === '') {
             setEmptyField(true)
         } else {
+            const photos = []
+            for (let i = 0; i < photoReducer.length; i++) { // boucle pour sauvegarder toutes les photos du reducer dns le backend
+                const formData = new FormData();
+                formData.append('photoFromFront', {
+                    uri: photoReducer[i],
+                    name: 'photo.jpg',
+                    type: 'image/jpeg',
+                });
+
+                const response = await fetch(`${backendAddress}/offers/upload`, { // http://172.16.0.153:3000/offers/upload
+                    method: 'POST',
+                    body: formData,
+                })
+                const photoSaveCloudinaty = await response.json() // pas du TOUT opti car toute les photos sont saves avant de savoir si la requete pour save va passer
+
+                console.log('response trouvée : ', photoSaveCloudinaty)
+
+                photos.push(photoSaveCloudinaty.url) // stock les url cloudinary dans une var
+                //console.log('photos', photos)
+
+            }
             fetch(`${backendAddress}/offers/modifyOffer/${idProduct}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     offerTitle: name,
-                    images: photoReducer,
+                    images: photos,
                     description: description,
                     category: category,
                     price: price,
@@ -135,35 +158,45 @@ export default function FicheVente({ route, navigation }) {
     };
 
     const takePicture = () => {
-        navigation.navigate('Photo', { from: 'FicheVente' })
+        setOpenTakePhotoModal(true)
+        // navigation.navigate('Photo', { from: 'FicheVente' })
     }
 
+    const closeTakePhotoModal = () => {
+        setOpenTakePhotoModal(false);
+        setmMdalAddPhoto(false)
+    };
+
+    const openModalPhoto = (data) => {
+        setOpenPhoto(true)
+        setDisplayOpenPhoto(data)
+    }
     const photos = photoReducer.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une limite max?)
         return (
-            <TouchableOpacity key={i}  >
-                <ImageBackground source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >
+            <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} >
+                <ImageBackground source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20, marginBottom: "2%" }} >
                     <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
-                        <AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />
+                        {modify && <AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />}
                     </TouchableOpacity>
                 </ImageBackground>
             </TouchableOpacity>
         );
     });
-    const closeTakePhotoModalFicheVente = () => {
-        setOpenTakePhotoModal(false);
-        setmMdalAddPhoto(false)
-    };
+
+
+
     return (
         <View style={styles.container}>
 
             <Header />
             <View style={styles.displayPhoto}>
                 {photos}
+
+                {modify && <TouchableOpacity onPress={() => setmMdalAddPhoto(true)} style={styles.addPicture}>
+                    <Text>Ajoutez des photos</Text>
+                    <MaterialIcons name="add-a-photo" size={55} color="black" />
+                </TouchableOpacity>}
             </View>
-            <TouchableOpacity onPress={() => setmMdalAddPhoto(true)} style={styles.addPicture}>
-                <Text>Ajoutez des photos</Text>
-                <MaterialIcons name="add-a-photo" size={55} color="black" />
-            </TouchableOpacity>
             <View style={styles.product}>
 
 
@@ -288,13 +321,26 @@ export default function FicheVente({ route, navigation }) {
                 transparent={true}
                 visible={openTakePhotoModal}
                 onRequestClose={() => {
-                    setOpenTakePhotoModal(!openPhoto);
+                    setOpenTakePhotoModal(!openTakePhotoModal);
                     //console.log(modalVisible)
                 }}>
-
-                <Photo closeModal={closeTakePhotoModalFicheVente} />
-
-
+                <Photo closeModal={closeTakePhotoModal} />
+            </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openPhoto}
+                onRequestClose={() => {
+                    setOpenPhoto(!openPhoto);
+                    //console.log(modalVisible)
+                }}>
+                <Pressable onPress={() => setOpenPhoto(!openPhoto)} style={styles.ModalAcceuil} >
+                    <ImageBackground source={{ uri: displayOpenPhoto }} style={{ width: 400, height: 400, margin: 20 }} >
+                        <TouchableOpacity onPress={() => { deletePhotoDisplay(displayOpenPhoto); setOpenPhoto(!openPhoto) }}>
+                            <AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />
+                        </TouchableOpacity>
+                    </ImageBackground>
+                </Pressable>
             </Modal>
         </View>
     );
@@ -430,16 +476,19 @@ const styles = StyleSheet.create({
 
     },
     displayPhoto: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: "2%",
+        flexWrap: 'wrap',
     },
     blocModiSuppr: {
         alignItems: 'center',
     },
     addPicture: {
-        width: '40%',
-        height: '15%',
+        width: 120,
+        height: 120,
+        marginRight: 20,
         borderWidth: 1,
-        margin: 8,
         justifyContent: 'center',
         alignItems: 'center'
     },

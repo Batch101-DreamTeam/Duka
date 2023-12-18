@@ -24,7 +24,6 @@ export default function MesVentes({ navigation }) {
         }, [])
     );
 
-
     const handleNavigate = (data) => {
         navigation.navigate("FicheVente", { dataOffers: data });
     };
