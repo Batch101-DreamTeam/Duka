@@ -38,7 +38,6 @@ export default function ProfilScreen({ navigation }) {
     const token = user.token;
 
 
-
     useEffect(() => {
         fetch(`${backendAddress}/users/getProfilInfos/${token}`)
             .then(response => response.json())
@@ -113,8 +112,7 @@ export default function ProfilScreen({ navigation }) {
                                 )}
                             </View>
                             <View>
-                                <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-
+                                <TouchableOpacity onPress={() => modifyProfil()}activeOpacity={0.8} style={styles.btn}>
                                     <Text style={styles.white}>
                                         Enregistrer les modifications
                                     </Text>
