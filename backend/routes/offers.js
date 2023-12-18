@@ -141,7 +141,7 @@ router.put('/modifyOffer/:idOffer', async (req, res) => {
                 description: req.body.description,
                 category: req.body.category,
                 price: req.body.price,
-                locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
+                locations: req.body.locations, // à récupérer sous forme de liste déroulante dans le front
             }
             const modifyOffer = await Offer.findOneAndUpdate({ _id: produit }, infos, { new: true })
             res.status(200).json({ result: true, message: modifyOffer })
