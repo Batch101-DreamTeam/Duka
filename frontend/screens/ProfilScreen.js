@@ -20,6 +20,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 
+
 //Créer un nouveau profil
 export default function ProfilScreen({ navigation }) {
     const [profileData, setProfileData] = useState({

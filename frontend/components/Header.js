@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity,Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
 
     },
     header: {
-        height: '100%',
+        // height: '100%',
         width: '100%',
-        height: '7%',
+        // height: '7%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -86,9 +86,9 @@ const styles = StyleSheet.create({
     logo: {
         width: '25%',
         height: '25%',
-        marginRight:-30,
-        marginLeft:55,
-        padding:25
+        marginRight: -30,
+        marginLeft: 55,
+        padding: 25
     },
 
 });
