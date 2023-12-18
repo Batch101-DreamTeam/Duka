@@ -68,7 +68,7 @@ export default function FicheVente({ route, navigation }) {
         }, [])
     );
 
-
+    console.log(photoReducer)
     const ConfirmationDelete = () => {
         setModalVisible(true)
     }
