@@ -31,7 +31,6 @@ router.get('/getProfilInfos/:token', async (req, res) => {
       avatar: data.avatarUrl,
       location: data.location,
       favorites: data.favorites,
-
     });
   })
 });
@@ -133,8 +132,18 @@ router.get('/:token', async (req, res, next) => {
 })
 
 
-
-
+router.put('/setFavorites', async (req, res, next)=>{
+  try{
+    const target = await User.updateOne({
+      token: req.body.Token
+    }, {$set:{ favorites: req.body.favorites}});
+    const ret = await User.findOne({token: req.body.Token});
+    res.status(200).json({result: true })
+  }
+  catch{
+    res.status(400).json({result: false })
+  }
+});
 
 
 module.exports = router;
