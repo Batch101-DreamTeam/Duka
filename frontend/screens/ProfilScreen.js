@@ -16,8 +16,7 @@ import { BACKEND_ADDRESS } from "@env";
 import Connection from '../components/Connection';
 const backendAddress = BACKEND_ADDRESS;
 
-<<<<<<< HEAD
-    
+
 
 
 export default function ProfilScreen({ navigation }) {
@@ -31,9 +30,9 @@ export default function ProfilScreen({ navigation }) {
         avatar: "",
     });
 
-const [modifyField, setModifyField] = useState(false);
+    const [modifyField, setModifyField] = useState(false);
 
-    
+
     const user = useSelector((state) => state.user.value);
     const token = user.token;
 
@@ -64,74 +63,74 @@ const [modifyField, setModifyField] = useState(false);
 
     return (
         <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-        <View style={styles.container}>
-            <Header />
-            {token ? (
-                <View style={styles.containerContent}>
-                    <SafeAreaView style={styles.container}>
-                        <Text style={styles.h1}>Mon profil</Text>
-                        <View style={styles.userBlock}>
-                        {/* ={() => handleSubmit()} */}
-                        
-                            <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={()=>setModifyField(true)}>
-                                <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
-                            </TouchableOpacity>
-                            {!modifyField?<Text style={styles.name}>{profileData.username}</Text>:<TextInput style={styles.textInput}/>}
-                            {!modifyField?<Text style={styles.tel}>{profileData.contact}</Text>:<TextInput style={styles.textInput}/>}
-                            <Text style={styles.mail}>{profileData.mail}</Text>
-                            <Image source={{ uri: profileData.avatar }} style={styles.pictureProfile} />
-                            <View style={styles.nameContact}></View>
-                        </View>
-                        <Text style={styles.h2}>Description</Text>
-                        <View style={styles.descriptionBloc}>
-                            {!modifyField?<Text style={styles.whiteText}>{profileData.description}</Text>:<TextInput style={styles.textInput}/>}
-                            <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={()=>setModifyField(true)}>
-                                <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={styles.h2}>Lieux favoris</Text>
-                        <View style={styles.localisationContainer}>
-                            {[1, 2, 3].map((item) => (
-                                <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
-                                    <Text style={styles.whiteText}>{profileData.location}</Text>
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.container}>
+            <View style={styles.container}>
+                <Header />
+                {token ? (
+                    <View style={styles.containerContent}>
+                        <SafeAreaView style={styles.container}>
+                            <Text style={styles.h1}>Mon profil</Text>
+                            <View style={styles.userBlock}>
+                                {/* ={() => handleSubmit()} */}
+
+                                <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
+                                    <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
                                 </TouchableOpacity>
-                            ))}
-                            <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                                <FontAwesome name="plus" style={styles.plusButton} size={20} />
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={styles.h2}>Offres en cours</Text>
-                        <View style={styles.localisationContainer}>
-                            {[1, 2, 3].map((item) => (
-                                <TouchableOpacity activeOpacity={0.8}key={item} style={styles.altBtn}>
-                                    <Text style={styles.whiteText}>{profileData.favorites}</Text>
-                                </TouchableOpacity>    
-                            )
-                            
-                            )}
-                        </View>
-                        <View>
-                            <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+                                {!modifyField ? <Text style={styles.name}>{profileData.username}</Text> : <TextInput style={styles.textInput} />}
+                                {!modifyField ? <Text style={styles.tel}>{profileData.contact}</Text> : <TextInput style={styles.textInput} />}
+                                <Text style={styles.mail}>{profileData.mail}</Text>
+                                <Image source={{ uri: profileData.avatar }} style={styles.pictureProfile} />
+                                <View style={styles.nameContact}></View>
+                            </View>
+                            <Text style={styles.h2}>Description</Text>
+                            <View style={styles.descriptionBloc}>
+                                {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput style={styles.textInput} />}
+                                <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
+                                    <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
+                                </TouchableOpacity>
+                            </View>
+                            <Text style={styles.h2}>Lieux favoris</Text>
+                            <View style={styles.localisationContainer}>
+                                {[1, 2, 3].map((item) => (
+                                    <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
+                                        <Text style={styles.whiteText}>{profileData.location}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                                    <FontAwesome name="plus" style={styles.plusButton} size={20} />
+                                </TouchableOpacity>
+                            </View>
+                            <Text style={styles.h2}>Offres en cours</Text>
+                            <View style={styles.localisationContainer}>
+                                {[1, 2, 3].map((item) => (
+                                    <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
+                                        <Text style={styles.whiteText}>{profileData.favorites}</Text>
+                                    </TouchableOpacity>
+                                )
 
-        <Text style={styles.white}>
-            Enregistrer les modifications
-        </Text>
-      </TouchableOpacity >
+                                )}
+                            </View>
+                            <View>
+                                <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
 
-                        </View>
-                    </SafeAreaView>
-                </View>
-            ) : (
-                <View style={styles.container}>
-                    <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
-                    <Connection />
-                    <Inscription />
-                </View>
-            )}
-        </View>
-    </KeyboardAvoidingView>
+                                    <Text style={styles.white}>
+                                        Enregistrer les modifications
+                                    </Text>
+                                </TouchableOpacity >
+
+                            </View>
+                        </SafeAreaView>
+                    </View>
+                ) : (
+                    <View style={styles.container}>
+                        <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+                        <Connection />
+                        <Inscription />
+                    </View>
+                )}
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -251,8 +250,8 @@ const styles = StyleSheet.create({
         marginLeft: 300,
         marginBottom: 0,
         marginTop: 20,
-        width:50,
-        height:50,
+        width: 50,
+        height: 50,
         color: '#BAB700',
 
     },
@@ -295,19 +294,19 @@ const styles = StyleSheet.create({
     },
 
     textInput: {
-backgroundColor:'#BBDFC5',
-width:200,
-height:10,
-marginLeft:130,
+        backgroundColor: '#BBDFC5',
+        width: 200,
+        height: 10,
+        marginLeft: 130,
     },
     btn: {
         flexDirection: "row",
-        padding: 18, 
+        padding: 18,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,
         backgroundColor: "#BAB700",
         // fontFamily: 'MontserratMedium', 
         fontSize: 20,
-      },
+    },
 });

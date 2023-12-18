@@ -23,10 +23,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: 70,
-    backgroundColor: 'rgba(52, 52, 52)',
-    // backgroundColor: 'transparent',
+    // backgroundColor: 'rgba(52, 52, 52)',
+    backgroundColor: 'grey',
     // opacity: 0.9,
     padding: '1%',
+    marginTop: 1,
   },
   white: {
     color: 'white',

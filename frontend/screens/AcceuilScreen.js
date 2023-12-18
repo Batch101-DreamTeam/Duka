@@ -3,18 +3,17 @@ import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, 
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
-import { BACKEND_ADDRESS } from "@env"
+
 import { useSelector, useDispatch } from 'react-redux';
+import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
-// console.log(backendAddress)
-//console.log(backendAddress)
-// const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
-// BACKEND_ADDRESS = 'http://192.168.43.46:3000'
+
+
 export default function AcceuilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
-    
+
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
@@ -22,10 +21,19 @@ export default function AcceuilScreen({ navigation }) {
             .then(response => response.json())
             .then(data => {
                 // console.log(data.offers)
-                setOffersData(data.offers);
+                if (data.offers = []) {
+
+                    // setOffersData(data.offers);
+                    console.log('aucune')
+                } else {
+                    console.log(data)
+                    setOffersData(data.offers);
+
+                }
                 // setArticlesData(data.articles.filter((data, i) => i > 0));
             });
     }, []);
+
 
     const offers = offersData.map((data, i) => {
         const isLiked = Favorites.some((offer) => offer._id === data._id);
@@ -40,6 +48,8 @@ export default function AcceuilScreen({ navigation }) {
             isLiked={isLiked}
         />;
     });
+
+    // let messagePageVide = <Text style={styles.messagePageVide}>aucune offre disponible</Text>;
     return (
 
 
@@ -104,5 +114,9 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center',
     },
+    messagePageVide: {
+        width: '100%',
+        backgroundColor: 'green',
+    }
 
 });
