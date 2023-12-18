@@ -20,6 +20,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 
+
 export default function ProfilScreen({ navigation }) {
     const [profileData, setProfileData] = useState({
         username: "",
@@ -36,7 +37,6 @@ export default function ProfilScreen({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
     const token = user.token;
-
 
 
     useEffect(() => {
@@ -113,8 +113,7 @@ export default function ProfilScreen({ navigation }) {
                                 )}
                             </View>
                             <View>
-                                <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-
+                                <TouchableOpacity onPress={() => modifyProfil()}activeOpacity={0.8} style={styles.btn}>
                                     <Text style={styles.white}>
                                         Enregistrer les modifications
                                     </Text>
