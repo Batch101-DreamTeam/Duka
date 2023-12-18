@@ -12,7 +12,7 @@ const offerShema = mongoose.Schema({
   category: String,
   dateOfCreation: Date,
   locations: [String],
-  categories: [String],
+  //categories: [String],
   // categories déja définies
 });
 

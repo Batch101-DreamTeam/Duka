@@ -3,23 +3,29 @@ import Header from '../components/Header';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ResultSearch from '../components/ResultSearch';
-
+import { useFocusEffect } from '@react-navigation/native';
 import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 
 export default function MesVentes({ navigation }) {
 
     const [offersData, setOffersData] = useState([]);
+    const [count, setCount] = useState(0);
     const user = useSelector((state) => state.user.value);
     const token = user.token
 
-    useEffect(() => {
-        fetch(`${backendAddress}/offers/allOffersBySeller/${token}`)
-            .then(response => response.json())
-            .then(data => {
-                setOffersData(data.offers);
-            });
-    }, []);
+    useFocusEffect(
+
+        React.useCallback(() => {
+            const fetchData = async () => {
+                const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
+                const newData = await response.json();
+                setOffersData(newData.offers);
+            };
+            fetchData();
+        }, [])
+    );
+
 
     const handleNavigate = (data) => {
         navigation.navigate("FicheVente", { offerData: data });
