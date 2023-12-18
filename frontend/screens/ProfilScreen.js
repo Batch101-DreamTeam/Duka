@@ -14,13 +14,14 @@ import { useFonts } from 'expo-font';
 
 import { BACKEND_ADDRESS } from "@env";
 import Connection from '../components/Connection';
+import { useFocusEffect } from '@react-navigation/native';
 const backendAddress = BACKEND_ADDRESS;
 
 
 
 
 
-
+//Créer un nouveau profil
 export default function ProfilScreen({ navigation }) {
     const [profileData, setProfileData] = useState({
         username: "",
@@ -32,8 +33,14 @@ export default function ProfilScreen({ navigation }) {
         avatar: "",
     });
 
-    const [modifyField, setModifyField] = useState(false);
+    //Mettre à jour son profil
+const [updatedUsername, setUpdatedUsername] = useState(''); 
+const [updatedContact, setUpdatedContact] = useState('');
+const [updatedDescription, setUpdatedDescription] = useState('');
 
+
+
+    const [modifyField, setModifyField] = useState(false);
 
     const user = useSelector((state) => state.user.value);
     const token = user.token;
@@ -54,13 +61,32 @@ export default function ProfilScreen({ navigation }) {
                         location: profileInfos.location,
                         favorites: profileInfos.favorites,
                     });
+                    setUpdatedUsername(profileInfos.username)
+                    setUpdatedContact(profileInfos.contact)
+                    setUpdatedDescription(profileInfos.description)
                 }
             })
             .catch(error => {
                 console.error("Error fetching profile information:", error);
                 // Handle error gracefully
             });
-    }, [token]);
+    
+    
+        }, [token]);
+
+const updateProfilInfo = () => {
+    fetch(`${backendAddress}/users/modifyProfil/${token}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: updatedUsername,
+            contact: updatedContact,
+            description: updatedDescription,
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {})
+}
 
     return (
         <KeyboardAvoidingView
@@ -72,21 +98,20 @@ export default function ProfilScreen({ navigation }) {
                     <View style={styles.containerContent}>
                         <SafeAreaView style={styles.container}>
                             <Text style={styles.h1}>Mon profil</Text>
-                            <View style={styles.userBlock}>
-                                {/* ={() => handleSubmit()} */}
 
+                            <View style={styles.userBlock}>
                                 <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
                                     <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
                                 </TouchableOpacity>
-                                {!modifyField ? <Text style={styles.name}>{profileData.username}</Text> : <TextInput style={styles.textInput} />}
-                                {!modifyField ? <Text style={styles.tel}>{profileData.contact}</Text> : <TextInput style={styles.textInput} />}
-                                <Text style={styles.mail}>{profileData.mail}</Text>
+                                {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value)=>setUpdatedUsername(value)} style={styles.textInputUsername} />}
+                                {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value)=>setUpdatedContact(value)} style={styles.textInputTel} />}
+                                <Text style={styles.mail}>email :  {profileData.mail}</Text>
                                 <Image source={{ uri: profileData.avatar }} style={styles.pictureProfile} />
-                                <View style={styles.nameContact}></View>
+                           
                             </View>
                             <Text style={styles.h2}>Description</Text>
                             <View style={styles.descriptionBloc}>
-                                {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput style={styles.textInput} />}
+                                {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value)=>setUpdatedDescription(value)} style={styles.textInputDescription} />}
                                 <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
                                     <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
                                 </TouchableOpacity>
@@ -113,7 +138,7 @@ export default function ProfilScreen({ navigation }) {
                                 )}
                             </View>
                             <View>
-                                <TouchableOpacity onPress={() => modifyProfil()}activeOpacity={0.8} style={styles.btn}>
+                                <TouchableOpacity onPress={() => updateProfilInfo()}activeOpacity={0.8} style={styles.btn}>
                                     <Text style={styles.white}>
                                         Enregistrer les modifications
                                     </Text>
@@ -183,6 +208,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop: 0,
+        // backgroundColor:'red'
     },
 
     pictureProfile: {
@@ -190,13 +216,16 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 80,
-        marginTop: -90,
-        marginRight: 220,
+        marginTop: -125,
+        // marginBottom: 100,
+        // marginRight: 220,
+        marginLeft: -275
     },
 
     name: {
         // height: 35,
-        marginTop: -30,
+        marginTop: -40,
+        marginBottom: 20,
         borderRadius: 5,
         justifyContent: 'center',
         fontSize: 18,
@@ -209,33 +238,27 @@ const styles = StyleSheet.create({
 
     tel: {
         width: 200,
-        height: 35,
-        marginTop: -10,
-        borderRadius: 5,
+        height: 20,
+        marginTop: 0,
         fontSize: 18,
         color: 'white',
         borderBottomWidth: 5,
         // fontFamily: 'MontserratMedium',
-        marginLeft: 165
+        marginLeft: 165,
+        // backgroundColor:"red"
     },
 
     mail: {
+        marginTop: 20,
         width: 200,
         height: 35,
-        marginTop: -10,
         borderRadius: 5,
-        fontSize: 18,
+        fontSize: 14,
         color: 'white',
         borderBottomWidth: 5,
         // fontFamily: 'MontserratMedium',
         marginLeft: 165
     },
-
-    // blockNamePpContact: {
-    //     flexDirection: 'row',
-    //     alignItems: 'center',
-    //     backgroundColor: 'yellow',
-    // },
 
     descriptionBloc: {
         backgroundColor: '#60935D',
@@ -247,7 +270,7 @@ const styles = StyleSheet.create({
     },
 
     modifyContactSlidePen: {
-        marginLeft: 300,
+        marginLeft: 350,
         marginBottom: 0,
         marginTop: 20,
         width: 50,
@@ -293,13 +316,31 @@ const styles = StyleSheet.create({
         margin: 15,
     },
 
-    textInput: {
+    textInputUsername: {
+        backgroundColor: '#BBDFC5',
+        width: 200,
+        height: 20,
+        marginLeft: 130,
+        marginTop:-40,
+    },
+
+    textInputContact: {
+        backgroundColor: 'red',
+        width: 200,
+        height: 20,
+        marginLeft: 130,
+        marginTop:-800,
+    },
+    
+    textInputDescription: {
         backgroundColor: '#BBDFC5',
         width: 200,
         height: 10,
         marginLeft: 130,
     },
+    
     btn: {
+        marginTop: 20,
         flexDirection: "row",
         padding: 18,
         alignItems: "center",
@@ -308,5 +349,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#BAB700",
         // fontFamily: 'MontserratMedium', 
         fontSize: 20,
+
     },
 });
