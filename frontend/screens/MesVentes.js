@@ -26,9 +26,9 @@ export default function MesVentes({ navigation }) {
     };
 
 
-    const offers = offersData.map((data, i) => {
+    const offers = offersData && offersData.map((data, i) => {
         return (
-            <TouchableOpacity key={i} data={data} onPress={() => handleNavigate(data)}>
+            <TouchableOpacity key={i} data={data} navigation={navigation} onPress={() => handleNavigate(data)}>
                 <ResultSearch
                     offerTitle={data.offerTitle}
                     images={data.images[0]}

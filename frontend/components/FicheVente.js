@@ -6,7 +6,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 
-export default function FicheVente({ route }) {
+export default function FicheVente({ route, navigation }) {
+    console.log(navigation)
     const { offerData } = route.params; // recuperation des infos du parent
     const offerTitle = offerData.offerTitle
     const idProduct = offerData._id
@@ -14,6 +15,7 @@ export default function FicheVente({ route }) {
     const price = offerData.price
     const images = offerData.images[0] // mapper les photos pour toutes les afficher par la suite
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalConfirmDelete, setModalConfirmDelete] = useState(false)
 
 
     const user = useSelector((state) => state.user.value);
@@ -23,12 +25,13 @@ export default function FicheVente({ route }) {
         setModalVisible(true)
     }
     const deleteOffer = () => {
-        fetch(`${backendAddress}/offers/deleteOffer/${idProduct}`,
-            // method: Delete
-        )
+        fetch(`${backendAddress}/offers/deleteOffer/${idProduct}`, {
+            method: 'DELETE',
+        })
             .then(response => response.json())
             .then(data => {
-                setOffersData(data.offers);
+                setModalVisible(!modalVisible)
+                navigation.navigate("MesVentes")
             });
     }
     return (

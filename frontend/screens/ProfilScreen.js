@@ -19,6 +19,8 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 
+
+
 export default function ProfilScreen({ navigation }) {
     const [profileData, setProfileData] = useState({
         username: "",
