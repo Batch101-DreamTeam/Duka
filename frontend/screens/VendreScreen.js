@@ -122,7 +122,7 @@ export default function VendreScreen({ navigation }) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('reponse du back addoffer', data)
+                    //console.log('reponse du back addoffer', data)
                     if (data.result) {
                         setName("")
                         setDescription("")

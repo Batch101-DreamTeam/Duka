@@ -45,11 +45,25 @@ const persistor = persistStore(store)
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+export const Main = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Acceuil" component={AcceuilScreen} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="Photo" component={Photo} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="Header" component={Header} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="VendreScreen" component={VendreScreen} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="MesVentes" component={MesVentes} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="FicheVente" component={FicheVente} screenOptions={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+}
+
 const TabNavigator = () => {
   return (
-    <Tab.Navigator screenOptions={({ route }) => ({
+    <Tab.Navigator initialRouteName='Acceuil' screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
         let iconName = '';
+
 
         if (route.name === 'Acceuil') {
           iconName = 'home';
@@ -71,8 +85,9 @@ const TabNavigator = () => {
       tabBarActiveTintColor: '#ec6e5b',
       tabBarInactiveTintColor: '#335561',
       headerShown: false,
+
     })}>
-      <Tab.Screen name="Acceuil" component={AcceuilScreen} />
+      <Tab.Screen name="Acceuil" component={Main} />
       <Tab.Screen name="Favoris" component={FavorisScreen} />
       <Tab.Screen name="Vendre" component={VendreScreen} />
       <Tab.Screen name="Message" component={MessageScreen} />
@@ -90,11 +105,7 @@ export default function App() {
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
-            <Stack.Screen name="Photo" component={Photo} />
-            <Stack.Screen name="Header" component={Header} />
-            <Stack.Screen name="VendreScreen" component={VendreScreen} />
-            <Stack.Screen name="MesVentes" component={MesVentes} />
-            <Stack.Screen name="FicheVente" component={FicheVente} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

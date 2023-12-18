@@ -14,10 +14,11 @@ export default function AcceuilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
-    
+
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
+        console.log("useeffectacceuil")
         fetch(`${backendAddress}/offers/allOffers`)
             .then(response => response.json())
             .then(data => {
@@ -27,8 +28,8 @@ export default function AcceuilScreen({ navigation }) {
             });
     }, []);
 
-    const offers = offersData.map((data, i) => {
-        const isLiked = Favorites.some((offer) => offer._id === data._id);
+    const offers = offersData && offersData.map((data, i) => {
+        //const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -37,7 +38,7 @@ export default function AcceuilScreen({ navigation }) {
             price={data.price}
             category={data.category}
             id={data._id}
-            isLiked={isLiked}
+        // isLiked={isLiked}
         />;
     });
     return (
