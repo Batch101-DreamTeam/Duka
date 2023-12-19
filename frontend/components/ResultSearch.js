@@ -20,9 +20,10 @@ export default function ResultSearch(props) {
     })
 
     return (
-        <TouchableOpacity style={styles.product}>
-            <Image style={styles.image} source={{ uri: props.images }} />
-
+        <View style={styles.product}>
+            <TouchableOpacity>
+                <Image style={styles.image} source={{ uri: props.images }} />
+            </TouchableOpacity>
             <View style={styles.descProd}>
                 <Text >{props.offerTitle}</Text>
                 <Text >{props.description}</Text>
@@ -38,7 +39,7 @@ export default function ResultSearch(props) {
                 )
                 }
             </View>
-        </TouchableOpacity>
+        </View>
 
     );
 }
