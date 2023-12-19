@@ -68,7 +68,15 @@ export default function FavorisScreen({ navigation }) {
   });
 
   let display;
-  if (!Favorites.length) {
+  if(!token){
+   display = ( <View style={styles.container}>
+        <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+        <Connection />
+        <Inscription />
+    </View>
+   )
+ }
+  else if (!Favorites.length && token) {
     display = (
       <View style={styles.containerContent}>
         <Text style={styles.margin}> No offer added yet ?</Text>
@@ -85,7 +93,7 @@ export default function FavorisScreen({ navigation }) {
         </TouchableOpacity>
       </View>
     );
-  } else if (Favorites.length) {
+  } else if (Favorites.length && token) {
     display =(
     <ScrollView style={styles.scrollView}>
        {displayFav}
@@ -151,6 +159,13 @@ productList: {
   width: '100%',
   height: '100%',
   paddingBottom: '1%',
+},
+h3: {
+  // fontFamily: 'MontserratRegular',
+  fontSize: 16,
+  color: 'black',
+  textAlign: 'center',
+  marginTop: 5
 },
 });
 

@@ -102,7 +102,7 @@ router.post('/search', async (req, res) => {
 
 router.get('/allOffers', async (req, res) => {
     try {
-        const data = await Offer.find()
+        const data = await Offer.find({online: true})
         // console.log(data)
         res.json({ result: true, offers: data });
     }
@@ -179,32 +179,43 @@ router.delete('/deleteOffer/:idProduct', async (req, res) => {
 })
 
 
+
+// filtre
 router.post('/search/Bycate', async(req, res, next)=>{
-    const actif = {
-        price: false,
-        name: true,
-        category: true
+    try {
+        const max = 1000;
+        const priceChoice = parseInt(req.body.price) || max;
+        const nameOfProdChoice = req.body.name;
+        const cateChoice = req.body.category;
+        const cityChoice = req.body.city;
+    
+        let query = {};
+    
+        // Créer dynamiquement la requête en fonction des critères renseignés
+        if (priceChoice !== max) {
+            query.price = { $lt: priceChoice };
+        }
+        if (cateChoice) {
+            query.category = cateChoice;
+        }
+        if (cityChoice) {
+            query.locations = { $all: [cityChoice]};
+        }
+        if (nameOfProdChoice) {
+            query.offerTitle = nameOfProdChoice
+        }
+    
+        const resultQuery = await Offer.find(query);
+        console.log(query)
+    
+        if (!resultQuery.length) {
+            res.status(200).json({ result: true, message: 'Aucune offre trouvée' });
+        } else {
+            res.status(200).json({ result: true, resultQuery });
+        }
+    } catch (error) {
+        res.status(400).json({ result: false, message: 'Requête incorrecte' });
     }
-    const max = 1000;
-
-
-        const priceChoice = req.body.price || max;
-        const nameOfProdChoice = req.body.name || ""
-        const cateChoice = req.body.category || "";
-
-
-        const resultQuery = await Offer.find()
-            .where('price').gt(priceChoice)
-            // .where('category').equals(cateChoice)
-            .then((err, products) => {
-                if (err) {
-                    console.error('Erreur lors de la recherche :', err);
-                } else {
-                    console.log('Résultats de la recherche :', products);
-                    // Traiter les produits trouvés ici
-                }
-
-                res.json({message: 'handled'})
     });
 
 
@@ -225,6 +236,6 @@ router.post('/search/Bycate', async(req, res, next)=>{
     // }
     //   const category = {category: req.body.category}
     //   const targets = Offer.find(category, )
-})
+// })
 
 module.exports = router;

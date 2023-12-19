@@ -6,7 +6,8 @@ import ResultSearch from '../components/ResultSearch';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import { newSearch } from '../reducers/offer'
+import { newSearch, nameSearch } from '../reducers/offer'
+import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation }) {
@@ -14,7 +15,10 @@ export default function AcceuilScreen({ navigation }) {
     const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
-    const resultSearchUser = offer.resultSearch.searchOnWord
+
+    const offerName = offer.nameOfResearch
+    const resultSearchUser = offer.resultSearch
+    console.log(offer)
     const dispatch = useDispatch();
 
     const [offersData, setOffersData] = useState([]);
@@ -52,13 +56,13 @@ export default function AcceuilScreen({ navigation }) {
     //   else{
     //     const isLiked = Favorites.some((offer) => offer.id === data._id);
         if (resultSearchUser) {
-            setOffersData(resultSearchUser)
+            setOffersData(resultSearchUser.searchOnWord)
         } else {
             fetch(`${backendAddress}/offers/allOffers`)
                 .then(response => response.json())
                 .then(data => {
-                    // console.log(data.offers)
-                    if (data.offers.length) {
+                    console.log("alors fetch")
+                    if (data.offers) {
                         setOffersData(data.offers);
                         // setArticlesData(data.articles.filter((data, i) => i > 0));
                     }
@@ -68,13 +72,23 @@ export default function AcceuilScreen({ navigation }) {
                     }
                 });
         }
-    }, [resultSearchUser, Favorites]);
+    }, [resultSearchUser]);
 
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, []);
-    const offers = offersData.map((data, i) => {
-        const isLiked = Favorites.some((offer) => offer._id === data._id);
+
+    const deleteSearch = () => {
+        dispatch(newSearch())
+        dispatch(nameSearch())
+    }
+
+    const handleNavigate = (data) => {
+        navigation.navigate("OfferScreen", { dataOffers: data });
+    };
+
+    const offers = offersData && offersData.map((data, i) => {
+        // const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -83,7 +97,8 @@ export default function AcceuilScreen({ navigation }) {
             price={data.price}
             category={data.category}
             id={data._id}
-            isLiked={isLiked}
+            handleNavigate={handleNavigate}
+        // isLiked={isLiked}
         />;
     }
     );
@@ -96,6 +111,17 @@ export default function AcceuilScreen({ navigation }) {
             <Header navigation={navigation} />
             <InputSearch />
             <View style={styles.containerContent}>
+                {offerName &&
+                    <View>
+                        <View style={styles.votreRecherche}>
+                            <Text>Votre recherche:</Text>
+                            <Text>{offerName}</Text>
+                            <TouchableOpacity onPress={() => deleteSearch()}>
+                                <MaterialIcons name="cancel" size={24} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                        {!offer.resultSearch.result && <Text>Pas de résultat</Text>}
+                    </View>}
                 <ScrollView style={styles.scrollView}>
 
                     <View style={styles.productList}>
@@ -151,5 +177,9 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center',
     },
+    votreRecherche: {
+        flexDirection: 'row'
+
+    }
 
 });
