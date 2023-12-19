@@ -10,6 +10,7 @@ import FavorisScreen from "./screens/FavorisScreen.js";
 import VendreScreen from "./screens/VendreScreen.js";
 import MessageScreen from "./screens/MessageScreen.js";
 import ProfilScreen from "./screens/ProfilScreen.js";
+import OfferScreen from "./components/OfferScreen.js";
 import Header from "./components/Header.js";
 import Photo from "./components/Photo.js";
 import MesVentes from "./screens/MesVentes.js";
@@ -62,6 +63,7 @@ export const Main = () => {
       <Stack.Screen name="VendreScreen" component={VendreScreen} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="MesVentes" component={MesVentes} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="FicheVente" component={FicheVente} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="OfferScreen" component={OfferScreen} screenOptions={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

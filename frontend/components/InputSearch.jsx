@@ -5,7 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
 import { RemoteDataSetExample2 } from '../components/autodrop';
 import { useDispatch, useSelector } from 'react-redux';
-import { newSearch } from '../reducers/offer'
+import { newSearch, nameSearch } from '../reducers/offer'
 // import RNPickerSelect from 'react-native-picker-select';
 // import { Dropdown } from './Dropdown';
 import { BACKEND_ADDRESS } from "@env"
@@ -47,6 +47,7 @@ export default function InputSearch(navigation) {
                     //console.log(data)
                     setResult(data)
                     dispatch(newSearch(data))
+                    dispatch(nameSearch(searchWord))
                     setSearchWord('');
                     setModalVisible(false);
                 } else {
