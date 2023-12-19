@@ -9,42 +9,42 @@ import { useEffect, useState } from 'react';
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function ResultSearch(props) {
-    
-    const[isLiked, setIsliked] = useState(false)
-    const dispatch = useDispatch(); 
 
-    useEffect(()=>{
-        if(props.isLiked)
-        setIsliked(true);
-      
+    const [isLiked, setIsliked] = useState(false)
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (props.isLiked)
+            setIsliked(true);
+
     })
 
     return (
-        <View style={styles.product}>
+        <TouchableOpacity style={styles.product}>
             <Image style={styles.image} source={{ uri: props.images }} />
- 
+
             <View style={styles.descProd}>
                 <Text >{props.offerTitle}</Text>
                 <Text >{props.description}</Text>
                 <Text >{props.price} CFA</Text>
-              { isLiked ? (
-                <TouchableOpacity onPress={()=> {dispatch(suppFavorites(props)), setIsliked(false)}}>
-                <FontAwesome style={styles.red} name='heart' size={20} />
-                </TouchableOpacity>
-               ) : (
-                <TouchableOpacity onPress={()=> {dispatch(addFavorites(props)),  setIsliked(true)}}>
-                <FontAwesome name='heart' size={20} />
-                </TouchableOpacity>
-              )
-               }
+                {isLiked ? (
+                    <TouchableOpacity onPress={() => { dispatch(suppFavorites(props)), setIsliked(false) }}>
+                        <FontAwesome style={styles.red} name='heart' size={20} />
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={() => { dispatch(addFavorites(props)), setIsliked(true) }}>
+                        <FontAwesome name='heart' size={20} />
+                    </TouchableOpacity>
+                )
+                }
             </View>
-        </View>
+        </TouchableOpacity>
 
     );
 }
 
 const styles = StyleSheet.create({
-    red:{
+    red: {
         color: 'red'
     },
     container: {
