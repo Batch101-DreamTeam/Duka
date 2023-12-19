@@ -59,6 +59,7 @@ export default function AcceuilScreen({ navigation, route }) {
         //const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
+            sellerName={data.sellerName}
             offerTitle={data.offerTitle}
             locations={data.locations}
             images={data.images}

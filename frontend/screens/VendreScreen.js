@@ -142,7 +142,15 @@ export default function VendreScreen({ route, navigation }) {
         //navigation.navigate('Photo', { from: 'VendreScreen' })
     }
     const refresh = () => { // ne fonctionne pas
-        navigation.replace('VendreScreen')
+        setName("")
+        setDescription("")
+        setPrice("")
+        dispatch(deleteAllPhoto())
+        setCategory("")
+        setLocations("")
+        setModalVisible(false);
+        dispatch(deleteAllPhoto())
+        setOfferRegister(!offerRegister)
     }
 
     const deletePhotoDisplay = (picture) => {
