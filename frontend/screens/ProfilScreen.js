@@ -333,7 +333,6 @@ const styles = StyleSheet.create({
     },
     
     textInputDescription: {
-        
         backgroundColor: '#BBDFC5',
         width: 370,
         height: 90,
