@@ -20,8 +20,14 @@ export default function AcceuilScreen({ navigation }) {
             .then(response => response.json())
             .then(data => {
                 // console.log(data.offers)
+                if(data.offers.length){
                 setOffersData(data.offers);
                 // setArticlesData(data.articles.filter((data, i) => i > 0));
+                }
+                else{
+                  console.log('aucune donnée')
+                  return 
+                }
             });
     }, []);
 

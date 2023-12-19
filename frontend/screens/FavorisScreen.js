@@ -22,6 +22,7 @@ export default function FavorisScreen({ navigation }) {
   const token = user.token;
   const Favorites = user.favorites;
   const dispatch = useDispatch();
+  
   const displayFav = Favorites.map((el, i) => {
     return <Text key={i}> {el.id} </Text>;
   });
@@ -54,17 +55,8 @@ export default function FavorisScreen({ navigation }) {
       console.log("bye");
     };
   });
-  
-  let display;
 
-  // if(!token){
-  //     display = <View style={styles.containerContent}>
-  //                 <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
-  //                 <Connection />
-  //                 <Inscription />
-  //     </View>
-  // }
-  // else
+  let display;
   if (!Favorites.length) {
     display = (
       <View style={styles.containerContent}>
@@ -86,7 +78,6 @@ export default function FavorisScreen({ navigation }) {
     display = <>{displayFav}</>;
   }
   console.log(Favorites);
-  //  console.log(user)
 
   return (
     <SafeAreaView style={styles.container}>
