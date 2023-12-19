@@ -11,9 +11,6 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 export default function Photo(props) {
-    // const { from } = route.params
-    // console.log(navigation.navigate)
-    console.log(route.props)
 
     const dispatch = useDispatch();
     const isFocused = useIsFocused();

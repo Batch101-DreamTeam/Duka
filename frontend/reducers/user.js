@@ -19,7 +19,12 @@ export const userSlice = createSlice({
       state.value.token = action.payload;
     },
     addPhoto: (state, action) => {
-      state.value.photos.push(action.payload)
+      if (state.value.photos.length < 3) {
+        state.value.photos.push(action.payload);
+      } else {
+        state.value.photos.pop();
+        state.value.photos.push(action.payload);
+      }
     },
     removePhoto: (state, action) => {
       state.value.photos = state.value.photos.filter((data) => data !== action.payload);

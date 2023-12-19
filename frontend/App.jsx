@@ -55,7 +55,7 @@ const Tab = createBottomTabNavigator();
 export const Main = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="Acceuil" component={AcceuilScreen} screenOptions={{ headerShown: false }} />
+      <Tab.Screen name="AcceuilScreen" component={AcceuilScreen} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="Photo" component={Photo} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="Header" component={Header} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="VendreScreen" component={VendreScreen} screenOptions={{ headerShown: false }} />

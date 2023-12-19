@@ -143,7 +143,7 @@ router.put('/modifyOffer/:idOffer', async (req, res) => {
         else {
             const infos = {
                 offerTitle: req.body.offerTitle,
-                // images: req.body.images,
+                images: req.body.images,
                 description: req.body.description,
                 category: req.body.category,
                 price: req.body.price,

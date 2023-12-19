@@ -303,7 +303,7 @@ export default function VendreScreen({ route, navigation }) {
                 transparent={true}
                 visible={openTakePhotoModal}
                 onRequestClose={() => {
-                    setOpenTakePhotoModal(!openPhoto);
+                    setOpenTakePhotoModal(!openTakePhotoModal);
                     //console.log(modalVisible)
                 }}>
 
