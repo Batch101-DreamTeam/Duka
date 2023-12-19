@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-    value: { resultSearch: "", nameOfResearch: "" },
+    value: { resultSearch: null, nameOfResearch: "" },
 };
-
 export const userSlice = createSlice({
     name: 'offer',
     initialState,

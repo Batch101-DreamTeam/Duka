@@ -73,7 +73,6 @@ export default function AcceuilScreen({ navigation }) {
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, []);
-
     const offers = offersData.map((data, i) => {
         const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
@@ -84,7 +83,7 @@ export default function AcceuilScreen({ navigation }) {
             price={data.price}
             category={data.category}
             id={data._id}
-        isLiked={isLiked}
+            isLiked={isLiked}
         />;
     }
     );

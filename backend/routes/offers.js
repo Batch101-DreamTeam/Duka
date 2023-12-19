@@ -178,4 +178,53 @@ router.delete('/deleteOffer/:idProduct', async (req, res) => {
     }
 })
 
+
+router.post('/search/Bycate', async(req, res, next)=>{
+    const actif = {
+        price: false,
+        name: true,
+        category: true
+    }
+    const max = 1000;
+
+
+        const priceChoice = req.body.price || max;
+        const nameOfProdChoice = req.body.name || ""
+        const cateChoice = req.body.category || "";
+
+
+        const resultQuery = await Offer.find()
+            .where('price').gt(priceChoice)
+            // .where('category').equals(cateChoice)
+            .then((err, products) => {
+                if (err) {
+                    console.error('Erreur lors de la recherche :', err);
+                } else {
+                    console.log('Résultats de la recherche :', products);
+                    // Traiter les produits trouvés ici
+                }
+
+                res.json({message: 'handled'})
+    });
+
+
+
+
+
+
+ 
+    // const
+
+    // if(actif.)
+    // const cateChoice = req.body.category;
+    // const priceChoice = req.body.price;
+    // const nameOfProdChoice = req.body.name;
+    // let querySerch;
+    // if(!nameOfProdChoice){
+    //     querySerch = Offer.find({catechoice})
+    // }
+    //   const category = {category: req.body.category}
+    //   const targets = Offer.find(category, )
+})
+
 module.exports = router;
