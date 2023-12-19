@@ -34,12 +34,12 @@ export default function ProfilScreen({ navigation }) {
     });
 
     //Mettre à jour son profil
-const [updatedUsername, setUpdatedUsername] = useState(''); 
-const [updatedContact, setUpdatedContact] = useState('');
-const [updatedDescription, setUpdatedDescription] = useState('');
-const [modifyField, setModifyField] = useState(false);
-const user = useSelector((state) => state.user.value);
-const token = user.token;
+    const [updatedUsername, setUpdatedUsername] = useState('');
+    const [updatedContact, setUpdatedContact] = useState('');
+    const [updatedDescription, setUpdatedDescription] = useState('');
+    const [modifyField, setModifyField] = useState(false);
+    const user = useSelector((state) => state.user.value);
+    const token = user.token;
 
 
     useEffect(() => {
@@ -66,23 +66,23 @@ const token = user.token;
                 console.error("Error fetching profile information:", error);
                 // Handle error gracefully
             });
-        }, [token]);
+    }, [token]);
 
-const updateProfilInfo = () => {
-    fetch(`${backendAddress}/users/modifyProfil/${token}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: updatedUsername,
-            contact: updatedContact,
-            description: updatedDescription,
-        }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            setModifyField(false)
+    const updateProfilInfo = () => {
+        fetch(`${backendAddress}/users/modifyProfil/${token}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: updatedUsername,
+                contact: updatedContact,
+                description: updatedDescription,
+            }),
         })
-}
+            .then(response => response.json())
+            .then(data => {
+                setModifyField(false)
+            })
+    }
 
     return (
         <KeyboardAvoidingView
@@ -93,56 +93,56 @@ const updateProfilInfo = () => {
                 {token ? (
                     <View style={styles.containerContent}>
                         <SafeAreaView style={styles.container}>
-                        <ScrollView contentContainerStyle={styles.scrollView}>
-      
-                            <Text style={styles.h1}>Mon profil</Text>
+                            <ScrollView contentContainerStyle={styles.scrollView}>
 
-                            <View style={styles.userBlock}>
-                                <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true) }>
-                                    <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
-                                </TouchableOpacity>
-                                {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value)=>setUpdatedUsername(value)} style={styles.textInputUsername} />}
-                                {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value)=>setUpdatedContact(value)} style={styles.textInputTel} />}
-                                <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                <Image source={{ uri: profileData.avatar }} style={styles.pictureProfile} />
-                           
-                            </View>
-                            <Text style={styles.h2}>Description</Text>
-                            <View style={styles.descriptionBloc}>
-                                {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value)=>setUpdatedDescription(value)} style={styles.textInputDescription} />}
-                                <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
-                                    <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
-                                </TouchableOpacity>
-                            </View>
-                            <Text style={styles.h2}>Lieux favoris</Text>
-                            <View style={styles.localisationContainer}>
-                                {[1, 2, 3].map((item) => (
-                                    <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
-                                        <Text style={styles.whiteText}>{profileData.location}</Text>
+                                <Text style={styles.h1}>Mon profil</Text>
+
+                                <View style={styles.userBlock}>
+                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
+                                        <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
                                     </TouchableOpacity>
-                                ))}
-                                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                                    <FontAwesome name="plus" style={styles.plusButton} size={20} />
-                                </TouchableOpacity>
-                            </View>
-                            <Text style={styles.h2}>Offres en cours</Text>
-                            <View style={styles.localisationContainer}>
-                                {[1, 2, 3].map((item) => (
-                                    <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
-                                        <Text style={styles.whiteText}>{profileData.favorites}</Text>
+                                    {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
+                                    {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
+                                    <Text style={styles.mail}>email :  {profileData.mail}</Text>
+                                    <Image source={{ uri: profileData.avatar }} style={styles.pictureProfile} />
+
+                                </View>
+                                <Text style={styles.h2}>Description</Text>
+                                <View style={styles.descriptionBloc}>
+                                    {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value) => setUpdatedDescription(value)} style={styles.textInputDescription} />}
+                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
+                                        <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
                                     </TouchableOpacity>
-                                )
+                                </View>
+                                <Text style={styles.h2}>Lieux favoris</Text>
+                                <View style={styles.localisationContainer}>
+                                    {[1, 2, 3].map((item) => (
+                                        <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
+                                            <Text style={styles.whiteText}>{profileData.location}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                    <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                                        <FontAwesome name="plus" style={styles.plusButton} size={20} />
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={styles.h2}>Offres en cours</Text>
+                                <View style={styles.localisationContainer}>
+                                    {[1, 2, 3].map((item) => (
+                                        <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
+                                            <Text style={styles.whiteText}>{profileData.favorites}</Text>
+                                        </TouchableOpacity>
+                                    )
 
-                                )}
-                            </View>
-                            <View>
-                                <TouchableOpacity onPress={() => updateProfilInfo()}activeOpacity={0.8} style={styles.btn}>
-                                    <Text style={styles.white}>
-                                        Enregistrer les modifications
-                                    </Text>
-                                </TouchableOpacity >
+                                    )}
+                                </View>
+                                <View>
+                                    <TouchableOpacity onPress={() => updateProfilInfo()} activeOpacity={0.8} style={styles.btn}>
+                                        <Text style={styles.white}>
+                                            Enregistrer les modifications
+                                        </Text>
+                                    </TouchableOpacity >
 
-                            </View>
+                                </View>
                             </ScrollView>
                         </SafeAreaView>
                     </View>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     scrollView: {
         alignItems: 'center',
         paddingBottom: 20,
-      },
+    },
 
     userBlock: {
         backgroundColor: '#60935D',
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 30,
         marginLeft: 130,
-        marginTop:-55,
+        marginTop: -55,
     },
 
     textInputTel: {
@@ -332,9 +332,9 @@ const styles = StyleSheet.create({
         width: 200,
         height: 30,
         marginLeft: 130,
-        marginTop:8,
+        marginTop: 8,
     },
-    
+
     textInputDescription: {
         backgroundColor: '#BBDFC5',
         width: 370,
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         marginTop: 15
     },
-    
+
     btn: {
         marginTop: 20,
         flexDirection: "row",

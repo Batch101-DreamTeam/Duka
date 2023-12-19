@@ -52,9 +52,9 @@ export default function AcceuilScreen({ navigation }) {
         dispatch(nameSearch())
     }
 
-    const handleNavigate = (data) => {
-        navigation.navigate("OfferScreen", { dataOffers: data });
-    };
+    // const handleNavigate = (data) => {
+    //     navigation.navigate("OfferScreen", { dataOffers: data });
+    // };
 
     const offers = offersData && offersData.map((data, i) => {
         //const isLiked = Favorites.some((offer) => offer._id === data._id);
@@ -66,7 +66,7 @@ export default function AcceuilScreen({ navigation }) {
             price={data.price}
             category={data.category}
             id={data._id}
-            handleNavigate={handleNavigate}
+
         // isLiked={isLiked}
         />;
     });

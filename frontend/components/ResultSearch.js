@@ -21,7 +21,7 @@ export default function ResultSearch(props) {
 
     return (
         <View style={styles.product}>
-            <TouchableOpacity onPress={props.handleNavigate()} data={props}>
+            <TouchableOpacity >
                 <Image style={styles.image} source={{ uri: props.images }} />
             </TouchableOpacity>
             <View style={styles.descProd}>
