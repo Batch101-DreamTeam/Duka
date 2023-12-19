@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Inscription from '../components/Inscription';
@@ -37,20 +37,16 @@ export default function ProfilScreen({ navigation }) {
 const [updatedUsername, setUpdatedUsername] = useState(''); 
 const [updatedContact, setUpdatedContact] = useState('');
 const [updatedDescription, setUpdatedDescription] = useState('');
-
-
-
-    const [modifyField, setModifyField] = useState(false);
-
-    const user = useSelector((state) => state.user.value);
-    const token = user.token;
+const [modifyField, setModifyField] = useState(false);
+const user = useSelector((state) => state.user.value);
+const token = user.token;
 
 
     useEffect(() => {
         fetch(`${backendAddress}/users/getProfilInfos/${token}`)
             .then(response => response.json())
             .then(profileInfos => {
-                console.log(profileInfos);
+                // console.log(profileInfos);
                 if (profileInfos.result) {
                     setProfileData({
                         username: profileInfos.username,
@@ -70,8 +66,6 @@ const [updatedDescription, setUpdatedDescription] = useState('');
                 console.error("Error fetching profile information:", error);
                 // Handle error gracefully
             });
-    
-    
         }, [token]);
 
 const updateProfilInfo = () => {
@@ -85,7 +79,9 @@ const updateProfilInfo = () => {
         }),
     })
         .then(response => response.json())
-        .then(data => {})
+        .then(data => {
+            setModifyField(false)
+        })
 }
 
     return (
@@ -97,10 +93,12 @@ const updateProfilInfo = () => {
                 {token ? (
                     <View style={styles.containerContent}>
                         <SafeAreaView style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+      
                             <Text style={styles.h1}>Mon profil</Text>
 
                             <View style={styles.userBlock}>
-                                <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
+                                <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true) }>
                                     <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
                                 </TouchableOpacity>
                                 {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value)=>setUpdatedUsername(value)} style={styles.textInputUsername} />}
@@ -145,6 +143,7 @@ const updateProfilInfo = () => {
                                 </TouchableOpacity >
 
                             </View>
+                            </ScrollView>
                         </SafeAreaView>
                     </View>
                 ) : (
@@ -200,6 +199,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: '#60935D'
     },
+    scrollView: {
+        alignItems: 'center',
+        paddingBottom: 20,
+      },
 
     userBlock: {
         backgroundColor: '#60935D',
