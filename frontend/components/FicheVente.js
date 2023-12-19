@@ -15,18 +15,21 @@ import * as ImagePicker from 'expo-image-picker';
 import { Foundation } from '@expo/vector-icons';
 import Photo from './Photo';
 
-export default function FicheVente({ route, navigation }) {
+export default function FicheVente(props, { route, navigation }) {
     const dispatch = useDispatch()
-    const { dataOffers } = route.params; // recuperation des infos du parent
+    // console.log("route", props.route.params.dataOffers.images)
+    const dataOffers = props.route.params.dataOffers; // recuperation des infos du parent
 
     const offerTitle = dataOffers.offerTitle
-    const idProduct = dataOffers._id
+    const idProduct = dataOffers.id
     const descriptionOffer = dataOffers.description
     const categoryOffer = dataOffers.category
     const cityData = dataOffers.locations[0]
+    //console.log("ok", locations)
     const priceOffer = dataOffers.price
-    const images = dataOffers.images[0] // mapper les photos pour toutes les afficher par la suite
+    // const images = dataOffers.images[0] // mapper les photos pour toutes les afficher par la suite
     const imagesToMap = dataOffers.images
+    //console.log(imagesToMap)
 
     const [modify, setModify] = useState(false) // affichage conditionel en cours de modification
 
@@ -50,6 +53,7 @@ export default function FicheVente({ route, navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
+    // console.log(photoReducer)
 
 
 
@@ -64,6 +68,18 @@ export default function FicheVente({ route, navigation }) {
             for (let i = 0; i < imagesToMap.length; i++) {
                 dispatch(addPhoto(imagesToMap[i]))
             }
+            // const checkUserIsSeller = async () => { // Vérifier si l'utilisateur est celui qui a posté l'offre de vente: si oui: alors accès aux boutons modifier et si non accès au bouton contact et profil vendeur
+            //     const response = await fetch(`${backendAddress}/users/checkIfUserIsSeller`, {
+            //         method: 'POST',
+            //         headers: { 'Content-Type': 'application/json' },
+            //         body: JSON.stringify({
+            //             token: token,
+            //             id: idProduct,
+            //         }),
+            //     })
+            //     console.log('ici', response.result)
+            // };
+            // checkUserIsSeller();
         }, [])
     );
 
