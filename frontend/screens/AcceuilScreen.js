@@ -10,7 +10,8 @@ import { newSearch, nameSearch } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function AcceuilScreen({ navigation }) {
+export default function AcceuilScreen({ navigation, route }) {
+    // console.log("acceuil", route)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
@@ -18,7 +19,7 @@ export default function AcceuilScreen({ navigation }) {
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
-    console.log(offer)
+    // console.log(offer)
     const dispatch = useDispatch();
 
     const [offersData, setOffersData] = useState([]);
@@ -52,21 +53,22 @@ export default function AcceuilScreen({ navigation }) {
         dispatch(nameSearch())
     }
 
-    // const handleNavigate = (data) => {
-    //     navigation.navigate("OfferScreen", { dataOffers: data });
-    // };
+
 
     const offers = offersData && offersData.map((data, i) => {
         //const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
+            sellerName={data.sellerName}
             offerTitle={data.offerTitle}
-            images={data.images[0]}
+            locations={data.locations}
+            images={data.images}
             description={data.description}
             price={data.price}
             category={data.category}
             id={data._id}
-
+            navigation={navigation}
+            route={route}
         // isLiked={isLiked}
         />;
     });

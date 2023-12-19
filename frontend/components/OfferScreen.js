@@ -10,12 +10,12 @@ import { newSearch, nameSearch } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function OfferScreen(props) {
+export default function OfferScreen() {
+
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
-    console.log('props', props.dataOffers)
 
     return (
 
