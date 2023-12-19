@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Modal, Pressable, Image, Alert, ImageBackground } from 'react-native';
 import Header from '../components/Header';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 // import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
@@ -16,9 +16,11 @@ import Inscription from '../components/Inscription';
 import { AntDesign } from '@expo/vector-icons';
 import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user'
 import { BACKEND_ADDRESS } from "@env"
+import { useFocusEffect } from '@react-navigation/native';
+import Photo from '../components/Photo';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function VendreScreen({ navigation }) {
+export default function VendreScreen({ route, navigation }) {
     const dispatch = useDispatch();
 
 
@@ -35,13 +37,17 @@ export default function VendreScreen({ navigation }) {
     const [selected, setSelected] = useState("")
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
+    const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
 
-    console.log(selected)
+    //console.log(locations)
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setModalVisible(false);
+            dispatch(deleteAllPhoto())
+        }, [])
+    );
 
-    useEffect(() => {
-        setModalVisible(false);
-    }, []);
 
 
     const pickImage = async () => {
@@ -65,7 +71,6 @@ export default function VendreScreen({ navigation }) {
             setModalVisible(false)
         }
     };
-
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
@@ -83,7 +88,7 @@ export default function VendreScreen({ navigation }) {
     }
 
     const Validate = async () => {
-        if (name != "" && description != "" && price != "") {
+        if (name != "" || description != "" || price != "") {
             const photos = []
             for (let i = 0; i < photoReducer.length; i++) { // boucle pour sauvegarder toutes les photos du reducer dns le backend
                 const formData = new FormData();
@@ -102,7 +107,7 @@ export default function VendreScreen({ navigation }) {
                 console.log('response trouvée : ', photoSaveCloudinaty)
 
                 photos.push(photoSaveCloudinaty.url) // stock les url cloudinary dans variable d'état
-                console.log('photos', photos)
+                //console.log('photos', photos)
 
             }
 
@@ -110,9 +115,9 @@ export default function VendreScreen({ navigation }) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    token: token,// recup dans le reducer
+                    token: token,
                     offerTitle: name,
-                    images: photos,// recup dans la variable d'état qui stock les url cloudinary
+                    images: photos,// recup dans le tableau au dessus
                     category: category,
                     description: description,
                     price: price,
@@ -122,7 +127,7 @@ export default function VendreScreen({ navigation }) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('reponse du back addoffer', data)
+                    //console.log('reponse du back addoffer', data)
                     if (data.result) {
                         setName("")
                         setDescription("")
@@ -141,7 +146,8 @@ export default function VendreScreen({ navigation }) {
     }
 
     const takePicture = () => {
-        navigation.navigate('Photo')
+        setOpenTakePhotoModal(true)
+        //navigation.navigate('Photo', { from: 'VendreScreen' })
     }
     const refresh = () => { // ne fonctionne pas
         navigation.replace('VendreScreen')
@@ -165,6 +171,11 @@ export default function VendreScreen({ navigation }) {
             </TouchableOpacity>
         );
     });
+    const closeTakePhotoModal = () => {
+        setOpenTakePhotoModal(false);
+        setModalVisible(false)
+    };
+
 
     return (
         <View style={styles.container}>
@@ -217,11 +228,11 @@ export default function VendreScreen({ navigation }) {
                 </View>
                 <View style={styles.SearchRow} >
                     <FontAwesome name="tag" style={styles.iconSearch} size={20} />
-                    <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric" />
+                    <TextInput onChangeText={(value) => setPrice(value)} value={Number(price)} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric" />
                 </View>
                 <View style={styles.slectlist}>
                     <SelectList
-                        setSelected={(val) => setSelected(val)}
+                        setSelected={(val) => setCategory(val)}
                         data={store}
                         save="value"
                         placeholder='Catégorie'
@@ -286,6 +297,19 @@ export default function VendreScreen({ navigation }) {
                         </TouchableOpacity>
                     </ImageBackground>
                 </Pressable>
+            </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openTakePhotoModal}
+                onRequestClose={() => {
+                    setOpenTakePhotoModal(!openPhoto);
+                    //console.log(modalVisible)
+                }}>
+
+                <Photo closeModal={closeTakePhotoModal} />
+
+
             </Modal>
 
         </View>

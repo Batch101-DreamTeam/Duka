@@ -132,6 +132,7 @@ router.get('/:token', async (req, res, next) => {
 })
 
 
+
 router.put('/setFavorites', async (req, res, next)=>{
   try{
     const target = await User.updateOne({
@@ -145,5 +146,35 @@ router.put('/setFavorites', async (req, res, next)=>{
   }
 });
 
+// Route permettant correspondant au bouton Enregistrer les modifications de profil et de mettre à jour la BDD
+
+router.put('/modifyProfil/:idToken', async (req, res) => {
+  const profilFields = req.params.idToken;
+  if (!profilFields) {
+      res.status(400).json({ result: false, message: "wrong request" })
+      return
+  } else {
+      const targettedUser = await User.findOne({ token: profilFields })
+      console.log(targettedUser)
+      if (!targettedUser) {
+          res.status(400).json({ result: false, message: "no user founded" })
+          return
+      }
+      else {
+          const profilDetails = {
+            username: req.body.username,
+            contact: req.body.contact,
+            description: req.body.description,
+            // mail: targettedUser.mail,
+            // location: targettedUser.location,
+            // favorites: targettedUser.favorites,
+            // avatar: req.body.avatar,
+          }
+          const modifyUser = await User.findOneAndUpdate({ token: profilFields }, profilDetails, { new: true })
+          res.status(200).json({ result: true, message: modifyUser })
+      }
+  }
+
+}),
 
 module.exports = router;

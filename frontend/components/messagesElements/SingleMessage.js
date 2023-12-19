@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const SingleMessage = (props) => {
-  console.log(props.userId);
+  // console.log(props.userId);
   return (
     <View style={styles.cont}>
 

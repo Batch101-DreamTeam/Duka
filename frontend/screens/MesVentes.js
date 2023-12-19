@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ResultSearch from '../components/ResultSearch';
-
+import { useFocusEffect } from '@react-navigation/native';
 import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 
@@ -13,22 +13,26 @@ export default function MesVentes({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
 
-    useEffect(() => {
-        fetch(`${backendAddress}/offers/allOffersBySeller/${token}`)
-            .then(response => response.json())
-            .then(data => {
-                setOffersData(data.offers);
-            });
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchData = async () => {
+                const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
+                const newData = await response.json();
+                setOffersData(newData.offers);
+            };
+            fetchData();
+        }, [])
+    );
+
 
     const handleNavigate = (data) => {
-        navigation.navigate("FicheVente", { offerData: data });
+        navigation.navigate("FicheVente", { dataOffers: data });
     };
 
 
-    const offers = offersData.map((data, i) => {
+    const offers = offersData && offersData.map((data, i) => {
         return (
-            <TouchableOpacity key={i} data={data} onPress={() => handleNavigate(data)}>
+            <TouchableOpacity key={i} data={data} navigation={navigation} onPress={() => handleNavigate(data)}>
                 <ResultSearch
                     offerTitle={data.offerTitle}
                     images={data.images[0]}

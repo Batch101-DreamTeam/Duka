@@ -54,6 +54,7 @@ export default function FavorisScreen({ navigation }) {
       console.log("bye");
     };
   });
+  
   let display;
 
   // if(!token){
@@ -91,21 +92,8 @@ export default function FavorisScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <Header />
       {display}
-      {/* { !Favorites.length ? (  
-            <View style={styles.containerContent}>
-                <Text style={styles.margin}>No offer added yet ?</Text>
 
-                <Text> ADD NEW OFFER</Text>
-                    <TouchableOpacity onPress={()=> {console.log('redirectToConnectPage'), navigation.navigate('Acceuil')}} style={styles.plus}>
-                        <FontAwesome name="plus" size={100} />
-                    </TouchableOpacity>
-            </View>
-            ) : ( 
-            <View style={styles.containerContent}>
-             {displayFav} 
-             </View>
-            )} */}
-    </SafeAreaView>
+   </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
@@ -134,3 +122,4 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
 });
+
