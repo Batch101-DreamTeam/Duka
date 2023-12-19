@@ -12,7 +12,6 @@ export default function MesVentes({ navigation }) {
     const [offersData, setOffersData] = useState([]);
     const user = useSelector((state) => state.user.value);
     const token = user.token
-
     useFocusEffect(
         React.useCallback(() => {
             const fetchData = async () => {

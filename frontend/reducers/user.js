@@ -23,6 +23,7 @@ export const userSlice = createSlice({
         state.value.photos.push(action.payload);
       } else {
         state.value.photos.pop();
+        state.value.photos.push(action.payload);
       }
     },
     removePhoto: (state, action) => {

@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
 
-
 export default function AcceuilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
