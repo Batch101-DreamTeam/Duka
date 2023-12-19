@@ -78,14 +78,14 @@ export default function VendreScreen({ route, navigation }) {
 
     let dateOfTheDay = new Date(); // obtenir la date du jour
 
-    let [fontsLoaded] = useFonts({
-        MontserratRegular: MontserratRegular,
-        MontserratMedium: MontserratMedium,
-    });
+    // let [fontsLoaded] = useFonts({
+    //     MontserratRegular: MontserratRegular,
+    //     MontserratMedium: MontserratMedium,
+    // });
 
-    if (!fontsLoaded) {
-        return null;
-    }
+    // if (!fontsLoaded) {
+    //     return null;
+    // }
 
     const Validate = async () => {
         if (name != "" || description != "" || price != "") {
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
         color: 'white',
         height: '100%',
         textAlignVertical: 'center',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     iconSearch: {
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 300,
         borderRadius: 10,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
 
     },
@@ -363,17 +363,17 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10,
         backgroundColor: '#BBDFC5',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
     },
     white: {
         color: 'white',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     whiteSmall: {
         color: 'white',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 12,
     },
     send: {
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 20,
         backgroundColor: "#60935D",
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
         width: '85%',
         marginBottom: 10
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     h3: {
-        fontFamily: 'MontserratRegular',
+        // fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'black',
         textAlign: 'center',
