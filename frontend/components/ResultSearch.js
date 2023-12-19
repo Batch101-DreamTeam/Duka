@@ -16,7 +16,6 @@ export default function ResultSearch(props) {
     useEffect(()=>{
         if(props.isLiked)
         setIsliked(true);
-      
     })
 
     return (

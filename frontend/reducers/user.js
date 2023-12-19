@@ -36,12 +36,18 @@ export const userSlice = createSlice({
 
 
     addFavorites: (state, action) => {
-      // console.log('addfav')
-      // console.log(state.value.favorites)
-      state.value.favorites.push(action.payload)
+      if(state.value.favorites.includes(action.payload.id)){
+        console.log('already Had')
+        return 
+      }
+      else{
+        state.value.favorites.push(action.payload)
+      
+    }
     },
     suppFavorites: (state, action) => {
       state.value.favorites = state.value.favorites.filter((data) => data.id !== action.payload.id);
+      console.log('tryed   eqsfkhzsrmrkgf')
     },
     getFavorites: (state, action) => {
       state.value.favorites = action.payload;

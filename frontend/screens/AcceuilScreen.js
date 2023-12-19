@@ -28,10 +28,23 @@ export default function AcceuilScreen({ navigation }) {
                   return 
                 }
             });
-    }, []);
+    }, [Favorites]);
 
     const offers = offersData.map((data, i) => {
-        const isLiked = Favorites.some((offer) => offer._id === data._id);
+      if(!Favorites.length){
+        return <ResultSearch
+        key={i}
+        offerTitle={data.offerTitle}
+        images={data.images[0]}
+        description={data.description}
+        price={data.price}
+        category={data.category}
+        id={data._id}
+        isLiked={false}
+        />;
+      }
+      else{
+        const isLiked = Favorites.some((offer) => offer.id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -42,7 +55,8 @@ export default function AcceuilScreen({ navigation }) {
             id={data._id}
             isLiked={isLiked}
         />;
-    });
+    }}
+    );
     return (
 
 

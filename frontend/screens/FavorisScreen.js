@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  ScrollView,
   TextInput,
 } from "react-native";
 import Header from "../components/Header";
@@ -15,6 +16,7 @@ import Inscription from "../components/Inscription";
 import { useFocusEffect } from "@react-navigation/native";
 import { BACKEND_ADDRESS } from "@env";
 import { getFavorites } from "../reducers/user";
+import ResultSearch from "../components/ResultSearch";
 const backendAddress = BACKEND_ADDRESS;
 
 export default function FavorisScreen({ navigation }) {
@@ -22,9 +24,18 @@ export default function FavorisScreen({ navigation }) {
   const token = user.token;
   const Favorites = user.favorites;
   const dispatch = useDispatch();
-  
+
   const displayFav = Favorites.map((el, i) => {
-    return <Text key={i}> {el.id} </Text>;
+    return <ResultSearch 
+    offerTitle={el.offerTitle}
+    images={el.images}
+    description={el.description}
+    price={el.price}
+    category={el.category}
+    id={el.id}
+    isLiked={true}
+    key={el.id}
+    >  </ResultSearch>;
   });
 
   useFocusEffect(() => {
@@ -75,19 +86,30 @@ export default function FavorisScreen({ navigation }) {
       </View>
     );
   } else if (Favorites.length) {
-    display = <>{displayFav}</>;
+    display =(
+    <ScrollView style={styles.scrollView}>
+       {displayFav}
+   </ScrollView>
+    )
+
   }
+  
   console.log(Favorites);
 
   return (
     <SafeAreaView style={styles.container}>
       <Header />
+      <Text style={styles.title}> Favoris </Text>
       {display}
-
    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  title:{
+     marginTop: 20,
+     marginLeft: 50,
+     fontSize: 30,
+  },
   container: {
     flex: 1,
     flexDirection: "column",
@@ -112,5 +134,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
   },
+  scrollView: {
+    padding: 3,
+    maxHeight: '100%',
+    marginTop: 30,
+    backgroundColor: "#BBDFC5",
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 30,
+    paddingTop: 30
+
+},
+productList: {
+  flex: 1,
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  width: '100%',
+  height: '100%',
+  paddingBottom: '1%',
+},
 });
 
