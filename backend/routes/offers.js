@@ -90,12 +90,13 @@ router.post('/search', async (req, res) => {
     searchOnWord = searchOnWord.toLowerCase()
     console.log(searchOnWord)
     const resultSearch = await Offer.find({ offerTitle: { $regex: searchOnWord, $options: 'i' } })
-    if (resultSearch) {
-        console.log(resultSearch)
+    if (resultSearch.length) {
+        console.log(resultSearch.length)
         res.status(200).json({ result: true, searchOnWord: resultSearch })
     }
     else {
         res.status(400).json({ result: false, message: 'no offers founded' })
+        return
     }
 })
 
