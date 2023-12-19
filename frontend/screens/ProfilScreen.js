@@ -319,24 +319,25 @@ const styles = StyleSheet.create({
     textInputUsername: {
         backgroundColor: '#BBDFC5',
         width: 200,
-        height: 20,
+        height: 30,
         marginLeft: 130,
-        marginTop:-40,
+        marginTop:-55,
     },
 
-    textInputContact: {
-        backgroundColor: 'red',
+    textInputTel: {
+        backgroundColor: '#BBDFC5',
         width: 200,
-        height: 20,
+        height: 30,
         marginLeft: 130,
-        marginTop:-800,
+        marginTop:8,
     },
     
     textInputDescription: {
         backgroundColor: '#BBDFC5',
-        width: 200,
-        height: 10,
-        marginLeft: 130,
+        width: 370,
+        height: 90,
+        marginLeft: 0,
+        marginTop: 15
     },
     
     btn: {

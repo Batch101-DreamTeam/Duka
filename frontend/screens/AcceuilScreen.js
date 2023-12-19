@@ -31,7 +31,7 @@ export default function AcceuilScreen({ navigation }) {
     }, []);
 
     const offers = offersData.map((data, i) => {
-        const isLiked = Favorites.some((offer) => offer._id === data._id);
+        // const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -40,7 +40,7 @@ export default function AcceuilScreen({ navigation }) {
             price={data.price}
             category={data.category}
             id={data._id}
-            isLiked={isLiked}
+            // isLiked={isLiked}
         />;
     });
     return (
