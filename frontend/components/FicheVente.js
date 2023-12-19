@@ -17,7 +17,6 @@ import Photo from './Photo';
 
 export default function FicheVente({ route, navigation }) {
     const dispatch = useDispatch()
-    //console.log(route.locations)
     const { dataOffers } = route.params; // recuperation des infos du parent
 
     const offerTitle = dataOffers.offerTitle
@@ -68,7 +67,7 @@ export default function FicheVente({ route, navigation }) {
         }, [])
     );
 
-    console.log(photoReducer)
+    //console.log(photoReducer)
     const ConfirmationDelete = () => {
         setModalVisible(true)
     }
@@ -104,7 +103,7 @@ export default function FicheVente({ route, navigation }) {
                 })
                 const photoSaveCloudinaty = await response.json() // pas du TOUT opti car toute les photos sont saves avant de savoir si la requete pour save va passer
 
-                console.log('response trouvée : ', photoSaveCloudinaty)
+                // console.log('response trouvée : ', photoSaveCloudinaty)
 
                 photos.push(photoSaveCloudinaty.url) // stock les url cloudinary dans une var
                 //console.log('photos', photos)
@@ -130,7 +129,6 @@ export default function FicheVente({ route, navigation }) {
         }
     }
     const deletePhotoDisplay = (picture) => {
-        console.log(picture)
         dispatch(removePhoto(picture))
     }
 
@@ -145,7 +143,6 @@ export default function FicheVente({ route, navigation }) {
         });
 
         if (!result.canceled) {
-            //console.log(result.assets)
             const formData = new FormData();
             formData.append('photoFromFront', {
                 uri: result.assets[0].uri,
@@ -272,7 +269,6 @@ export default function FicheVente({ route, navigation }) {
                 visible={modalVisible}
                 onRequestClose={() => {
                     setModalVisible(!modalVisible);
-                    //console.log(modalVisible)
                 }}>
                 <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil} >
                     <View style={styles.modalView}>
@@ -296,7 +292,6 @@ export default function FicheVente({ route, navigation }) {
                 visible={modalAddPhoto}
                 onRequestClose={() => {
                     setmMdalAddPhoto(!modalAddPhoto);
-                    //console.log(modalVisible)
                 }}>
                 <Pressable onPress={() => setmMdalAddPhoto(!modalAddPhoto)} style={styles.ModalAcceuil}>
                     <View style={styles.modalView}>

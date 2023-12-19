@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 300,
         borderRadius: 10,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
     },
     box: {
@@ -167,12 +167,12 @@ const styles = StyleSheet.create({
         color: 'white',
         height: '100%',
         textAlignVertical: 'center',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     white: {
         color: 'white',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     btnConnexion: {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: "#14342B",
         fontSize: 40,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     erreur: {
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 300,
         borderRadius: 10,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
         flexDirection: 'row',
         justifyContent: 'space-between'
