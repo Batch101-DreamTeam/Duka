@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { checkBody } = require('./../modules/checkBody');
 const User = require('./../models/user')
+const Offer = require('./../models/offer')
 const uid2 = require('uid2');
 const bcrypt = require('bcrypt');
 
@@ -16,7 +17,7 @@ router.get('/getProfilInfos/:token', async (req, res) => {
     token: req.params.token
   });
   if (!potentielUser) {
-    console.log(potentielUser)
+    //console.log(potentielUser)
     return
   }
   const potentielId = potentielUser._id
@@ -133,16 +134,16 @@ router.get('/:token', async (req, res, next) => {
 
 
 
-router.put('/setFavorites', async (req, res, next)=>{
-  try{
+router.put('/setFavorites', async (req, res, next) => {
+  try {
     const target = await User.updateOne({
       token: req.body.Token
-    }, {$set:{ favorites: req.body.favorites}});
-    const ret = await User.findOne({token: req.body.Token});
-    res.status(200).json({result: true })
+    }, { $set: { favorites: req.body.favorites } });
+    const ret = await User.findOne({ token: req.body.Token });
+    res.status(200).json({ result: true })
   }
-  catch{
-    res.status(400).json({result: false })
+  catch {
+    res.status(400).json({ result: false })
   }
 });
 
@@ -151,30 +152,61 @@ router.put('/setFavorites', async (req, res, next)=>{
 router.put('/modifyProfil/:idToken', async (req, res) => {
   const profilFields = req.params.idToken;
   if (!profilFields) {
-      res.status(400).json({ result: false, message: "wrong request" })
-      return
+    res.status(400).json({ result: false, message: "wrong request" })
+    return
   } else {
-      const targettedUser = await User.findOne({ token: profilFields })
-      console.log(targettedUser)
-      if (!targettedUser) {
-          res.status(400).json({ result: false, message: "no user founded" })
-          return
+    const targettedUser = await User.findOne({ token: profilFields })
+    //console.log(targettedUser)
+    if (!targettedUser) {
+      res.status(400).json({ result: false, message: "no user founded" })
+      return
+    }
+    else {
+      const profilDetails = {
+        username: req.body.username,
+        contact: req.body.contact,
+        description: req.body.description,
+        // mail: targettedUser.mail,
+        // location: targettedUser.location,
+        // favorites: targettedUser.favorites,
+        // avatar: req.body.avatar,
       }
-      else {
-          const profilDetails = {
-            username: req.body.username,
-            contact: req.body.contact,
-            description: req.body.description,
-            // mail: targettedUser.mail,
-            // location: targettedUser.location,
-            // favorites: targettedUser.favorites,
-            // avatar: req.body.avatar,
-          }
-          const modifyUser = await User.findOneAndUpdate({ token: profilFields }, profilDetails, { new: true })
-          res.status(200).json({ result: true, message: modifyUser })
-      }
+      const modifyUser = await User.findOneAndUpdate({ token: profilFields }, profilDetails, { new: true })
+      res.status(200).json({ result: true, message: modifyUser })
+    }
   }
 
 }),
+
+  router.post('/checkIfUserIsSeller', async (req, res, next) => { //verification si l'utilsateur en cours est le propriétaire d'une offre à partie du token du reducer
+    let tokenUser = req.body.token
+    let idProduct = req.body.id
+    const idToken = await User.findOne({ token: tokenUser });
+    if (!idToken) {
+      res.status(400).json({ result: false, message: 'wrong token' })
+      return
+    } else {
+      const isSeller = await User.findOne({ _id: idToken._id })
+      if (!isSeller) {
+        res.status(400).json({ result: false, message: 'no match for id product' })
+      } else {
+        const idProductOwner = await Offer.findOne({ _id: idProduct })
+        if (!idProductOwner) {
+          res.status(400).json({ result: false, message: 'no product found' })
+        } else {
+          console.log(idToken._id)
+          console.log(idProductOwner.seller)
+          if (idToken._id.equals(idProductOwner.seller)) {
+            res.status(200).json({ result: true })
+          } else {
+            res.status(400).json({ result: false, message: 'this user is not the owner of the product' })
+          }
+        }
+
+      }
+    }
+  }
+
+  )
 
 module.exports = router;

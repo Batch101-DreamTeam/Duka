@@ -7,7 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 
-export default function MesVentes({ navigation }) {
+export default function MesVentes({ navigation, route }) {
 
     const [offersData, setOffersData] = useState([]);
     const user = useSelector((state) => state.user.value);
@@ -30,15 +30,18 @@ export default function MesVentes({ navigation }) {
 
     const offers = offersData && offersData.map((data, i) => {
         return (
-            <TouchableOpacity key={i} data={data} navigation={navigation} onPress={() => handleNavigate(data)}>
-                <ResultSearch
-                    offerTitle={data.offerTitle}
-                    images={data.images[0]}
-                    description={data.description}
-                    price={data.price}
-                    category={data.category}
-                />
-            </TouchableOpacity>
+            <ResultSearch
+                key={i}
+                offerTitle={data.offerTitle}
+                locations={data.locations}
+                images={data.images}
+                description={data.description}
+                price={data.price}
+                category={data.category}
+                id={data._id}
+                navigation={navigation}
+                route={route}
+            />
         )
     });
 

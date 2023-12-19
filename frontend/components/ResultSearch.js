@@ -9,7 +9,9 @@ import { useEffect, useState } from 'react';
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function ResultSearch(props) {
-
+    //console.log("props", props)
+    const { navigation } = props;
+    // console.log(props)
     const [isLiked, setIsliked] = useState(false)
     const dispatch = useDispatch();
 
@@ -19,27 +21,33 @@ export default function ResultSearch(props) {
 
     })
 
+    const handleNavigate = (data) => {
+        navigation.navigate("FicheVente", { dataOffers: data, route: props.route });
+    };
+
     return (
-        <View style={styles.product}>
-            <TouchableOpacity onPress={props.handleNavigate()} data={props}>
-                <Image style={styles.image} source={{ uri: props.images }} />
-            </TouchableOpacity>
-            <View style={styles.descProd}>
-                <Text >{props.offerTitle}</Text>
-                <Text >{props.description}</Text>
-                <Text >{props.price} CFA</Text>
-                {isLiked ? (
-                    <TouchableOpacity onPress={() => { dispatch(suppFavorites(props)), setIsliked(false) }}>
-                        <FontAwesome style={styles.red} name='heart' size={20} />
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={() => { dispatch(addFavorites(props)), setIsliked(true) }}>
-                        <FontAwesome name='heart' size={20} />
-                    </TouchableOpacity>
-                )
-                }
+        <TouchableOpacity onPress={() => handleNavigate(props)} >
+            <View style={styles.product}>
+
+                {props.images && (<Image style={styles.image} source={{ uri: props.images[0] }} />)}
+
+                <View style={styles.descProd}>
+                    <Text >{props.offerTitle}</Text>
+                    <Text >{props.description}</Text>
+                    <Text >{props.price} CFA</Text>
+                    {isLiked ? (
+                        <TouchableOpacity onPress={() => { dispatch(suppFavorites(props)), setIsliked(false) }}>
+                            <FontAwesome style={styles.red} name='heart' size={20} />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={() => { dispatch(addFavorites(props)), setIsliked(true) }}>
+                            <FontAwesome name='heart' size={20} />
+                        </TouchableOpacity>
+                    )
+                    }
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
 
     );
 }
