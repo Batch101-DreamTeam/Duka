@@ -20,6 +20,8 @@ export default function InputSearch(navigation) {
     const price = ["Prix croissant", "Prix décroisssant"]
     const place = ["Par produit le plus proche", "Par prix décroisssant"]
     const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
+    const [isResult, setIsResult] = useState(true)
+    const [result, setResult] = useState("")
 
     const [modalVisible, setModalVisible] = useState(false);
     const [searchWord, setSearchWord] = useState('');
@@ -36,7 +38,7 @@ export default function InputSearch(navigation) {
         }).then(response => response.json())
             .then(data => {
                 if (data) {
-
+                    setResult()
                     console.log(data.searchOnWord)
 
                     setSearchWord('');
@@ -52,9 +54,7 @@ export default function InputSearch(navigation) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
-            console.log(modalVisible)
         }}>
         <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
             <View style={styles.modalView}>

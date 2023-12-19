@@ -87,16 +87,15 @@ router.get('/search/:offerId', async (req, res, next) => { // route pour accéde
 
 router.post('/search', async (req, res) => {
     const searchOnWord = req.body.offerTitle;
-    Offer.find({
-        offerTitle: searchOnWord,
-    }).then(data => {
-        if (data) {
-            res.status(200).json({ result: true, searchOnWord: data })
-        }
-        else {
-            res.status(400).json({ result: false, message: 'no offers founded' })
-        }
-    });
+    //console.log(searchOnWord)
+    const resultSearch = await Offer.find({ sold: false })
+    if (resultSearch) {
+        console.log(resultSearch)
+        res.status(200).json({ result: true, searchOnWord: resultSearch })
+    }
+    else {
+        res.status(400).json({ result: false, message: 'no offers founded' })
+    }
 })
 
 router.get('/allOffers', async (req, res) => {

@@ -21,12 +21,10 @@ export default function AcceuilScreen({ navigation }) {
             .then(response => response.json())
             .then(data => {
                 // console.log(data.offers)
-                if (data.offers = []) {
-
-                    // setOffersData(data.offers);
+                if (!data.offers) {
                     console.log('aucune')
                 } else {
-                    console.log(data)
+                    //console.log(data)
                     setOffersData(data.offers);
 
                 }
