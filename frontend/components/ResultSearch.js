@@ -3,13 +3,21 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFavorites, suppFavorites } from '../reducers/user';
 // const user = useSelector((state) => state.user.value);
+import { useEffect, useState } from 'react';
 // const token = user.token
 // const Favorites = user.favorites;
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function ResultSearch(props) {
     
-    const dispatch = useDispatch();
+    const[isLiked, setIsliked] = useState(false)
+    const dispatch = useDispatch(); 
+
+    useEffect(()=>{
+        if(props.isLiked)
+        setIsliked(true);
+      
+    })
 
     return (
         <View style={styles.product}>
@@ -19,12 +27,12 @@ export default function ResultSearch(props) {
                 <Text >{props.offerTitle}</Text>
                 <Text >{props.description}</Text>
                 <Text >{props.price} CFA</Text>
-              { !props.isLiked ? (
-                <TouchableOpacity onPress={()=> dispatch(suppFavorites(props))}>
+              { isLiked ? (
+                <TouchableOpacity onPress={()=> {dispatch(suppFavorites(props)), setIsliked(false)}}>
                 <FontAwesome style={styles.red} name='heart' size={20} />
                 </TouchableOpacity>
                ) : (
-                <TouchableOpacity onPress={()=> dispatch(addFavorites(props))}>
+                <TouchableOpacity onPress={()=> {dispatch(addFavorites(props)),  setIsliked(true)}}>
                 <FontAwesome name='heart' size={20} />
                 </TouchableOpacity>
               )

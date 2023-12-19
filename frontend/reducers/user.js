@@ -41,7 +41,7 @@ export const userSlice = createSlice({
       state.value.favorites.push(action.payload)
     },
     suppFavorites: (state, action) => {
-      state.value.favorites = state.value.favorites.filter((data) => data !== action.payload);
+      state.value.favorites = state.value.favorites.filter((data) => data.id !== action.payload.id);
     },
     getFavorites: (state, action) => {
       state.value.favorites = action.payload;

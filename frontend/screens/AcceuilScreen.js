@@ -3,9 +3,8 @@ import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, 
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
-
+import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
-import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation }) {
@@ -16,25 +15,23 @@ export default function AcceuilScreen({ navigation }) {
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
-        console.log("useeffectacceuil")
         fetch(`${backendAddress}/offers/allOffers`)
             .then(response => response.json())
             .then(data => {
                 // console.log(data.offers)
-                if (!data.offers) {
-                    console.log('aucune')
-                } else {
-                    //console.log(data)
+                if (data.offers.length) {
                     setOffersData(data.offers);
-
+                    // setArticlesData(data.articles.filter((data, i) => i > 0));
                 }
-                // setArticlesData(data.articles.filter((data, i) => i > 0));
+                else {
+                    console.log('aucune donnée')
+                    return
+                }
             });
     }, []);
 
-
-    const offers = offersData && offersData.map((data, i) => {
-        //const isLiked = Favorites.some((offer) => offer._id === data._id);
+    const offers = offersData.map((data, i) => {
+        const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -43,11 +40,9 @@ export default function AcceuilScreen({ navigation }) {
             price={data.price}
             category={data.category}
             id={data._id}
-        // isLiked={isLiked}
+            isLiked={isLiked}
         />;
     });
-
-    // let messagePageVide = <Text style={styles.messagePageVide}>aucune offre disponible</Text>;
     return (
 
 
@@ -112,9 +107,5 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center',
     },
-    messagePageVide: {
-        width: '100%',
-        backgroundColor: 'green',
-    }
 
 });

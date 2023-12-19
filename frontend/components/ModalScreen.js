@@ -4,8 +4,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 
 // Importez le fichier de police
-import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
-import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
+// import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
+// import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
 
 export default function ModalScreen({ navigation }) {
@@ -20,19 +20,12 @@ export default function ModalScreen({ navigation }) {
     }
     return (
         <View style={styles.container}>
-
-
-
             <Text style={styles.inputTextSearch}  >
-
                 <Pressable
                     style={[styles.button, styles.buttonOpen]}
-                    onPress={() => setModalVisible(true)}
-
-                >
+                    onPress={() => setModalVisible(true)} >
                     <Text style={styles.textStyle}> Que cherchez-vous ?</Text>
                 </Pressable>
-
             </Text>
 
 

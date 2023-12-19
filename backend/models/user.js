@@ -18,7 +18,7 @@ const userShema = mongoose.Schema({
       // clé Token à voir si on ne trouve pas une alt à jwt pr mobile  (token permanant) 
       avatarUrl: String,
       activeAccount: Boolean,
-      favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers' }],
+      favorites: [],
       reputation: Boolean,
       // ou moyenne des notes
       conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'chatChannels' }],

@@ -3,8 +3,8 @@ import Header from '../components/Header';
 import React, { useState, useEffect } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
-import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
+// import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
+// import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectDropdown from 'react-native-select-dropdown'
 import { SelectList } from 'react-native-dropdown-select-list'

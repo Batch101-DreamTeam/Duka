@@ -99,9 +99,15 @@ router.post('/search', async (req, res) => {
 })
 
 router.get('/allOffers', async (req, res) => {
+    try{
     const data = await Offer.find()
     // console.log(data)
-    res.json({ offers: data });
+    res.json({ result: true, offers: data });
+    }
+    catch{
+        res.status(400).json({ result: false });
+
+    }
 });
 
 
