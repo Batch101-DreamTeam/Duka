@@ -323,9 +323,9 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: '#60935D',
-        width: '80%',
+        width: '100%',
         height: '6%',
-        borderRadius: 5,
+        borderRadius: 0,
     },
 
     textBox: {
