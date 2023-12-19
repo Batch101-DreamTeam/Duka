@@ -4,6 +4,8 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
 import { RemoteDataSetExample2 } from '../components/autodrop';
+import { useDispatch, useSelector } from 'react-redux';
+import { newSearch } from '../reducers/offer'
 // import RNPickerSelect from 'react-native-picker-select';
 // import { Dropdown } from './Dropdown';
 import { BACKEND_ADDRESS } from "@env"
@@ -22,27 +24,32 @@ export default function InputSearch(navigation) {
     const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
     const [isResult, setIsResult] = useState(true)
     const [result, setResult] = useState("")
+    const dispatch = useDispatch()
 
     const [modalVisible, setModalVisible] = useState(false);
     const [searchWord, setSearchWord] = useState('');
-    const handleSubmit = () => {
 
+    const offer = useSelector((state) => state.offer.value);
+    console.log(offer)
+
+    const handleSubmit = () => {
         if (searchWord.length === 0) {
             return;
         }
-
         fetch(`${backendAddress}/offers/search`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ offerTitle: searchWord }),
+            body: JSON.stringify({ offerTitleSearch: searchWord }),
         }).then(response => response.json())
             .then(data => {
                 if (data) {
-                    setResult()
-                    console.log(data.searchOnWord)
-
+                    console.log(data)
+                    setResult(data)
+                    dispatch(newSearch(data))
                     setSearchWord('');
                     setModalVisible(false);
+                } else {
+                    setIsResult(false)
                 }
             });
 

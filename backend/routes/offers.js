@@ -86,10 +86,11 @@ router.get('/search/:offerId', async (req, res, next) => { // route pour accéde
 
 
 router.post('/search', async (req, res) => {
-    const searchOnWord = req.body.offerTitle;
-    //console.log(searchOnWord)
-    const resultSearch = await Offer.find({ sold: false })
-    if (resultSearch) {
+    let searchOnWord = req.body.offerTitleSearch;
+    searchOnWord = searchOnWord.toLowerCase()
+    console.log(searchOnWord)
+    const resultSearch = await Offer.find({ offerTitle: { $regex: searchOnWord, $options: 'i' } })
+    if (resultSearch && resultSearch.length > 0) {
         console.log(resultSearch)
         res.status(200).json({ result: true, searchOnWord: resultSearch })
     }
@@ -99,12 +100,12 @@ router.post('/search', async (req, res) => {
 })
 
 router.get('/allOffers', async (req, res) => {
-    try{
-    const data = await Offer.find()
-    // console.log(data)
-    res.json({ result: true, offers: data });
+    try {
+        const data = await Offer.find()
+        // console.log(data)
+        res.json({ result: true, offers: data });
     }
-    catch{
+    catch {
         res.status(400).json({ result: false });
 
     }
