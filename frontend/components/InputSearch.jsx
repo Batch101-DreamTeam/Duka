@@ -29,8 +29,9 @@ export default function InputSearch(navigation) {
     const [modalVisible, setModalVisible] = useState(false);
     const [searchWord, setSearchWord] = useState('');
 
-    const offer = useSelector((state) => state.offer.value);
-    console.log(offer)
+    // const offer = useSelector((state) => state.offer.value);
+    // console.log(offer.resultSearch.searchOnWord)
+
 
     const handleSubmit = () => {
         if (searchWord.length === 0) {
@@ -43,7 +44,7 @@ export default function InputSearch(navigation) {
         }).then(response => response.json())
             .then(data => {
                 if (data) {
-                    console.log(data)
+                    //console.log(data)
                     setResult(data)
                     dispatch(newSearch(data))
                     setSearchWord('');

@@ -5,30 +5,42 @@ import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { newSearch } from '../reducers/offer'
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
-
+    const offer = useSelector((state) => state.offer.value);
+    const resultSearchUser = offer.resultSearch.searchOnWord
+    const dispatch = useDispatch();
 
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
-        fetch(`${backendAddress}/offers/allOffers`)
-            .then(response => response.json())
-            .then(data => {
-                // console.log(data.offers)
-                if (data.offers.length) {
-                    setOffersData(data.offers);
-                    // setArticlesData(data.articles.filter((data, i) => i > 0));
-                }
-                else {
-                    console.log('aucune donnée')
-                    return
-                }
-            });
+        if (resultSearchUser) {
+            setOffersData(resultSearchUser)
+        } else {
+            fetch(`${backendAddress}/offers/allOffers`)
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data.offers)
+                    if (data.offers.length) {
+                        setOffersData(data.offers);
+                        // setArticlesData(data.articles.filter((data, i) => i > 0));
+                    }
+                    else {
+                        console.log('aucune donnée')
+                        return
+                    }
+                });
+        }
+    }, [resultSearchUser]);
+
+    useEffect(() => {
+        return () => dispatch(newSearch(""));
     }, []);
 
     const offers = offersData.map((data, i) => {
