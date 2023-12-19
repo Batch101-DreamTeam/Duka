@@ -78,14 +78,6 @@ export default function VendreScreen({ route, navigation }) {
 
     let dateOfTheDay = new Date(); // obtenir la date du jour
 
-    // let [fontsLoaded] = useFonts({
-    //     MontserratRegular: MontserratRegular,
-    //     MontserratMedium: MontserratMedium,
-    // });
-
-    // if (!fontsLoaded) {
-    //     return null;
-    // }
 
     const Validate = async () => {
         if (name != "" || description != "" || price != "") {
