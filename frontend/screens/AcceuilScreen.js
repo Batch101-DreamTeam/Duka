@@ -11,7 +11,8 @@ export default function AcceuilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
-    
+
+
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
@@ -19,19 +20,19 @@ export default function AcceuilScreen({ navigation }) {
             .then(response => response.json())
             .then(data => {
                 // console.log(data.offers)
-                if(data.offers.length){
-                setOffersData(data.offers);
-                // setArticlesData(data.articles.filter((data, i) => i > 0));
+                if (data.offers.length) {
+                    setOffersData(data.offers);
+                    // setArticlesData(data.articles.filter((data, i) => i > 0));
                 }
-                else{
-                  console.log('aucune donnée')
-                  return 
+                else {
+                    console.log('aucune donnée')
+                    return
                 }
             });
     }, []);
 
     const offers = offersData.map((data, i) => {
-        // const isLiked = Favorites.some((offer) => offer._id === data._id);
+        //const isLiked = Favorites.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -40,7 +41,7 @@ export default function AcceuilScreen({ navigation }) {
             price={data.price}
             category={data.category}
             id={data._id}
-            // isLiked={isLiked}
+        // isLiked={isLiked}
         />;
     });
     return (

@@ -44,13 +44,11 @@ export default function Photo(props) {
 
     const takePicture = async () => {
         const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
-        //console.log(photo.uri)
         formData.append('photoFromFront', {
             uri: photo.uri,
             name: 'photo.jpg',
             type: 'image/jpeg',
         });
-        //console.log(formData)
         setPhotoTake(photo.uri)// enregistre la photo prise dans une variable d'état: permet de demander si on garde la photo ou non
         setSaveFormData(formData)
     }
@@ -58,11 +56,6 @@ export default function Photo(props) {
     const savePhoto = () => {
         dispatch(addPhoto(photoTake))
         props.closeModal()
-        // if (from === 'VendreScreen') {
-        //     navigation.navigate("VendreScreen")
-        // } else if (from === 'FicheVente') {
-        //     navigation.navigate("FicheVente")
-        // }
     }
 
 
