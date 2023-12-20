@@ -73,7 +73,7 @@ export default function AcceuilScreen({ navigation, route }) {
                     }
                 });
         }
-    }, [resultSearchUser]);
+    }, [resultSearchUser, Favorites]);
 
     useEffect(() => {
         return () => dispatch(newSearch(""));
@@ -84,10 +84,10 @@ export default function AcceuilScreen({ navigation, route }) {
         dispatch(nameSearch())
     }
 
-
+     
 
     const offers = offersData && offersData.map((data, i) => {
-        // const isLiked = Favorites.some((offer) => offer._id === data._id);
+        const isLiked = Favorites?.some((offer) => offer._id === data._id);
         return <ResultSearch
             key={i}
             offerTitle={data.offerTitle}
@@ -99,7 +99,7 @@ export default function AcceuilScreen({ navigation, route }) {
             id={data._id}
             navigation={navigation}
             route={route}
-        // isLiked={isLiked}
+            isLiked={isLiked}
         />;
     }
     );

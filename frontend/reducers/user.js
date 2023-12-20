@@ -33,16 +33,14 @@ export const userSlice = createSlice({
       state.value.photos = []
     },
 
-
-
     addFavorites: (state, action) => {
-      if(state.value.favorites.includes(action.payload.id)){
+  
+       if(state.value.favorites.includes(action.payload.id) || !state.value.token){
         console.log('already Had')
         return 
       }
-      else{
-        state.value.favorites.push(action.payload)
-      
+      else if(state.value.token){
+        state.value.favorites.push(action.payload);
     }
     },
     suppFavorites: (state, action) => {

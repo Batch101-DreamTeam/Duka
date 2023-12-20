@@ -41,7 +41,7 @@ export default function FavorisScreen({ navigation }) {
   useFocusEffect(() => {
     return () => {
       const donne = {
-        Token: "bTvTdKlU48uAa2kCOVfdGrlz05fnH319",
+        Token: token,
         favorites: Favorites,
       };
       fetch(`${backendAddress}/users/setFavorites`, {
