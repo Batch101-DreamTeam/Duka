@@ -25,37 +25,6 @@ export default function AcceuilScreen({ navigation, route }) {
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
-        // <<<<<<< HEAD
-        //         fetch(`${backendAddress}/offers/allOffers`)
-        //             .then(response => response.json())
-        //             .then(data => {
-        //                 // console.log(data.offers)
-        //                 if(data.offers.length){
-        //                 setOffersData(data.offers);
-        //                 // setArticlesData(data.articles.filter((data, i) => i > 0));
-        //                 }
-        //                 else{
-        //                   console.log('aucune donnée')
-        //                   return 
-        //                 }
-        //             });
-        //     }, [Favorites]);
-
-        // const offers = offersData.map((data, i) => {
-        //   if(!Favorites.length){
-        //     return <ResultSearch
-        //     key={i}
-        //     offerTitle={data.offerTitle}
-        //     images={data.images[0]}
-        //     description={data.description}
-        //     price={data.price}
-        //     category={data.category}
-        //     id={data._id}
-        //     isLiked={false}
-        //     />;
-        //   }
-        //   else{
-        //     const isLiked = Favorites.some((offer) => offer.id === data._id);
         if (resultSearchUser) {
             setOffersData(resultSearchUser.searchOnWord)
         } else {
