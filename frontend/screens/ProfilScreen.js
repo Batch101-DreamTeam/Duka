@@ -1,12 +1,14 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground, Pressable} from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Inscription from '../components/Inscription';
 import React, { useEffect, useState, Dispatch, } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Camera } from 'expo-camera';
 import Photo from '../components/Photo';
+import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user';
+import { Foundation } from '@expo/vector-icons';
 
 
 // Import des fichiers de police
@@ -36,24 +38,30 @@ export default function ProfilScreen({ navigation }) {
         avatar: "",
     });
 
-    //Mettre à jour son profil
+const dispatch = useDispatch();
+
     const [updatedUsername, setUpdatedUsername] = useState('');
     const [updatedContact, setUpdatedContact] = useState('');
     const [updatedDescription, setUpdatedDescription] = useState('');
     const [modifyField, setModifyField] = useState(false);
     const user = useSelector((state) => state.user.value);
-    const token = user.token;
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
-
-    
-
-    useEffect(() => {
-        fetch(`${backendAddress}/users/getProfilInfos/${token}`)
-            .then(response => response.json())
+    const [modalVisible, setModalVisible] = useState(false);
+// console.log(user)
+    useFocusEffect(
+        React.useCallback(() => {
+            setModalVisible(false);
+            dispatch(deleteAllPhoto())
+        }, [])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
+                        .then(response => response.json())
             .then(profileInfos => {
-                // console.log(profileInfos);
+ 
                 if (profileInfos.result) {
                     setProfileData({
                         username: profileInfos.username,
@@ -71,12 +79,15 @@ export default function ProfilScreen({ navigation }) {
             })
             .catch(error => {
                 console.error("Error fetching profile information:", error);
-                // Handle error gracefully
+         
             });
-    }, [token]);
+    
+        }, [])
+    );
 
+    //Mettre à jour son profil
     const updateProfilInfo = () => {
-        fetch(`${backendAddress}/users/modifyProfil/${token}`, {
+        fetch(`${backendAddress}/users/modifyProfil/${user.token}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -112,13 +123,36 @@ export default function ProfilScreen({ navigation }) {
         setModalVisible(false)
     };
 
+    //Pour aller chercher une photo dans la librairie du smartphone
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            //console.log(result.assets)
+            const formData = new FormData();
+            formData.append('photoFromFront', {
+                uri: result.assets[0].uri,
+                name: 'photo.jpg',
+                type: 'image/jpeg',
+            })
+            dispatch(addPhoto(result.assets[0].uri)) //vise les photos de produits dans le reducer
+            setModalVisible(false)
+        }
+    };
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}>
             <View style={styles.container}>
                 <Header />
-                {token ? (
+                {user.token ? (
                     <View style={styles.containerContent}>
                         <SafeAreaView style={styles.container}>
                             <ScrollView contentContainerStyle={styles.scrollView}>
@@ -132,13 +166,36 @@ export default function ProfilScreen({ navigation }) {
                                     {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
                                     {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
                                     <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                    {/* <ImageBackground>
-                                    source={{ uri: profileData.avatar }} 
-                                    style={styles.pictureProfile} 
-                                    </ImageBackground> */}
-                                     <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => takePicture()}>
+                                        <Image style={styles.pictureProfile} />
+                                     <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
                                         <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={20} color={'white'} />
                                     </TouchableOpacity>
+                                    <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                        //console.log(modalVisible)
+                    }}>
+                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
+                        <View style={styles.modalView}>
+                            <TouchableOpacity style={styles.send} onPress={pickImage}>
+                                <Foundation name="photo" size={24} color="white" style={styles.iconModal} />
+                                <Text style={styles.whiteSmall}>
+                                    A partir de la bibliothèque
+                                </Text>
+                            </TouchableOpacity >
+                            <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
+                                <FontAwesome name="camera" size={24} color="white" style={styles.iconModal} />
+                                <Text style={styles.whiteSmall}>
+                                    Prendre une photo
+                                </Text>
+                            </TouchableOpacity >
+                        </View>
+                    </Pressable>
+                    {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
+                </Modal>
                                 </View>
                                 <Text style={styles.h2}>Description</Text>
                                 <View style={styles.descriptionBloc}>
@@ -245,6 +302,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: '#60935D'
     },
+    
     scrollView: {
         alignItems: 'center',
         paddingBottom: 20,
@@ -268,7 +326,7 @@ const styles = StyleSheet.create({
         marginTop: -125,
         // marginBottom: 100,
         // marginRight: 220,
-        marginLeft: -275
+        marginLeft: -190
     },
 
     name: {
@@ -335,7 +393,6 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         color: '#BAB700',
-
     },
 
     modifyPenDescription: {
@@ -344,7 +401,6 @@ const styles = StyleSheet.create({
         color: '#BAB700'
     },
 
-
     h1: {
         // fontFamily: 'MontserratMedium',
         fontSize: 28,
@@ -352,17 +408,20 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontWeight: 'bold'
     },
+
     h2: {
         marginTop: 25,
         // fontFamily: 'MontserratRegular',
         fontSize: 24,
         color: '#BAB700',
     },
+
     h3: {
         // fontFamily: 'MontserratMedium',
         fontSize: 20,
         color: '#14342B',
     },
+
     text: {
         // fontFamily: 'MontserratRegular',
         fontSize: 16,
@@ -410,6 +469,49 @@ const styles = StyleSheet.create({
         backgroundColor: "#BAB700",
         // fontFamily: 'MontserratMedium', 
         fontSize: 20,
+    },
 
+    photoReducer: {
+        flexDirection: 'row'
+    },
+    addPicture: {
+        width: '40%',
+        height: '15%',
+        borderWidth: 1,
+        margin: 8,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    ModalAcceuil: {
+        backgroundColor: 'transparent',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+        marginBottom: 48,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconModal: {
+        marginRight: 10
     },
 });

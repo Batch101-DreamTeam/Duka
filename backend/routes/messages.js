@@ -7,13 +7,13 @@ const User = require('../models/user')
 
 
 
-const pusher = new Pusher({
-    appId: process.env.PUSHER_APPID,
-    key: process.env.PUSHER_KEY,
-    secret: process.env.PUSHER_SECRET,
-    cluster: process.env.PUSHER_CLUSTER,
-    useTLS: true,
-});
+// const pusher = new Pusher({
+//     appId: process.env.PUSHER_APPID,
+//     key: process.env.PUSHER_KEY,
+//     secret: process.env.PUSHER_SECRET,
+//     cluster: process.env.PUSHER_CLUSTER,
+//     useTLS: true,
+// });
 
 
 // const pusher = new Pusher({
@@ -25,7 +25,7 @@ const pusher = new Pusher({
 //     encryptionMasterKeyBase64: "DkiB1alywjEFoxRKaOeJKZzHSUFqU19TbuJ7Nj2Gl4k=",
 // });
 
-console.log(pusher)
+// console.log(pusher)
 // Join chat
 router.put('/:chatname/:username', async (req, res) => {
     await pusher.trigger(req.params.chatname, 'join', {
@@ -36,26 +36,26 @@ router.put('/:chatname/:username', async (req, res) => {
 });
 
 // Leave chat
-router.delete('/:chatname/:username', async (req, res) => {
-    await pusher.trigger(req.params.chatname, 'leave', {
-        username: req.params.username,
-    });
+// router.delete('/:chatname/:username', async (req, res) => {
+//     await pusher.trigger(req.params.chatname, 'leave', {
+//         username: req.params.username,
+//     });
 
-    res.json({ result: true });
-});
+//     res.json({ result: true });
+// });
 
 // Send message
-router.post('/', async (req, res) => {
-    const { text, username, chatname, createdAt } = req.body;
-    await pusher.trigger(chatname, 'message', req.body);
+// router.post('/', async (req, res) => {
+//     const { text, username, chatname, createdAt } = req.body;
+//     await pusher.trigger(chatname, 'message', req.body);
 
-    ChatChannel.updateOne(
-        { name: chatname },
-        { $push: { messages: { username, text, createdAt } } }
-    ).exec();
+//     ChatChannel.updateOne(
+//         { name: chatname },
+//         { $push: { messages: { username, text, createdAt } } }
+//     ).exec();
 
-    res.json({ result: true });
-});
+//     res.json({ result: true });
+// });
 
 router.get('/previousMessages/:chatname', (req, res) => {
     ChatChannel.findOne({ name: req.params.chatname }).then((resp) => {
