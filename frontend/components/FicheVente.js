@@ -16,6 +16,7 @@ import { Foundation } from '@expo/vector-icons';
 import Photo from './Photo';
 import { LogBox } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 
 export default function FicheVente(props, { route }) {
@@ -213,13 +214,13 @@ export default function FicheVente(props, { route }) {
                             </TouchableOpacity>
                         </View>}
                         <View style={{ marginLeft: '50%' }}>
-                            <TouchableOpacity onPress={() => deletePhotoDisplay(data)} style={{ marginTop: '5%', height: '20%' }}>
-                                {modify && <AntDesign name="closecircle" size={30} color="green" />}
-                            </TouchableOpacity>
+                            {modify && <TouchableOpacity onPress={() => deletePhotoDisplay(data)} style={{ marginTop: '5%', height: '20%', borderRadius: 50 }}>
+                                <Entypo name="circle-with-cross" size={35} color="black" style={{ backgroundColor: 'white' }} />
+                            </TouchableOpacity>}
                             {currentPhotoIndex === i && (
                                 <TouchableOpacity onPress={navigateNext} style={!modify ?
-                                    { marginLeft: '80%', marginTop: '40%', backgroundColor: 'white', borderRadius: 18, height: '18%', width: '20%', alignItems: 'center', justifyContent: 'center' }
-                                    : { marginTop: '200%', backgroundColor: 'red', borderRadius: 50, height: '20%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                    { marginLeft: '80%', marginTop: '65%', backgroundColor: 'white', borderRadius: 18, height: '21%', width: '20%', alignItems: 'center', justifyContent: 'center' }
+                                    : { marginTop: '250%', backgroundColor: 'white', borderRadius: 50, height: '17%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                     <Feather name="arrow-right" size={32} color="black" />
                                 </TouchableOpacity>
                             )}

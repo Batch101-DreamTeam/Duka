@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
@@ -25,36 +25,33 @@ export default function AcceuilScreen({ navigation, route }) {
     const [offersData, setOffersData] = useState([]);
     console.log(resultSearchUser);
     useFocusEffect(
-    React.useCallback(() => {
-        if (resultSearchUser) {
-            setOffersData(resultSearchUser)
-        } else {
-            // setOffersData([]);
-            console.log(backendAddress)
-            fetch(`${backendAddress}/offers/allOffers`, {
-                method: 'GET',
-                // headers: { 
-                //     'Cache-Control': 'no-cache',
-                //   }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("alors fetch")
-                    if (data.offers) {
-                        setOffersData(data.offers);
-                        console.log('recharge')
-                        // setArticlesData(data.articles.filter((data, i) => i > 0));
-                    }
-                    // else if(Favorites.length){
-                    //     setOffersData([...Favorites, ...data.offers])
-                    // }
-                    else {
-                        console.log('aucune donnée')
-                        return
-                    }
-                });
-        }
-    }, [resultSearchUser, Favorites])
+        React.useCallback(() => {
+            if (resultSearchUser) {
+                setOffersData(resultSearchUser)
+            } else {
+                // setOffersData([]);
+                console.log(backendAddress)
+                fetch(`${backendAddress}/offers/allOffers`, {
+                    method: 'GET',
+                    // headers: { 
+                    //     'Cache-Control': 'no-cache',
+                    //   }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("alors fetch")
+                        if (data.offers) {
+                            setOffersData(data.offers);
+                            console.log('rechaokrge')
+                            // setArticlesData(data.articles.filter((data, i) => i > 0));
+                        }
+                        else {
+                            console.log('aucune donnée')
+                            return
+                        }
+                    });
+            }
+        }, [resultSearchUser, Favorites])
     )
 
     useEffect(() => {
@@ -92,7 +89,7 @@ export default function AcceuilScreen({ navigation, route }) {
 
             <Header navigation={navigation} />
             <InputSearch />
-            <View style={styles.containerContent}> 
+            <View style={styles.containerContent}>
                 {offerName &&
                     <View>
                         <View style={styles.votreRecherche}>
@@ -102,7 +99,7 @@ export default function AcceuilScreen({ navigation, route }) {
                                 <MaterialIcons name="cancel" size={24} color="black" />
                             </TouchableOpacity>
                         </View>
-                        {!offersData.length && <Text>Pas de résultat</Text>}
+                        {!offersData && <Text>Pas de résultat</Text>}
                     </View>}
                 <ScrollView style={styles.scrollView}>
 
