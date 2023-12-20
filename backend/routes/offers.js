@@ -73,6 +73,7 @@ router.get('/search/:offerId', async (req, res, next) => { // route pour accéde
     }
     else {
         const targettedOffer = await Offer.findOne({ _id: argument })
+            .populate('seller')
         if (!targettedOffer) {
             res.status(400).json({ result: false, message: "no offer founded" })
             return

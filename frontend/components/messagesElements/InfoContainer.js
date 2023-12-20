@@ -1,14 +1,15 @@
 import { View, StyleSheet, Image, Text } from 'react-native'
 
-const InfoContainer = () => {
+const InfoContainer = (props) => {
   return (
     <View style={styles.infos}>
       <View style={styles.infosArticle}>
-        <Text style={styles.white}>Vendeur : Smith  </Text>
-        <Text style={styles.white}> Produit: Chiotte </Text>
+        <Text style={styles.white}>Vendeur : {props.seller}  </Text>
+        <Text style={styles.white}> Produit: {props.offerTitle} </Text>
       </View>
       <View style={styles.photoArticle}>
-        <Image style={styles.image} source={require('../../assets/toilet.jpg')} />
+        <Image style={styles.image} source={{ uri: props.images }} />
+        {/* <Image style={styles.image} source={require('../../assets/toilet.jpg')} /> */}
       </View>
       {/* <Text style={styles.white}> truc </Text> */}
     </View>

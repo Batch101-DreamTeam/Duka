@@ -32,7 +32,7 @@ export default function Inscription(navigation) {
 
     useEffect(() => {
         if (isFocused) {
-            //Update the state you want to be updated
+
             setWrong(true)
             setUserExist(true)
             setMissingField(true)

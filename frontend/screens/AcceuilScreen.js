@@ -17,21 +17,17 @@ export default function AcceuilScreen({ navigation }) {
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
-        // console.log("useeffectacceuil")
+
         fetch(`${backendAddress}/offers/allOffers`)
             .then(response => response.json())
             .then(data => {
-                // console.log(data.offers)
-                if (data.offers = []) {
 
-                    // setOffersData(data.offers);
-                    console.log('aucune')
-                } else {
-                    console.log(data)
-                    setOffersData(data.offers);
 
-                }
-                // setArticlesData(data.articles.filter((data, i) => i > 0));
+                // console.log(data)
+                setOffersData(data.offers);
+
+
+
             });
     }, []);
 

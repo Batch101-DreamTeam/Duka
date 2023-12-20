@@ -2,8 +2,10 @@ var express = require('express');
 var router = express.Router();
 
 const Pusher = require('pusher');
-
+const Offer = require("../models/offer");
 const User = require('../models/user')
+const Message = require("../models/message");
+const ChatChannel = require("../models/ChatChannel")
 
 
 
@@ -26,6 +28,8 @@ const pusher = new Pusher({
 // });
 
 // console.log(pusher)
+
+
 // Join chat
 router.put('/:chatname/:username', async (req, res) => {
     await pusher.trigger(req.params.chatname, 'join', {
@@ -57,21 +61,29 @@ router.post('/', async (req, res) => {
     res.json({ result: true });
 });
 
-router.get('/previousMessages/:chatname', (req, res) => {
+router.get('/previousMessages/:chatname', async (req, res) => {
+    // console.log(chatname)
     ChatChannel.findOne({ name: req.params.chatname }).then((resp) => {
-        res.json({
-            result: true,
-            messages: resp.messages,
-        });
+        console.log(resp)
+        if (resp) {
+            res.json({
+                result: true,
+                messages: resp.messages,
+            })
+        } else {
+            res.json({
+                result: true,
+                messages: [],
+            })
+        }
     });
-});
-
+})
 //GET /:token - User's chats  
 router.get(`/:token`, (req, res) => {
     User.findOne({ token: req.params.token })
         .populate({
             path: 'chatChannels',
-            populate: [{ path: 'traveler' }, { path: 'host' }],
+            populate: [{ path: 'seller' }, { path: 'buyer' }],
         })
         .then((data) => {
             if (data) {
