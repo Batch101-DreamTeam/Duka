@@ -17,7 +17,7 @@ export default function AcceuilScreen({ navigation }) {
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
-        console.log("useeffectacceuil")
+        // console.log("useeffectacceuil")
         fetch(`${backendAddress}/offers/allOffers`)
             .then(response => response.json())
             .then(data => {

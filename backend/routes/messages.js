@@ -25,7 +25,7 @@ const pusher = new Pusher({
 //     encryptionMasterKeyBase64: "DkiB1alywjEFoxRKaOeJKZzHSUFqU19TbuJ7Nj2Gl4k=",
 // });
 
-console.log(pusher)
+// console.log(pusher)
 // Join chat
 router.put('/:chatname/:username', async (req, res) => {
     await pusher.trigger(req.params.chatname, 'join', {
