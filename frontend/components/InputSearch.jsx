@@ -22,7 +22,7 @@ export default function InputSearch(navigation) {
     const price = ["Prix croissant", "Prix décroisssant"]
     const place = ["Par produit le plus proche", "Par prix décroisssant"]
     const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
-    const [isResult, setIsResult] = useState(true)
+    const [isResult, setIsResult] = useState(true);
     const [result, setResult] = useState("")
     const dispatch = useDispatch()
 
@@ -47,15 +47,21 @@ export default function InputSearch(navigation) {
             body: JSON.stringify({ name: searchWord }),
         }).then(response => response.json())
             .then((data) => {
-                if (data.resultQuery.length) {
+                if (data?.result) {
                     //console.log(data)
                     setResult(data.resultQuery)
                     dispatch(newSearch(data.resultQuery))
                     dispatch(nameSearch(searchWord))
                     setSearchWord('');
                     setModalVisible(false);
-                } else {
+                } 
+                else {
                     setIsResult(false)
+                    setResult([])
+                    dispatch(newSearch([]))
+                    dispatch(nameSearch(searchWord))
+                    setSearchWord('');
+                    setModalVisible(false);
                 }
             });
 

@@ -139,7 +139,7 @@ router.put('/modifyOffer/:idOffer', async (req, res) => {
         //console.log(targettedOffer)
         if (!targettedOffer) {
             res.status(400).json({ result: false, message: "no offer founded" })
-            return
+              return
         }
         else {
             const infos = {
@@ -209,7 +209,8 @@ router.post('/search/Bycate', async(req, res, next)=>{
         console.log(query)
     
         if (!resultQuery.length) {
-            res.status(200).json({ result: true, message: 'Aucune offre trouvée' });
+            res.status(400).json({ result: false, message: 'Aucune offre trouvée' });
+            return 
         } else {
             res.status(200).json({ result: true, resultQuery });
             console.log(resultQuery)
