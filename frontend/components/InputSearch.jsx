@@ -30,10 +30,12 @@ export default function InputSearch(navigation) {
     const [searchWord, setSearchWord] = useState('');
 
     // const offer = useSelector((state) => state.offer.value);
-    // console.log(offer.resultSearch.searchOnWord)
+    //console.log(offer.resultSearch.searchOnWord)
+    console.log("ok")
 
 
     const handleSubmit = () => {
+        console.log("ok")
         if (searchWord.length === 0) {
             return;
         }

@@ -11,7 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation, route }) {
-    // console.log("acceuil", route)
+
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
@@ -19,12 +19,13 @@ export default function AcceuilScreen({ navigation, route }) {
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
-    // console.log(offer)
+
     const dispatch = useDispatch();
 
     const [offersData, setOffersData] = useState([]);
 
     useEffect(() => {
+        console.log("bonjour")
         if (resultSearchUser) {
             setOffersData(resultSearchUser.searchOnWord)
         } else {

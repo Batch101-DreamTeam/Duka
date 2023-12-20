@@ -23,7 +23,6 @@ const backendAddress = BACKEND_ADDRESS;
 export default function VendreScreen({ route, navigation }) {
     const dispatch = useDispatch();
 
-
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -228,7 +227,7 @@ export default function VendreScreen({ route, navigation }) {
                 </View>
                 <View style={styles.SearchRow} >
                     <FontAwesome name="tag" style={styles.iconSearch} size={20} />
-                    <TextInput onChangeText={(value) => setPrice(value)} value={Number(price)} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric" />
+                    <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric" />
                 </View>
                 <View style={styles.slectlist}>
                     <SelectList

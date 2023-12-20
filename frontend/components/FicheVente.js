@@ -17,11 +17,10 @@ import Photo from './Photo';
 
 export default function FicheVente(props, { route, navigation }) {
     const dispatch = useDispatch()
-    // console.log("route", props.route.params.dataOffers.images)
+    console.log("route", props.route.params.route)
     const dataOffers = props.route.params.dataOffers; // recuperation des infos du parent
 
     const offerTitle = dataOffers.offerTitle
-
     const idProduct = dataOffers.id
     const descriptionOffer = dataOffers.description
     const categoryOffer = dataOffers.category
@@ -97,13 +96,14 @@ export default function FicheVente(props, { route, navigation }) {
         setModalVisible(true)
     }
     const deleteOffer = () => {
+        console.log("ici")
         fetch(`${backendAddress}/offers/deleteOffer/${idProduct}`, {
             method: 'DELETE',
         })
             .then(response => response.json())
             .then(data => {
                 setModalVisible(!modalVisible)
-                navigation.navigate("MesVentes")
+                props.navigation.navigate("AcceuilScreen")
             });
     }
     const changeOffer = () => {
@@ -149,7 +149,7 @@ export default function FicheVente(props, { route, navigation }) {
                 .then(response => response.json())
                 .then(data => {
                     dispatch(deleteAllPhoto())
-                    navigation.navigate("MesVentes")
+                    props.navigation.navigate("AcceuilScreen")
                 })
         }
     }
@@ -181,7 +181,6 @@ export default function FicheVente(props, { route, navigation }) {
 
     const takePicture = () => {
         setOpenTakePhotoModal(true)
-        // navigation.navigate('Photo', { from: 'FicheVente' })
     }
 
     const closeTakePhotoModal = () => {

@@ -88,7 +88,7 @@ router.get('/search/:offerId', async (req, res, next) => { // route pour accéde
 router.post('/search', async (req, res) => {
     let searchOnWord = req.body.offerTitleSearch;
     searchOnWord = searchOnWord.toLowerCase()
-    console.log(searchOnWord)
+    //console.log(searchOnWord)
     const resultSearch = await Offer.find({ offerTitle: { $regex: searchOnWord, $options: 'i' } })
     if (resultSearch.length) {
         console.log(resultSearch.length)
