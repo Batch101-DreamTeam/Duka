@@ -99,7 +99,7 @@ export default function AcceuilScreen({ navigation, route }) {
                                 <MaterialIcons name="cancel" size={24} color="black" />
                             </TouchableOpacity>
                         </View>
-                        {!offersData && <Text>Pas de résultat</Text>}
+                        {!offersData.length && <Text>Pas de résultat</Text>}
                     </View>}
                 <ScrollView style={styles.scrollView}>
 
