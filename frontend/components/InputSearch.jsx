@@ -37,16 +37,18 @@ export default function InputSearch(navigation) {
         if (searchWord.length === 0) {
             return;
         }
-        fetch(`${backendAddress}/offers/search`, {
+        fetch(`${backendAddress}/offers/search/Bycate`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ offerTitleSearch: searchWord }),
+            headers: { 'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',       
+         },
+            body: JSON.stringify({ name: searchWord }),
         }).then(response => response.json())
-            .then(data => {
-                if (data) {
+            .then((data) => {
+                if (data.resultQuery.length) {
                     //console.log(data)
-                    setResult(data)
-                    dispatch(newSearch(data))
+                    setResult(data.resultQuery)
+                    dispatch(newSearch(data.resultQuery))
                     dispatch(nameSearch(searchWord))
                     setSearchWord('');
                     setModalVisible(false);

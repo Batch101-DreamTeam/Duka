@@ -35,6 +35,9 @@ export default function FavorisScreen({ navigation }) {
     id={el.id}
     isLiked={true}
     key={el.id}
+    navigation={navigation}
+    route={route}
+    locations={data.locations}
     >  </ResultSearch>;
   });
 
@@ -44,6 +47,7 @@ export default function FavorisScreen({ navigation }) {
         Token: token,
         favorites: Favorites,
       };
+      if(token){
       fetch(`${backendAddress}/users/setFavorites`, {
         method: "put", 
         mode: "cors", 
@@ -63,6 +67,7 @@ export default function FavorisScreen({ navigation }) {
             return;
           }
         });
+      }
       console.log("bye");
     };
   });

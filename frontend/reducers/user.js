@@ -47,6 +47,10 @@ export const userSlice = createSlice({
       state.value.favorites = state.value.favorites.filter((data) => data.id !== action.payload.id);
       console.log('tryed   eqsfkhzsrmrkgf')
     },
+    deleteAllfavs: (state, action) => {
+      state.value.favorites = [];
+      console.log('del: ', state.value.favorites);
+    },
     getFavorites: (state, action) => {
       state.value.favorites = action.payload;
     },
@@ -54,5 +58,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
+export const { deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
 export default userSlice.reducer;

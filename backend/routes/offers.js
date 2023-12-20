@@ -212,6 +212,7 @@ router.post('/search/Bycate', async(req, res, next)=>{
             res.status(200).json({ result: true, message: 'Aucune offre trouvée' });
         } else {
             res.status(200).json({ result: true, resultQuery });
+            console.log(resultQuery)
         }
     } catch (error) {
         res.status(400).json({ result: false, message: 'Requête incorrecte' });
