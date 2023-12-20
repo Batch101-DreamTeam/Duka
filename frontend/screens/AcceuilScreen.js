@@ -92,7 +92,7 @@ export default function AcceuilScreen({ navigation, route }) {
 
             <Header navigation={navigation} />
             <InputSearch />
-            <View style={styles.containerContent}>
+            <View style={styles.containerContent}> 
                 {offerName &&
                     <View>
                         <View style={styles.votreRecherche}>

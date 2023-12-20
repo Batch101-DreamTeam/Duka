@@ -15,6 +15,7 @@ export default function MesVentes({ navigation, route }) {
     useFocusEffect(
         React.useCallback(() => {
             const fetchData = async () => {
+                console.log('ici')
                 const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
                 const newData = await response.json();
                 setOffersData(newData.offers);
@@ -22,7 +23,6 @@ export default function MesVentes({ navigation, route }) {
             fetchData();
         }, [])
     );
-
     const handleNavigate = (data) => {
         navigation.navigate("FicheVente", { dataOffers: data });
     };

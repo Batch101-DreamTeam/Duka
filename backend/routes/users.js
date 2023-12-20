@@ -194,8 +194,8 @@ router.put('/modifyProfil/:idToken', async (req, res) => {
         if (!idProductOwner) {
           res.status(400).json({ result: false, message: 'no product found' })
         } else {
-          console.log(idToken._id)
-          console.log(idProductOwner.seller)
+          // console.log(idToken._id)
+          // console.log(idProductOwner.seller)
           if (idToken._id.equals(idProductOwner.seller)) {
             res.status(200).json({ result: true })
           } else {

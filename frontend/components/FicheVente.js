@@ -1,5 +1,5 @@
 //Les photos prises et inportés de la bibliothèque du tel ne sont pas sauvegardés sur cloudinary
-import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput, Image, Modal, Pressable } from 'react-native';
+import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput, Image, Modal, Pressable, Dimensions } from 'react-native';
 import Header from '../components/Header';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,14 +14,19 @@ import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { Foundation } from '@expo/vector-icons';
 import Photo from './Photo';
+import { LogBox } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
-export default function FicheVente(props, { route, navigation }) {
+
+export default function FicheVente(props, { route }) {
     const dispatch = useDispatch()
-    // console.log("route", props.route.params.dataOffers.images)
+    LogBox.ignoreLogs([
+        'Non-serializable values were found in the navigation state',
+    ]);
+    //console.log("route", props.route.params.route)
     const dataOffers = props.route.params.dataOffers; // recuperation des infos du parent
 
     const offerTitle = dataOffers.offerTitle
-
     const idProduct = dataOffers.id
     const descriptionOffer = dataOffers.description
     const categoryOffer = dataOffers.category
@@ -40,6 +45,7 @@ export default function FicheVente(props, { route, navigation }) {
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
+    const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -85,25 +91,22 @@ export default function FicheVente(props, { route, navigation }) {
                     if (data.result) {
                         setIsOwner(data.result)
                     }
-
                 })
-
-
         }, [])
     );
-
     //console.log(photoReducer)
     const ConfirmationDelete = () => {
         setModalVisible(true)
     }
     const deleteOffer = () => {
+        console.log("ici")
         fetch(`${backendAddress}/offers/deleteOffer/${idProduct}`, {
             method: 'DELETE',
         })
             .then(response => response.json())
             .then(data => {
                 setModalVisible(!modalVisible)
-                navigation.navigate("MesVentes")
+                props.navigation.navigate("AcceuilScreen")
             });
     }
     const changeOffer = () => {
@@ -149,7 +152,7 @@ export default function FicheVente(props, { route, navigation }) {
                 .then(response => response.json())
                 .then(data => {
                     dispatch(deleteAllPhoto())
-                    navigation.navigate("MesVentes")
+                    props.navigation.navigate("AcceuilScreen")
                 })
         }
     }
@@ -181,7 +184,6 @@ export default function FicheVente(props, { route, navigation }) {
 
     const takePicture = () => {
         setOpenTakePhotoModal(true)
-        // navigation.navigate('Photo', { from: 'FicheVente' })
     }
 
     const closeTakePhotoModal = () => {
@@ -193,79 +195,91 @@ export default function FicheVente(props, { route, navigation }) {
         setOpenPhoto(true)
         setDisplayOpenPhoto(data)
     }
-    const photos = photoReducer.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une limite max?)
+    const navigateNext = () => {
+        setCurrentPhotoIndex((prevIndex) => {
+            const newIndex = prevIndex + 1;
+            return newIndex >= photoReducer.length ? 0 : newIndex;
+        });
+    };
+    const photos = photoReducer && photoReducer.map((data, i) => {
         return (
-            <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} >
-                <ImageBackground source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20, marginBottom: "2%" }} >
-                    <TouchableOpacity onPress={() => deletePhotoDisplay(data)}>
-                        {modify && <AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />}
-                    </TouchableOpacity>
+            <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} style={{ width: '100%', height: '45%' }}>
+                <ImageBackground source={{ uri: data }} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        {modify && <View style={styles.displayPhoto}>
+                            <TouchableOpacity onPress={() => setmMdalAddPhoto(true)} style={styles.addPicture}>
+                                <Text>Ajoutez des photos</Text>
+                                <MaterialIcons name="add-a-photo" size={55} color="black" />
+                            </TouchableOpacity>
+                        </View>}
+                        <View style={{ marginLeft: '50%' }}>
+                            <TouchableOpacity onPress={() => deletePhotoDisplay(data)} style={{ marginTop: '5%', height: '20%' }}>
+                                {modify && <AntDesign name="closecircle" size={30} color="green" />}
+                            </TouchableOpacity>
+                            {currentPhotoIndex === i && (
+                                <TouchableOpacity onPress={navigateNext} style={!modify ?
+                                    { marginLeft: '80%', marginTop: '40%', backgroundColor: 'white', borderRadius: 18, height: '18%', width: '20%', alignItems: 'center', justifyContent: 'center' }
+                                    : { marginTop: '200%', backgroundColor: 'red', borderRadius: 50, height: '20%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Feather name="arrow-right" size={32} color="black" />
+                                </TouchableOpacity>
+                            )}
+                        </View>
+                    </View>
                 </ImageBackground>
             </TouchableOpacity>
         );
     });
 
 
-
     return (
         <View style={styles.container}>
 
             <Header />
-            <View style={styles.displayPhoto}>
-                {photos}
-
-                {modify && <TouchableOpacity onPress={() => setmMdalAddPhoto(true)} style={styles.addPicture}>
-                    <Text>Ajoutez des photos</Text>
-                    <MaterialIcons name="add-a-photo" size={55} color="black" />
-                </TouchableOpacity>}
-            </View>
+            {photos[currentPhotoIndex]}
             <View style={styles.product}>
 
-
                 <View style={styles.descProd}>
-                    <Text> Nom de l'offre</Text>
-                    <View style={styles.SearchRow}>
+                    <View >
 
                         {!modify ?
-                            <Text >{offerTitle}</Text>
+                            <Text style={styles.detail} >{offerTitle}</Text>
                             : <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.inputSearch} placeholder=" Nom" maxLength={200}></TextInput>}
                     </View>
-                    <Text> Description de l'offre</Text>
-                    <View style={styles.SearchRow}>
+                    <View >
                         {!modify ?
-                            <Text >{descriptionOffer}</Text>
+                            <Text style={styles.description}>{descriptionOffer}</Text>
                             : <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.inputSearch} placeholder=" Description" maxLength={400}></TextInput>}
                     </View>
-                    <Text> Prix</Text>
-                    <View style={styles.SearchRow}>
-                        {!modify ?
-                            <Text >{priceOffer}</Text>
+                    <View >
+
+                        {!modify ? (<View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.price} >{priceOffer}</Text>
+                            <Text style={{ marginLeft: '5%' }}>CFA</Text>
+                        </View >)
                             : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
                     </View>
+                    {!modify ? <View >
+                        <Text style={styles.list} >{categoryOffer} </Text>
+                    </View> :
+                        (<SelectList
+                            setSelected={(val) => setCategory(val)}
+                            data={store}
+                            save="value"
+                            placeholder={category}
+                            search={false}
+                            maxHeight={150}
+                        />)}
+                    {!modify ? <View >
+                        <Text style={styles.list}>{cityData} </Text>
+                    </View> :
+                        (<SelectList
+                            setSelected={(val) => setLocations(val)}
+                            data={citiesData}
+                            save="value"
+                            placeholder={locations}
+                            search={false}
+                        />)}
 
-                    <View style={styles.slectlist}>
-                        {!modify ? <View style={styles.SearchRowList}>
-                            <Text>{categoryOffer} </Text>
-                        </View> :
-                            (<SelectList
-                                setSelected={(val) => setCategory(val)}
-                                data={store}
-                                save="value"
-                                placeholder={category}
-                                search={false}
-                                maxHeight={150}
-                            />)}
-                        {!modify ? <View style={styles.SearchRowList}>
-                            <Text>{cityData} </Text>
-                        </View> :
-                            (<SelectList
-                                setSelected={(val) => setLocations(val)}
-                                data={citiesData}
-                                save="value"
-                                placeholder={locations}
-                                search={false}
-                            />)}
-                    </View>
                     {isOwner ?
                         <View>
                             {modify ?
@@ -365,9 +379,9 @@ export default function FicheVente(props, { route, navigation }) {
                     //console.log(modalVisible)
                 }}>
                 <Pressable onPress={() => setOpenPhoto(!openPhoto)} style={styles.ModalAcceuil} >
-                    <ImageBackground source={{ uri: displayOpenPhoto }} style={{ width: 400, height: 400, margin: 20 }} >
+                    <ImageBackground source={{ uri: displayOpenPhoto }} style={{ width: 380, height: 450, margin: 20 }} >
                         <TouchableOpacity onPress={() => { deletePhotoDisplay(displayOpenPhoto); setOpenPhoto(!openPhoto) }}>
-                            <AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />
+                            {isOwner && modify && (<AntDesign name="closecircle" size={30} color="green" style={{ marginLeft: '75%', marginTop: 10 }} />)}
                         </TouchableOpacity>
                     </ImageBackground>
                 </Pressable>
@@ -384,6 +398,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: 'white',
         alignItems: 'center'
+    },
+
+    detail: {
+        fontSize: 28,
     },
 
     product: {
@@ -432,7 +450,7 @@ const styles = StyleSheet.create({
         // fontFamily: 'MontserratMedium',
         fontSize: 14,
         alignItems: 'center',
-
+        height: '8%'
 
     },
     send: {
@@ -497,20 +515,17 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     inputSearch: {
-        margin: 8,
-        height: 40,
-        width: 300,
+        height: 30,
+        width: '100%',
         borderRadius: 10,
         // fontFamily: 'MontserratMedium',
         fontSize: 14,
 
-
     },
     displayPhoto: {
         flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: "2%",
-        flexWrap: 'wrap',
+        marginTop: '15%'
+
     },
     blocModiSuppr: {
         alignItems: 'center',
@@ -525,5 +540,14 @@ const styles = StyleSheet.create({
     },
     iconModal: {
         marginRight: 10
+    },
+    description: {
+        fontSize: 18,
+    },
+    list: {
+        fontSize: 15
+    },
+    price: {
+        fontSize: 15
     },
 })
