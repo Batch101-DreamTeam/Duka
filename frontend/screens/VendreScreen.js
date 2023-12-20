@@ -23,7 +23,6 @@ const backendAddress = BACKEND_ADDRESS;
 export default function VendreScreen({ route, navigation }) {
     const dispatch = useDispatch();
 
-
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -189,10 +188,14 @@ export default function VendreScreen({ route, navigation }) {
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.inputSearch} placeholder=" Nom" maxLength={200} />
                 </View>
-                <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
-                    <Text>Ajoutez des photos</Text>
-                    <MaterialIcons name="add-a-photo" size={55} color="black" />
-                </TouchableOpacity>
+                <View style={styles.displayPhoto}>
+                    {photos}
+
+                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
+                        <Text>Ajoutez des photos</Text>
+                        <MaterialIcons name="add-a-photo" size={55} color="black" />
+                    </TouchableOpacity>
+                </View>
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -219,16 +222,14 @@ export default function VendreScreen({ route, navigation }) {
                     </Pressable>
                     {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
                 </Modal>
-                <View style={styles.photoReducer}>
-                    {photos}
-                </View>
+
                 <View style={styles.SearchRow} >
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.inputSearch} placeholder=" Description" maxLength={200} />
                 </View>
                 <View style={styles.SearchRow} >
                     <FontAwesome name="tag" style={styles.iconSearch} size={20} />
-                    <TextInput onChangeText={(value) => setPrice(value)} value={Number(price)} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric" />
+                    <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric" />
                 </View>
                 <View style={styles.slectlist}>
                     <SelectList
@@ -389,10 +390,10 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     addPicture: {
-        width: '40%',
-        height: '15%',
+        width: 120,
+        height: 120,
+        marginRight: 20,
         borderWidth: 1,
-        margin: 8,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -442,6 +443,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         margin: 10,
 
-    }
+    },
+    displayPhoto: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: "2%",
+        flexWrap: 'wrap',
+    },
 
 });

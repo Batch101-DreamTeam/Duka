@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
@@ -23,26 +23,36 @@ export default function AcceuilScreen({ navigation, route }) {
     const dispatch = useDispatch();
 
     const [offersData, setOffersData] = useState([]);
-
-    useEffect(() => {
-        if (resultSearchUser) {
-            setOffersData(resultSearchUser.searchOnWord)
-        } else {
-            fetch(`${backendAddress}/offers/allOffers`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("alors fetch")
-                    if (data.offers) {
-                        setOffersData(data.offers);
-                        // setArticlesData(data.articles.filter((data, i) => i > 0));
-                    }
-                    else {
-                        console.log('aucune donnée')
-                        return
-                    }
-                });
-        }
-    }, [resultSearchUser]);
+    console.log(resultSearchUser);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (resultSearchUser) {
+                setOffersData(resultSearchUser)
+            } else {
+                // setOffersData([]);
+                console.log(backendAddress)
+                fetch(`${backendAddress}/offers/allOffers`, {
+                    method: 'GET',
+                    // headers: { 
+                    //     'Cache-Control': 'no-cache',
+                    //   }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("alors fetch")
+                        if (data.offers) {
+                            setOffersData(data.offers);
+                            console.log('rechaokrge')
+                            // setArticlesData(data.articles.filter((data, i) => i > 0));
+                        }
+                        else {
+                            console.log('aucune donnée')
+                            return
+                        }
+                    });
+            }
+        }, [resultSearchUser, Favorites])
+    )
 
     useEffect(() => {
         return () => dispatch(newSearch(""));
@@ -53,10 +63,8 @@ export default function AcceuilScreen({ navigation, route }) {
         dispatch(nameSearch())
     }
 
-
-
     const offers = offersData && offersData.map((data, i) => {
-        //const isLiked = Favorites.some((offer) => offer._id === data._id);
+        const isLiked = Favorites?.some((offer) => offer.id === data._id);
         return <ResultSearch
             key={i}
             sellerName={data.sellerName}
@@ -69,9 +77,10 @@ export default function AcceuilScreen({ navigation, route }) {
             id={data._id}
             navigation={navigation}
             route={route}
-        // isLiked={isLiked}
+            isLiked={isLiked}
         />;
-    });
+    }
+    );
     return (
 
 
@@ -84,13 +93,13 @@ export default function AcceuilScreen({ navigation, route }) {
                 {offerName &&
                     <View>
                         <View style={styles.votreRecherche}>
-                            <Text>Votre recherche:</Text>
+                            <Text>Votre recherche: </Text>
                             <Text>{offerName}</Text>
                             <TouchableOpacity onPress={() => deleteSearch()}>
                                 <MaterialIcons name="cancel" size={24} color="black" />
                             </TouchableOpacity>
                         </View>
-                        {!offer.resultSearch.result && <Text>Pas de résultat</Text>}
+                        {!offersData && <Text>Pas de résultat</Text>}
                     </View>}
                 <ScrollView style={styles.scrollView}>
 

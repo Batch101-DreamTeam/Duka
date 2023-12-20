@@ -33,15 +33,23 @@ export const userSlice = createSlice({
       state.value.photos = []
     },
 
-
-
     addFavorites: (state, action) => {
-      // console.log('addfav')
-      // console.log(state.value.favorites)
-      state.value.favorites.push(action.payload)
+  
+       if(state.value.favorites.includes(action.payload.id) || !state.value.token){
+        console.log('already Had')
+        return 
+      }
+      else if(state.value.token){
+        state.value.favorites.push(action.payload);
+    }
     },
     suppFavorites: (state, action) => {
       state.value.favorites = state.value.favorites.filter((data) => data.id !== action.payload.id);
+      console.log('tryed   eqsfkhzsrmrkgf')
+    },
+    deleteAllfavs: (state, action) => {
+      state.value.favorites = [];
+      console.log('del: ', state.value.favorites);
     },
     getFavorites: (state, action) => {
       state.value.favorites = action.payload;
@@ -50,5 +58,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
+export const { deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
 export default userSlice.reducer;
