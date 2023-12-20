@@ -282,9 +282,9 @@ export default function FicheVente(props, { route }) {
                         />)}
 
                     {isOwner ?
-                        <View>
+                        <View style={styles.blocModiSuppr}>
                             {modify ?
-                                <View style={styles.blocModiSuppr}>
+                                <View >
                                     <TouchableOpacity onPress={() => confirmChange()} style={styles.send}>
                                         <Text> Confirmer les changements</Text>
                                     </TouchableOpacity>
@@ -303,7 +303,7 @@ export default function FicheVente(props, { route }) {
                                 </View>
                             }
                         </View>
-                        : <View>
+                        : <View >
                             <TouchableOpacity style={styles.send1}>
                                 <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
                             </TouchableOpacity>

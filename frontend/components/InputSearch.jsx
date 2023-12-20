@@ -48,8 +48,8 @@ export default function InputSearch(navigation) {
             body: JSON.stringify({ name: searchWord }),
         }).then(response => response.json())
             .then((data) => {
-                if (data.resultQuery.length) {
-                    //console.log(data)
+                if (data.result) {
+                    console.log("icicicici")
                     setResult(data.resultQuery)
                     dispatch(newSearch(data.resultQuery))
                     dispatch(nameSearch(searchWord))

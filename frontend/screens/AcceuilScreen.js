@@ -23,14 +23,14 @@ export default function AcceuilScreen({ navigation, route }) {
     const dispatch = useDispatch();
 
     const [offersData, setOffersData] = useState([]);
-    console.log(resultSearchUser);
+    //console.log(resultSearchUser);
     useFocusEffect(
         React.useCallback(() => {
             if (resultSearchUser) {
                 setOffersData(resultSearchUser)
             } else {
                 // setOffersData([]);
-                console.log(backendAddress)
+                //console.log(backendAddress)
                 fetch(`${backendAddress}/offers/allOffers`, {
                     method: 'GET',
                     // headers: { 

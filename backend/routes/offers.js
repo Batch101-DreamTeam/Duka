@@ -102,7 +102,7 @@ router.post('/search', async (req, res) => {
 
 router.get('/allOffers', async (req, res) => {
     try {
-        const data = await Offer.find({sold: false})
+        const data = await Offer.find({ sold: false })
         // console.log(data)
         res.json({ result: true, offers: data });
     }
@@ -181,16 +181,16 @@ router.delete('/deleteOffer/:idProduct', async (req, res) => {
 
 
 // filtre
-router.post('/search/Bycate', async(req, res, next)=>{
+router.post('/search/Bycate', async (req, res, next) => {
     try {
         const max = 1000;
         const priceChoice = parseInt(req.body.price) || max;
         const nameOfProdChoice = req.body.name;
         const cateChoice = req.body.category;
         const cityChoice = req.body.city;
-    
+
         let query = {};
-    
+
         // Créer dynamiquement la requête en fonction des critères renseignés
         if (priceChoice !== max) {
             query.price = { $lt: priceChoice };
@@ -199,17 +199,17 @@ router.post('/search/Bycate', async(req, res, next)=>{
             query.category = cateChoice;
         }
         if (cityChoice) {
-            query.locations = { $all: [cityChoice]};
+            query.locations = { $all: [cityChoice] };
         }
         if (nameOfProdChoice) {
             query.offerTitle = nameOfProdChoice
         }
-    
+
         const resultQuery = await Offer.find(query);
         console.log(query)
-    
+
         if (!resultQuery.length) {
-            res.status(200).json({ result: true, message: 'Aucune offre trouvée' });
+            res.status(400).json({ result: false, message: 'Aucune offre trouvée' });
         } else {
             res.status(200).json({ result: true, resultQuery });
             console.log(resultQuery)
@@ -217,26 +217,26 @@ router.post('/search/Bycate', async(req, res, next)=>{
     } catch (error) {
         res.status(400).json({ result: false, message: 'Requête incorrecte' });
     }
-    });
+});
 
 
 
 
 
 
- 
-    // const
 
-    // if(actif.)
-    // const cateChoice = req.body.category;
-    // const priceChoice = req.body.price;
-    // const nameOfProdChoice = req.body.name;
-    // let querySerch;
-    // if(!nameOfProdChoice){
-    //     querySerch = Offer.find({catechoice})
-    // }
-    //   const category = {category: req.body.category}
-    //   const targets = Offer.find(category, )
+// const
+
+// if(actif.)
+// const cateChoice = req.body.category;
+// const priceChoice = req.body.price;
+// const nameOfProdChoice = req.body.name;
+// let querySerch;
+// if(!nameOfProdChoice){
+//     querySerch = Offer.find({catechoice})
+// }
+//   const category = {category: req.body.category}
+//   const targets = Offer.find(category, )
 // })
 
 module.exports = router;
