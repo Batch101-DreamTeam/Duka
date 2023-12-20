@@ -21,11 +21,12 @@ export default function FicheVente(props, { route, navigation }) {
     const dataOffers = props.route.params.dataOffers; // recuperation des infos du parent
 
     const offerTitle = dataOffers.offerTitle
+
     const idProduct = dataOffers.id
     const descriptionOffer = dataOffers.description
     const categoryOffer = dataOffers.category
     const cityData = dataOffers.locations[0]
-    //console.log("ok", locations)
+    const sellerNameOffer = dataOffers.sellerName
     const priceOffer = dataOffers.price
     // const images = dataOffers.images[0] // mapper les photos pour toutes les afficher par la suite
     const imagesToMap = dataOffers.images
@@ -48,6 +49,8 @@ export default function FicheVente(props, { route, navigation }) {
     const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
 
+    const [isOwner, setIsOwner] = useState(false)
+
 
 
     const user = useSelector((state) => state.user.value);
@@ -68,18 +71,24 @@ export default function FicheVente(props, { route, navigation }) {
             for (let i = 0; i < imagesToMap.length; i++) {
                 dispatch(addPhoto(imagesToMap[i]))
             }
-            // const checkUserIsSeller = async () => { // Vérifier si l'utilisateur est celui qui a posté l'offre de vente: si oui: alors accès aux boutons modifier et si non accès au bouton contact et profil vendeur
-            //     const response = await fetch(`${backendAddress}/users/checkIfUserIsSeller`, {
-            //         method: 'POST',
-            //         headers: { 'Content-Type': 'application/json' },
-            //         body: JSON.stringify({
-            //             token: token,
-            //             id: idProduct,
-            //         }),
-            //     })
-            //     console.log('ici', response.result)
-            // };
-            // checkUserIsSeller();
+            // Vérifier si l'utilisateur est celui qui a posté l'offre de vente: si oui: alors accès aux boutons modifier et si non accès au bouton contact et profil vendeur
+            fetch(`${backendAddress}/users/checkIfUserIsSeller`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    token: token,
+                    id: idProduct,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result) {
+                        setIsOwner(data.result)
+                    }
+
+                })
+
+
         }, [])
     );
 
@@ -257,26 +266,36 @@ export default function FicheVente(props, { route, navigation }) {
                                 search={false}
                             />)}
                     </View>
-                    {modify ?
-                        <View style={styles.blocModiSuppr}>
-                            <TouchableOpacity onPress={() => confirmChange()} style={styles.send}>
-                                <Text> Confirmer les changements</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.suppr} onPress={() => { setModify(false); setEmptyField(false) }}>
-                                <Text> Annuler</Text>
-                            </TouchableOpacity>
-                        </View> :
-                        <View style={styles.blocModiSuppr}>
-                            {emptyField && <Text>Veuillez remplir les champs</Text>}
-                            <TouchableOpacity onPress={() => changeOffer()} style={styles.send1}>
-                                <Text> Modifier les informations</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.suppr} onPress={() => ConfirmationDelete()}>
-                                <Text> Supprimer l'offre</Text>
-                            </TouchableOpacity>
+                    {isOwner ?
+                        <View>
+                            {modify ?
+                                <View style={styles.blocModiSuppr}>
+                                    <TouchableOpacity onPress={() => confirmChange()} style={styles.send}>
+                                        <Text> Confirmer les changements</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.suppr} onPress={() => { setModify(false); setEmptyField(false) }}>
+                                        <Text> Annuler</Text>
+                                    </TouchableOpacity>
+                                </View> :
+                                <View style={styles.blocModiSuppr}>
+                                    {emptyField && <Text>Veuillez remplir les champs</Text>}
+                                    <TouchableOpacity onPress={() => changeOffer()} style={styles.send1}>
+                                        <Text> Modifier les informations</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.suppr} onPress={() => ConfirmationDelete()}>
+                                        <Text> Supprimer l'offre</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
                         </View>
-                    }
-
+                        : <View>
+                            <TouchableOpacity style={styles.send1}>
+                                <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.send1}>
+                                <Text>Contacter le vendeur</Text>
+                            </TouchableOpacity>
+                        </View>}
                 </View>
             </View>
             <Modal
@@ -292,10 +311,10 @@ export default function FicheVente(props, { route, navigation }) {
                             <Text>Etes vous sur de vouloir supprimer cette offre ? </Text>
                         </View>
                         <View>
-                            <TouchableOpacity onPress={() => deleteOffer()}>
+                            <TouchableOpacity onPress={() => deleteOffer()} style={styles.send1}>
                                 <Text>Oui</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.suppr}>
                                 <Text>Non</Text>
                             </TouchableOpacity>
                         </View>
@@ -412,7 +431,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#BBDFC5',
         // fontFamily: 'MontserratMedium',
         fontSize: 14,
-        alignItems: 'center'
+        alignItems: 'center',
+
 
     },
     send: {

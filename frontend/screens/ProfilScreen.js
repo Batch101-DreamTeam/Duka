@@ -1,10 +1,12 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground} from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Inscription from '../components/Inscription';
 import React, { useEffect, useState, Dispatch, } from 'react';
 import { useSelector } from 'react-redux';
+import { Camera } from 'expo-camera';
+import Photo from '../components/Photo';
 
 
 // Import des fichiers de police
@@ -15,6 +17,7 @@ import { useFonts } from 'expo-font';
 import { BACKEND_ADDRESS } from "@env";
 import Connection from '../components/Connection';
 import { useFocusEffect } from '@react-navigation/native';
+
 const backendAddress = BACKEND_ADDRESS;
 
 
@@ -40,7 +43,11 @@ export default function ProfilScreen({ navigation }) {
     const [modifyField, setModifyField] = useState(false);
     const user = useSelector((state) => state.user.value);
     const token = user.token;
+    const [openPhoto, setOpenPhoto] = useState(false);
+    const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
+    const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
 
+    
 
     useEffect(() => {
         fetch(`${backendAddress}/users/getProfilInfos/${token}`)
@@ -84,6 +91,27 @@ export default function ProfilScreen({ navigation }) {
             })
     }
 
+    const takePicture = () => {
+        setOpenTakePhotoModal(true)
+        //navigation.navigate('Photo', { from: 'VendreScreen' })
+    }
+    const refresh = () => { // ne fonctionne pas
+        navigation.replace('VendreScreen')
+    }
+
+    const deletePhotoDisplay = (picture) => {
+        dispatch(removePhoto(picture))
+    }
+    const openModalPhoto = (data) => {
+        setOpenPhoto(true)
+        setDisplayOpenPhoto(data)
+    }
+
+    const closeTakePhotoModal = () => {
+        setOpenTakePhotoModal(false);
+        setModalVisible(false)
+    };
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -104,8 +132,13 @@ export default function ProfilScreen({ navigation }) {
                                     {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
                                     {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
                                     <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                    <Image source={{ uri: profileData.avatar }} style={styles.pictureProfile} />
-
+                                    {/* <ImageBackground>
+                                    source={{ uri: profileData.avatar }} 
+                                    style={styles.pictureProfile} 
+                                    </ImageBackground> */}
+                                     <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => takePicture()}>
+                                        <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={20} color={'white'} />
+                                    </TouchableOpacity>
                                 </View>
                                 <Text style={styles.h2}>Description</Text>
                                 <View style={styles.descriptionBloc}>
@@ -154,6 +187,19 @@ export default function ProfilScreen({ navigation }) {
                     </View>
                 )}
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openTakePhotoModal}
+                onRequestClose={() => {
+                    setOpenTakePhotoModal(!openTakePhotoModal);
+                    //console.log(modalVisible)
+                }}>
+
+                <Photo closeModal={closeTakePhotoModal} />
+
+
+            </Modal>
         </KeyboardAvoidingView>
     )
 }
@@ -281,6 +327,17 @@ const styles = StyleSheet.create({
         color: '#BAB700',
 
     },
+
+    modifyProfilePhotoPen: {
+        marginLeft: -115,
+        marginBottom: 0,
+        marginTop: -100,
+        width: 50,
+        height: 50,
+        color: '#BAB700',
+
+    },
+
     modifyPenDescription: {
         marginTop: -30,
         marginLeft: 300,
