@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateName, updateToken, updateMail, deleteAllPhoto } from '../reducers/user'
+import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } from '../reducers/user'
 import React, { useState, useEffect, useRef } from 'react';
 
 
@@ -14,6 +14,7 @@ export default function Header({ navigation }) {
         dispatch(updateToken(null))
         dispatch(updateMail(null))
         dispatch(deleteAllPhoto())
+        dispatch(deleteAllfavs())
     }
 
     return (
@@ -25,13 +26,13 @@ export default function Header({ navigation }) {
                 {/* <Text style={styles.duka} >dUka</Text> */}
                 <View style={styles.topRightHeader} >
                     <TouchableOpacity style={styles.iconRightHeader}>
-                        <FontAwesome name="bell" size={30} />
+                        <FontAwesome name="bell" size={20} color='white'/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
-                        <AntDesign name="logout" size={24} color="black" />
+                        <AntDesign name="logout" size={20} color="white" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('MesVentes')} style={styles.iconRightHeader}>
-                        <AntDesign name="infocirlce" size={24} color="black" />
+                        <AntDesign name="infocirlce" size={20} color="white" />
                     </TouchableOpacity>
                 </View>
 
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderBottomWidth: 1,
         marginBottom: 0,
-        backgroundColor: '#60935D',
+        backgroundColor: '#14342B',
         marginTop: 30,
     },
     duka: {
@@ -77,18 +78,22 @@ const styles = StyleSheet.create({
     topRightHeader: {
         flexDirection: 'row',
         marginTop: 10,
-        marginRight: 10
+        marginRight: 10,
+        color:'white'
     },
     iconRightHeader: {
         marginLeft: 10,
+        color: 'white'
     },
 
     logo: {
         width: '25%',
         height: '25%',
-        marginRight: -30,
-        marginLeft: 55,
-        padding: 25
+        marginRight: 10,
+        marginLeft: 130,
+        padding: 15,
+        marginTop: 10,
+        marginBottom: 20
     },
 
 });

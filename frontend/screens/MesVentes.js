@@ -7,17 +7,15 @@ import { useFocusEffect } from '@react-navigation/native';
 import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 
-export default function MesVentes({ navigation }) {
+export default function MesVentes({ navigation, route }) {
 
     const [offersData, setOffersData] = useState([]);
-    const [count, setCount] = useState(0);
     const user = useSelector((state) => state.user.value);
     const token = user.token
-
     useFocusEffect(
-
         React.useCallback(() => {
             const fetchData = async () => {
+                console.log('ici')
                 const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
                 const newData = await response.json();
                 setOffersData(newData.offers);
@@ -25,24 +23,25 @@ export default function MesVentes({ navigation }) {
             fetchData();
         }, [])
     );
-
-
     const handleNavigate = (data) => {
-        navigation.navigate("FicheVente", { offerData: data });
+        navigation.navigate("FicheVente", { dataOffers: data });
     };
 
 
     const offers = offersData && offersData.map((data, i) => {
         return (
-            <TouchableOpacity key={i} data={data} navigation={navigation} onPress={() => handleNavigate(data)}>
-                <ResultSearch
-                    offerTitle={data.offerTitle}
-                    images={data.images[0]}
-                    description={data.description}
-                    price={data.price}
-                    category={data.category}
-                />
-            </TouchableOpacity>
+            <ResultSearch
+                key={i}
+                offerTitle={data.offerTitle}
+                locations={data.locations}
+                images={data.images}
+                description={data.description}
+                price={data.price}
+                category={data.category}
+                id={data._id}
+                navigation={navigation}
+                route={route}
+            />
         )
     });
 

@@ -4,8 +4,6 @@ var router = express.Router();
 const Pusher = require('pusher');
 const Offer = require("../models/offer");
 const User = require('../models/user')
-const Message = require("../models/message");
-const ChatChannel = require("../models/ChatChannel")
 
 
 
@@ -27,7 +25,7 @@ const pusher = new Pusher({
 //     encryptionMasterKeyBase64: "DkiB1alywjEFoxRKaOeJKZzHSUFqU19TbuJ7Nj2Gl4k=",
 // });
 
-// console.log(pusher)
+// // console.log(pusher)
 
 
 // Join chat
@@ -40,26 +38,26 @@ router.put('/:chatname/:username', async (req, res) => {
 });
 
 // Leave chat
-router.delete('/:chatname/:username', async (req, res) => {
-    await pusher.trigger(req.params.chatname, 'leave', {
-        username: req.params.username,
-    });
+// router.delete('/:chatname/:username', async (req, res) => {
+//     await pusher.trigger(req.params.chatname, 'leave', {
+//         username: req.params.username,
+//     });
 
-    res.json({ result: true });
-});
+//     res.json({ result: true });
+// });
 
 // Send message
-router.post('/', async (req, res) => {
-    const { text, username, chatname, createdAt } = req.body;
-    await pusher.trigger(chatname, 'message', req.body);
+// router.post('/', async (req, res) => {
+//     const { text, username, chatname, createdAt } = req.body;
+//     await pusher.trigger(chatname, 'message', req.body);
 
-    ChatChannel.updateOne(
-        { name: chatname },
-        { $push: { messages: { username, text, createdAt } } }
-    ).exec();
+//     ChatChannel.updateOne(
+//         { name: chatname },
+//         { $push: { messages: { username, text, createdAt } } }
+//     ).exec();
 
-    res.json({ result: true });
-});
+//     res.json({ result: true });
+// });
 
 router.get('/previousMessages/:chatname', async (req, res) => {
     // console.log(chatname)

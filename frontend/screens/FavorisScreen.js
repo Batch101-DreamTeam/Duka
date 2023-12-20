@@ -1,96 +1,176 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
-import Header from '../components/Header';
-import FontAwesome from 'react-native-vector-icons/FontAwesome/';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import Connection from '../components/Connection';
-import Inscription from '../components/Inscription';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+} from "react-native";
+import Header from "../components/Header";
+import FontAwesome from "react-native-vector-icons/FontAwesome/";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import Connection from "../components/Connection";
+import Inscription from "../components/Inscription";
+import { useFocusEffect } from "@react-navigation/native";
+import { BACKEND_ADDRESS } from "@env";
+import { getFavorites } from "../reducers/user";
+import ResultSearch from "../components/ResultSearch";
+const backendAddress = BACKEND_ADDRESS;
 
 export default function FavorisScreen({ navigation }) {
-    const user = useSelector((state) => state.user.value);
-    const token = user.token
-    const Favorites = user.favorites;
-    const dispatch = useDispatch();
-    // const displayFav = Favorites.map((el, i) => {
-    //     return <Text key={i}> {el.id} </Text>
-    // })
+  const user = useSelector((state) => state.user.value);
+  const token = user.token;
+  const Favorites = user.favorites;
+  const dispatch = useDispatch();
 
-    let display;
+  const displayFav = Favorites.map((el, i) => {
+    return <ResultSearch 
+    offerTitle={el.offerTitle}
+    images={el.images}
+    description={el.description}
+    price={el.price}
+    category={el.category}
+    id={el.id}
+    isLiked={true}
+    key={el.id}
+    navigation={navigation}
+    route={route}
+    locations={data.locations}
+    >  </ResultSearch>;
+  });
 
-    if (!token) {
-        display = <View style={styles.containerContent}>
-            <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
-            <Connection />
-            <Inscription />
-        </View>
-    }
-    else if (token && !Favorites.length) {
-        display = <View style={styles.containerContent}>
-            <Text style={styles.margin}> No offer added yet ?</Text>
+  useFocusEffect(() => {
+    return () => {
+      const donne = {
+        Token: token,
+        favorites: Favorites,
+      };
+      if(token){
+      fetch(`${backendAddress}/users/setFavorites`, {
+        method: "put", 
+        mode: "cors", 
+        cache: "no-cache", 
+        credentials: "same-origin", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(donne),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            console.log(data);
+          } else {
+            console.log(data.message);
+            return;
+          }
+        });
+      }
+      console.log("bye");
+    };
+  });
 
-            <Text> ADD NEW OFFER</Text>
-            <TouchableOpacity onPress={() => { console.log('redirectToConnectPage'), navigation.navigate('Acceuil') }} style={styles.plus}>
-                <FontAwesome name="plus" size={100} />
-            </TouchableOpacity>
-        </View>
-    }
-    else if (token && Favorites.length) {
-        display = <>{displayFav}</>
-    }
-    console.log(Favorites)
-    //  console.log(user)
+  let display;
+  if(!token){
+   display = ( <View style={styles.container}>
+        <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+        <Connection />
+        <Inscription />
+    </View>
+   )
+ }
+  else if (!Favorites.length && token) {
+    display = (
+      <View style={styles.containerContent}>
+        <Text style={styles.margin}> No offer added yet ?</Text>
 
-
-
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <Header />
-            {display}
-            {/* { !Favorites.length ? (  
-            <View style={styles.containerContent}>
-                <Text style={styles.margin}>No offer added yet ?</Text>
-
-                <Text> ADD NEW OFFER</Text>
-                    <TouchableOpacity onPress={()=> {console.log('redirectToConnectPage'), navigation.navigate('Acceuil')}} style={styles.plus}>
-                        <FontAwesome name="plus" size={100} />
-                    </TouchableOpacity>
-            </View>
-            ) : ( 
-            <View style={styles.containerContent}>
-             {displayFav} 
-             </View>
-            )} */}
-        </SafeAreaView>
+        <Text> ADD NEW OFFER</Text>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("redirectToConnectPage"),
+              navigation.navigate("Acceuil");
+          }}
+          style={styles.plus}
+        >
+          <FontAwesome name="plus" size={100} />
+        </TouchableOpacity>
+      </View>
     );
+  } else if (Favorites.length && token) {
+    display =(
+    <ScrollView style={styles.scrollView}>
+       {displayFav}
+   </ScrollView>
+    )
 
+  }
+  
+  console.log(Favorites);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header />
+      <Text style={styles.title}> Favoris </Text>
+      {display}
+   </SafeAreaView>
+  );
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: 'white',
-    },
-    margin: {
-        marginBottom: 50,
-        fontSize: 20
-    },
-    containerContent: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '',
-    },
-    plus: {
-        width: 100,
-        height: 100,
-        borderWidth: 2,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 50,
-    }
+  title:{
+     marginTop: 20,
+     marginLeft: 50,
+     fontSize: 30,
+  },
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "white",
+  },
+  margin: {
+    marginBottom: 50,
+    fontSize: 20,
+  },
+  containerContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "",
+  },
+  plus: {
+    width: 100,
+    height: 100,
+    borderWidth: 2,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+  },
+  scrollView: {
+    padding: 3,
+    maxHeight: '100%',
+    marginTop: 30,
+    backgroundColor: "#BBDFC5",
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 30,
+    paddingTop: 30
 
-
-
+},
+productList: {
+  flex: 1,
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  width: '100%',
+  height: '100%',
+  paddingBottom: '1%',
+},
+h3: {
+  // fontFamily: 'MontserratRegular',
+  fontSize: 16,
+  color: 'black',
+  textAlign: 'center',
+  marginTop: 5
+},
 });
+

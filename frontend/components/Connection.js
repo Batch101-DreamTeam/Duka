@@ -48,7 +48,10 @@ export default function Connection(navigation) {
         if (EMAIL_REGEX.test(email)) {
             fetch(`${backendAddress}/users/connexion`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
+                },
                 body: JSON.stringify({
                     mail: email,
                     password: password
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 300,
         borderRadius: 10,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
     },
     password: {
@@ -129,7 +132,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 300,
         borderRadius: 10,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -148,12 +151,12 @@ const styles = StyleSheet.create({
         color: 'white',
         height: '100%',
         textAlignVertical: 'center',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     white: {
         color: 'white',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     btnConnexion: {
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: "#14342B",
         fontSize: 40,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     erreur: {

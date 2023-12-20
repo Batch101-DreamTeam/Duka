@@ -4,6 +4,8 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
 import { RemoteDataSetExample2 } from '../components/autodrop';
+import { useDispatch, useSelector } from 'react-redux';
+import { newSearch, nameSearch } from '../reducers/offer'
 // import RNPickerSelect from 'react-native-picker-select';
 // import { Dropdown } from './Dropdown';
 import { BACKEND_ADDRESS } from "@env"
@@ -20,25 +22,45 @@ export default function InputSearch(navigation) {
     const price = ["Prix croissant", "Prix décroisssant"]
     const place = ["Par produit le plus proche", "Par prix décroisssant"]
     const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
+    const [isResult, setIsResult] = useState(true);
+    const [result, setResult] = useState("")
+    const dispatch = useDispatch()
 
     const [modalVisible, setModalVisible] = useState(false);
     const [searchWord, setSearchWord] = useState('');
-    const handleSubmit = () => {
 
+    // const offer = useSelector((state) => state.offer.value);
+    //console.log(offer.resultSearch.searchOnWord)
+    console.log("ok")
+
+
+    const handleSubmit = () => {
+        console.log("ok")
         if (searchWord.length === 0) {
             return;
         }
-
-        fetch(`${backendAddress}/offers/search`, {
+        fetch(`${backendAddress}/offers/search/Bycate`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ offerTitle: searchWord }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+            },
+            body: JSON.stringify({ name: searchWord }),
         }).then(response => response.json())
-            .then(data => {
-                if (data) {
-
-                    console.log(data.searchOnWord)
-
+            .then((data) => {
+                if (data?.result) {
+                    //console.log(data)
+                    setResult(data.resultQuery)
+                    dispatch(newSearch(data.resultQuery))
+                    dispatch(nameSearch(searchWord))
+                    setSearchWord('');
+                    setModalVisible(false);
+                }
+                else {
+                    setIsResult(false)
+                    setResult([])
+                    dispatch(newSearch([]))
+                    dispatch(nameSearch(searchWord))
                     setSearchWord('');
                     setModalVisible(false);
                 }
@@ -52,9 +74,7 @@ export default function InputSearch(navigation) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
-            console.log(modalVisible)
         }}>
         <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
             <View style={styles.modalView}>

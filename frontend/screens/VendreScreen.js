@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Modal, Pressable, Image, Alert, ImageBackground } from 'react-native';
 import Header from '../components/Header';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
-import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
+// import MontserratRegular from '../res/fonts/Montserrat-Regular.ttf';
+// import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectDropdown from 'react-native-select-dropdown'
 import { SelectList } from 'react-native-dropdown-select-list'
@@ -16,11 +16,12 @@ import Inscription from '../components/Inscription';
 import { AntDesign } from '@expo/vector-icons';
 import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user'
 import { BACKEND_ADDRESS } from "@env"
+import { useFocusEffect } from '@react-navigation/native';
+import Photo from '../components/Photo';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function VendreScreen({ navigation }) {
+export default function VendreScreen({ route, navigation }) {
     const dispatch = useDispatch();
-
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -35,13 +36,17 @@ export default function VendreScreen({ navigation }) {
     const [selected, setSelected] = useState("")
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
+    const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
 
     //console.log(locations)
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setModalVisible(false);
+            dispatch(deleteAllPhoto())
+        }, [])
+    );
 
-    useEffect(() => {
-        setModalVisible(false);
-    }, []);
 
 
     const pickImage = async () => {
@@ -72,17 +77,9 @@ export default function VendreScreen({ navigation }) {
 
     let dateOfTheDay = new Date(); // obtenir la date du jour
 
-    let [fontsLoaded] = useFonts({
-        MontserratRegular: MontserratRegular,
-        MontserratMedium: MontserratMedium,
-    });
-
-    if (!fontsLoaded) {
-        return null;
-    }
 
     const Validate = async () => {
-        if (name != "" && description != "" && price != "") {
+        if (name != "" || description != "" || price != "") {
             const photos = []
             for (let i = 0; i < photoReducer.length; i++) { // boucle pour sauvegarder toutes les photos du reducer dns le backend
                 const formData = new FormData();
@@ -101,7 +98,7 @@ export default function VendreScreen({ navigation }) {
                 console.log('response trouvée : ', photoSaveCloudinaty)
 
                 photos.push(photoSaveCloudinaty.url) // stock les url cloudinary dans variable d'état
-                console.log('photos', photos)
+                //console.log('photos', photos)
 
             }
 
@@ -109,9 +106,9 @@ export default function VendreScreen({ navigation }) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    token: token,// recup dans le reducer
+                    token: token,
                     offerTitle: name,
-                    images: photos,// recup dans la variable d'état qui stock les url cloudinary
+                    images: photos,// recup dans le tableau au dessus
                     category: category,
                     description: description,
                     price: price,
@@ -140,10 +137,19 @@ export default function VendreScreen({ navigation }) {
     }
 
     const takePicture = () => {
-        navigation.navigate('Photo')
+        setOpenTakePhotoModal(true)
+        //navigation.navigate('Photo', { from: 'VendreScreen' })
     }
     const refresh = () => { // ne fonctionne pas
-        navigation.replace('VendreScreen')
+        setName("")
+        setDescription("")
+        setPrice("")
+        dispatch(deleteAllPhoto())
+        setCategory("")
+        setLocations("")
+        setModalVisible(false);
+        dispatch(deleteAllPhoto())
+        setOfferRegister(!offerRegister)
     }
 
     const deletePhotoDisplay = (picture) => {
@@ -164,6 +170,11 @@ export default function VendreScreen({ navigation }) {
             </TouchableOpacity>
         );
     });
+    const closeTakePhotoModal = () => {
+        setOpenTakePhotoModal(false);
+        setModalVisible(false)
+    };
+
 
     return (
         <View style={styles.container}>
@@ -177,10 +188,14 @@ export default function VendreScreen({ navigation }) {
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.inputSearch} placeholder=" Nom" maxLength={200} />
                 </View>
-                <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
-                    <Text>Ajoutez des photos</Text>
-                    <MaterialIcons name="add-a-photo" size={55} color="black" />
-                </TouchableOpacity>
+                <View style={styles.displayPhoto}>
+                    {photos}
+
+                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
+                        <Text>Ajoutez des photos</Text>
+                        <MaterialIcons name="add-a-photo" size={55} color="black" />
+                    </TouchableOpacity>
+                </View>
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -207,9 +222,7 @@ export default function VendreScreen({ navigation }) {
                     </Pressable>
                     {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
                 </Modal>
-                <View style={styles.photoReducer}>
-                    {photos}
-                </View>
+
                 <View style={styles.SearchRow} >
                     <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
                     <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.inputSearch} placeholder=" Description" maxLength={200} />
@@ -220,7 +233,7 @@ export default function VendreScreen({ navigation }) {
                 </View>
                 <View style={styles.slectlist}>
                     <SelectList
-                        setSelected={(val) => setSelected(val)}
+                        setSelected={(val) => setCategory(val)}
                         data={store}
                         save="value"
                         placeholder='Catégorie'
@@ -286,6 +299,19 @@ export default function VendreScreen({ navigation }) {
                     </ImageBackground>
                 </Pressable>
             </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openTakePhotoModal}
+                onRequestClose={() => {
+                    setOpenTakePhotoModal(!openTakePhotoModal);
+                    //console.log(modalVisible)
+                }}>
+
+                <Photo closeModal={closeTakePhotoModal} />
+
+
+            </Modal>
 
         </View>
     );
@@ -306,9 +332,9 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: '#60935D',
-        width: '80%',
+        width: '100%',
         height: '6%',
-        borderRadius: 5,
+        borderRadius: 0,
     },
 
     textBox: {
@@ -316,7 +342,7 @@ const styles = StyleSheet.create({
         color: 'white',
         height: '100%',
         textAlignVertical: 'center',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     iconSearch: {
@@ -328,7 +354,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 300,
         borderRadius: 10,
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
 
     },
@@ -338,17 +364,17 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10,
         backgroundColor: '#BBDFC5',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 14,
     },
     white: {
         color: 'white',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
     },
     whiteSmall: {
         color: 'white',
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 12,
     },
     send: {
@@ -358,16 +384,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 20,
         backgroundColor: "#60935D",
-        fontFamily: 'MontserratMedium',
+        // fontFamily: 'MontserratMedium',
         fontSize: 20,
         width: '85%',
         marginBottom: 10
     },
     addPicture: {
-        width: '40%',
-        height: '15%',
+        width: 120,
+        height: 120,
+        marginRight: 20,
         borderWidth: 1,
-        margin: 8,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -404,7 +430,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     h3: {
-        fontFamily: 'MontserratRegular',
+        // fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'black',
         textAlign: 'center',
@@ -417,6 +443,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         margin: 10,
 
-    }
+    },
+    displayPhoto: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: "2%",
+        flexWrap: 'wrap',
+    },
 
 });

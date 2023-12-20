@@ -87,23 +87,30 @@ router.get('/search/:offerId', async (req, res, next) => { // route pour accéde
 
 
 router.post('/search', async (req, res) => {
-    const searchOnWord = req.body.offerTitle;
-    Offer.find({
-        offerTitle: searchOnWord,
-    }).then(data => {
-        if (data) {
-            res.status(200).json({ result: true, searchOnWord: data })
-        }
-        else {
-            res.status(400).json({ result: false, message: 'no offers founded' })
-        }
-    });
+    let searchOnWord = req.body.offerTitleSearch;
+    searchOnWord = searchOnWord.toLowerCase()
+    //console.log(searchOnWord)
+    const resultSearch = await Offer.find({ offerTitle: { $regex: searchOnWord, $options: 'i' } })
+    if (resultSearch.length) {
+        console.log(resultSearch.length)
+        res.status(200).json({ result: true, searchOnWord: resultSearch })
+    }
+    else {
+        res.status(400).json({ result: false, message: 'no offers founded' })
+        return
+    }
 })
 
 router.get('/allOffers', async (req, res) => {
-    const data = await Offer.find()
-    // console.log(data)
-    res.json({ offers: data });
+    try {
+        const data = await Offer.find({ sold: false })
+        // console.log(data)
+        res.json({ result: true, offers: data });
+    }
+    catch {
+        res.status(400).json({ result: false });
+
+    }
 });
 
 
@@ -138,11 +145,11 @@ router.put('/modifyOffer/:idOffer', async (req, res) => {
         else {
             const infos = {
                 offerTitle: req.body.offerTitle,
-                // images: req.body.images,
+                images: req.body.images,
                 description: req.body.description,
                 category: req.body.category,
                 price: req.body.price,
-                locations: req.body.location, // à récupérer sous forme de liste déroulante dans le front
+                locations: req.body.locations, // à récupérer sous forme de liste déroulante dans le front
             }
             const modifyOffer = await Offer.findOneAndUpdate({ _id: produit }, infos, { new: true })
             res.status(200).json({ result: true, message: modifyOffer })
@@ -171,5 +178,67 @@ router.delete('/deleteOffer/:idProduct', async (req, res) => {
         res.json({ result: true });
     }
 })
+
+
+
+// filtre
+router.post('/search/Bycate', async (req, res, next) => {
+    try {
+        const max = 1000;
+        const priceChoice = parseInt(req.body.price) || max;
+        const nameOfProdChoice = req.body.name;
+        const cateChoice = req.body.category;
+        const cityChoice = req.body.city;
+
+        let query = {};
+
+        // Créer dynamiquement la requête en fonction des critères renseignés
+        if (priceChoice !== max) {
+            query.price = { $lt: priceChoice };
+        }
+        if (cateChoice) {
+            query.category = cateChoice;
+        }
+        if (cityChoice) {
+            query.locations = { $all: [cityChoice] };
+        }
+        if (nameOfProdChoice) {
+            query.offerTitle = nameOfProdChoice
+        }
+
+        const resultQuery = await Offer.find(query);
+        console.log(query)
+
+        if (!resultQuery.length) {
+            res.status(400).json({ result: false, message: 'Aucune offre trouvée' });
+            return
+        } else {
+            res.status(200).json({ result: true, resultQuery });
+            console.log(resultQuery)
+        }
+    } catch (error) {
+        res.status(400).json({ result: false, message: 'Requête incorrecte' });
+    }
+});
+
+
+
+
+
+
+
+// const
+
+// if(actif.)
+// const cateChoice = req.body.category;
+// const priceChoice = req.body.price;
+// const nameOfProdChoice = req.body.name;
+// let querySerch;
+// if(!nameOfProdChoice){
+//     querySerch = Offer.find({catechoice})
+// }
+//   const category = {category: req.body.category}
+//   const targets = Offer.find(category, )
+// })
 
 module.exports = router;
