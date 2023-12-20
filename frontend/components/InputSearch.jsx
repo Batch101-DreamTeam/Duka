@@ -41,9 +41,10 @@ export default function InputSearch(navigation) {
         }
         fetch(`${backendAddress}/offers/search/Bycate`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache',       
-         },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+            },
             body: JSON.stringify({ name: searchWord }),
         }).then(response => response.json())
             .then((data) => {
