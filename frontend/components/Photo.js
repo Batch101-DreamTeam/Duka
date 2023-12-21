@@ -7,6 +7,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { addPhoto } from '../reducers/user';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { addProfilePhoto } from '../reducers/user';
 
 
 
@@ -51,10 +52,12 @@ export default function Photo(props) {
         });
         setPhotoTake(photo.uri)// enregistre la photo prise dans une variable d'état: permet de demander si on garde la photo ou non
         setSaveFormData(formData)
+
     }
 
     const savePhoto = () => {
         dispatch(addPhoto(photoTake))
+        dispatch(addProfilePhoto(photoTake))
         props.closeModal()
     }
 

@@ -2,18 +2,18 @@ var express = require('express');
 var router = express.Router();
 
 const Pusher = require('pusher');
-
+const Offer = require("../models/offer");
 const User = require('../models/user')
 
 
 
-// const pusher = new Pusher({
-//     appId: process.env.PUSHER_APPID,
-//     key: process.env.PUSHER_KEY,
-//     secret: process.env.PUSHER_SECRET,
-//     cluster: process.env.PUSHER_CLUSTER,
-//     useTLS: true,
-// });
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APPID,
+    key: process.env.PUSHER_KEY,
+    secret: process.env.PUSHER_SECRET,
+    cluster: process.env.PUSHER_CLUSTER,
+    useTLS: true,
+});
 
 
 // const pusher = new Pusher({
@@ -25,7 +25,9 @@ const User = require('../models/user')
 //     encryptionMasterKeyBase64: "DkiB1alywjEFoxRKaOeJKZzHSUFqU19TbuJ7Nj2Gl4k=",
 // });
 
-// console.log(pusher)
+// // console.log(pusher)
+
+
 // Join chat
 router.put('/:chatname/:username', async (req, res) => {
     await pusher.trigger(req.params.chatname, 'join', {
@@ -57,21 +59,29 @@ router.put('/:chatname/:username', async (req, res) => {
 //     res.json({ result: true });
 // });
 
-router.get('/previousMessages/:chatname', (req, res) => {
+router.get('/previousMessages/:chatname', async (req, res) => {
+    // console.log(chatname)
     ChatChannel.findOne({ name: req.params.chatname }).then((resp) => {
-        res.json({
-            result: true,
-            messages: resp.messages,
-        });
+        console.log(resp)
+        if (resp) {
+            res.json({
+                result: true,
+                messages: resp.messages,
+            })
+        } else {
+            res.json({
+                result: true,
+                messages: [],
+            })
+        }
     });
-});
-
+})
 //GET /:token - User's chats  
 router.get(`/:token`, (req, res) => {
     User.findOne({ token: req.params.token })
         .populate({
             path: 'chatChannels',
-            populate: [{ path: 'traveler' }, { path: 'host' }],
+            populate: [{ path: 'seller' }, { path: 'buyer' }],
         })
         .then((data) => {
             if (data) {

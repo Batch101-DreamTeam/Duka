@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground, Pressable} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground, Pressable } from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Inscription from '../components/Inscription';
@@ -7,8 +7,9 @@ import React, { useEffect, useState, Dispatch, } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Camera } from 'expo-camera';
 import Photo from '../components/Photo';
-import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user';
+import { removePhoto, addPhoto, deleteAllPhoto, addProfilePhoto, removeProfilePhoto } from '../reducers/user';
 import { Foundation } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 
 // Import des fichiers de police
@@ -38,18 +39,21 @@ export default function ProfilScreen({ navigation }) {
         avatar: "",
     });
 
-const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value);
+    const photoProfileReducer = user.profilePhoto
+    const token = user.token
+
+    const dispatch = useDispatch();
 
     const [updatedUsername, setUpdatedUsername] = useState('');
     const [updatedContact, setUpdatedContact] = useState('');
     const [updatedDescription, setUpdatedDescription] = useState('');
     const [modifyField, setModifyField] = useState(false);
-    const user = useSelector((state) => state.user.value);
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
     const [modalVisible, setModalVisible] = useState(false);
-// console.log(user)
+    // console.log(user)
     useFocusEffect(
         React.useCallback(() => {
             setModalVisible(false);
@@ -58,30 +62,31 @@ const dispatch = useDispatch();
     );
     useFocusEffect(
         React.useCallback(() => {
+            console.log('AVANT LE FETCH')
             fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
-                        .then(response => response.json())
-            .then(profileInfos => {
- 
-                if (profileInfos.result) {
-                    setProfileData({
-                        username: profileInfos.username,
-                        contact: profileInfos.contact,
-                        description: profileInfos.description,
-                        mail: profileInfos.mail,
-                        avatar: profileInfos.avatar,
-                        location: profileInfos.location,
-                        favorites: profileInfos.favorites,
-                    });
-                    setUpdatedUsername(profileInfos.username)
-                    setUpdatedContact(profileInfos.contact)
-                    setUpdatedDescription(profileInfos.description)
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching profile information:", error);
-         
-            });
-    
+                .then(response => response.json())
+                .then(profileInfos => {
+
+                    if (profileInfos.result) {
+                        setProfileData({
+                            username: profileInfos.username,
+                            contact: profileInfos.contact,
+                            description: profileInfos.description,
+                            mail: profileInfos.mail,
+                            avatar: profileInfos.avatar,
+                            location: profileInfos.location,
+                            favorites: profileInfos.favorites,
+                        });
+                        setUpdatedUsername(profileInfos.username)
+                        setUpdatedContact(profileInfos.contact)
+                        setUpdatedDescription(profileInfos.description)
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching profile information:", error);
+
+                });
+
         }, [])
     );
 
@@ -104,6 +109,7 @@ const dispatch = useDispatch();
 
     const takePicture = () => {
         setOpenTakePhotoModal(true)
+        console.log("ici")
         //navigation.navigate('Photo', { from: 'VendreScreen' })
     }
     const refresh = () => { // ne fonctionne pas
@@ -141,10 +147,13 @@ const dispatch = useDispatch();
                 name: 'photo.jpg',
                 type: 'image/jpeg',
             })
-            dispatch(addPhoto(result.assets[0].uri)) //vise les photos de produits dans le reducer
-            setModalVisible(false)
+            dispatch(addProfilePhoto(result.assets[0].uri)) //vise les photos de produits dans le reducer : à modifier!
+            setModalVisible(!modalVisible)
         }
     };
+
+
+
 
     return (
         <KeyboardAvoidingView
@@ -160,42 +169,44 @@ const dispatch = useDispatch();
                                 <Text style={styles.h1}>Mon profil</Text>
 
                                 <View style={styles.userBlock}>
-                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
+                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(!modifyField)}>
                                         <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
                                     </TouchableOpacity>
                                     {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
                                     {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
                                     <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                        <Image style={styles.pictureProfile} />
-                                     <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
-                                        <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={20} color={'white'} />
+                                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
+                                        <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} />
                                     </TouchableOpacity>
+                                    <Image source={{ uri: photoProfileReducer }} style={styles.pictureProfile} />
+
                                     <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        setModalVisible(!modalVisible);
-                        //console.log(modalVisible)
-                    }}>
-                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
-                        <View style={styles.modalView}>
-                            <TouchableOpacity style={styles.send} onPress={pickImage}>
-                                <Foundation name="photo" size={24} color="white" style={styles.iconModal} />
-                                <Text style={styles.whiteSmall}>
-                                    A partir de la bibliothèque
-                                </Text>
-                            </TouchableOpacity >
-                            <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
-                                <FontAwesome name="camera" size={24} color="white" style={styles.iconModal} />
-                                <Text style={styles.whiteSmall}>
-                                    Prendre une photo
-                                </Text>
-                            </TouchableOpacity >
-                        </View>
-                    </Pressable>
-                    {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
-                </Modal>
+                                        animationType="slide"
+                                        transparent={true}
+                                        visible={modalVisible}
+                                        onRequestClose={() => {
+                                            setModalVisible(!modalVisible);
+                                            //console.log(modalVisible)
+                                        }}>
+
+                                        <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
+                                            <View style={styles.modalView}>
+                                                <TouchableOpacity style={styles.send} onPress={pickImage}>
+                                                    <Foundation name="photo" size={24} color="black" style={styles.iconModal} />
+                                                    <Text style={styles.whiteSmall}>
+                                                        A partir de la bibliothèque
+                                                    </Text>
+                                                </TouchableOpacity >
+                                                <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
+                                                    <FontAwesome name="camera" size={24} color="black" style={styles.iconModal} />
+                                                    <Text style={styles.whiteSmall}>
+                                                        Prendre une photo
+                                                    </Text>
+                                                </TouchableOpacity >
+                                            </View>
+                                        </Pressable>
+                                        {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
+                                    </Modal>
                                 </View>
                                 <Text style={styles.h2}>Description</Text>
                                 <View style={styles.descriptionBloc}>
@@ -250,13 +261,12 @@ const dispatch = useDispatch();
                 visible={openTakePhotoModal}
                 onRequestClose={() => {
                     setOpenTakePhotoModal(!openTakePhotoModal);
-                    //console.log(modalVisible)
+                    // console.log("MODALE BIEN fermee")
                 }}>
 
                 <Photo closeModal={closeTakePhotoModal} />
-
-
             </Modal>
+
         </KeyboardAvoidingView>
     )
 }
@@ -298,11 +308,11 @@ const styles = StyleSheet.create({
         // height: '7%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         marginBottom: 10,
         backgroundColor: '#60935D'
     },
-    
+
     scrollView: {
         alignItems: 'center',
         paddingBottom: 20,
@@ -319,14 +329,14 @@ const styles = StyleSheet.create({
     },
 
     pictureProfile: {
-        backgroundColor: 'purple',
+        // backgroundColor: 'purple',
         width: 100,
         height: 100,
         borderRadius: 80,
         marginTop: -125,
         // marginBottom: 100,
         // marginRight: 220,
-        marginLeft: -190
+        marginLeft: -260
     },
 
     name: {
@@ -349,7 +359,7 @@ const styles = StyleSheet.create({
         marginTop: 0,
         fontSize: 18,
         color: 'white',
-        borderBottomWidth: 5,
+        // borderBottomWidth: 5,
         // fontFamily: 'MontserratMedium',
         marginLeft: 165,
         // backgroundColor:"red"
@@ -362,7 +372,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         fontSize: 14,
         color: 'white',
-        borderBottomWidth: 5,
+        // borderBottomWidth: 5,
         // fontFamily: 'MontserratMedium',
         marginLeft: 165
     },
@@ -393,6 +403,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         color: '#BAB700',
+
     },
 
     modifyPenDescription: {
@@ -475,12 +486,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     addPicture: {
-        width: '40%',
-        height: '15%',
-        borderWidth: 1,
+        width: '60%',
+        height: '55%',
+        // borderWidth: 1,
         margin: 8,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'yellow'
     },
     ModalAcceuil: {
         backgroundColor: 'transparent',
@@ -512,6 +524,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     iconModal: {
-        marginRight: 10
+        marginRight: 10,
     },
 });

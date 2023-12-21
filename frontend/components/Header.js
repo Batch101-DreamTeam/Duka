@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } from '../reducers/user'
 import React, { useState, useEffect, useRef } from 'react';
 
-export default function Header({ navigation }) {
 
+
+export default function Header(props, { navigation }) {
+    console.log(navigation)
     const dispatch = useDispatch();
     const logout = () => {
         dispatch(updateName(null))
@@ -25,12 +27,12 @@ export default function Header({ navigation }) {
                 {/* <Text style={styles.duka} >dUka</Text> */}
                 <View style={styles.topRightHeader} >
                     <TouchableOpacity style={styles.iconRightHeader}>
-                        <FontAwesome name="bell" size={20} color='white'/>
+                        <FontAwesome name="bell" size={20} color='white' />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
                         <AntDesign name="logout" size={20} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('MesVentes')} style={styles.iconRightHeader}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('MesVentes')} style={styles.iconRightHeader}>
                         <AntDesign name="infocirlce" size={20} color="white" />
                     </TouchableOpacity>
                 </View>
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 10,
         marginRight: 10,
-        color:'white'
+        color: 'white'
     },
     iconRightHeader: {
         marginLeft: 10,

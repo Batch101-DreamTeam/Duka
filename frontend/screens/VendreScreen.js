@@ -112,7 +112,7 @@ export default function VendreScreen({ route, navigation }) {
                     category: category,
                     description: description,
                     price: price,
-                    dateOfCreation: dateOfTheDay,
+                    date: dateOfTheDay,
                     locations: locations,
                 }),
             })
@@ -159,6 +159,7 @@ export default function VendreScreen({ route, navigation }) {
         setOpenPhoto(true)
         setDisplayOpenPhoto(data)
     }
+    
     const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une limite max?)
         return (
             <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} >
@@ -254,7 +255,6 @@ export default function VendreScreen({ route, navigation }) {
                     </Text>
                 </TouchableOpacity >
                 {!fillField ? <Text>Veuillez remplir les champs correctement</Text> : <></>}
-
 
             </View> :
                 <View style={styles.container}>

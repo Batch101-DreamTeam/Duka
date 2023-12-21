@@ -24,7 +24,7 @@ export default function Connection(navigation) {
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const user = useSelector((state) => state.user.value);
     const tokens = user.token
-    //console.log(user)
+    // console.log(user)
 
     useEffect(() => {
         if (isFocused) {
@@ -46,11 +46,12 @@ export default function Connection(navigation) {
         setMissingField(true)
         setAuthentification(true)
         if (EMAIL_REGEX.test(email)) {
-            fetch(`${backendAddress}/users/connexion`, {//   
+            fetch(`${backendAddress}/users/connexion`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-            },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
+                },
                 body: JSON.stringify({
                     mail: email,
                     password: password
@@ -58,11 +59,11 @@ export default function Connection(navigation) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    //console.log(data)
+
                     if (data.result) {
                         dispatch(updateName(data.data.username))
                         dispatch(updateToken(data.data.token))
-                        dispatch(updateMail(data.data.mail)) // ajouter la photo de profil
+                        dispatch(updateMail(data.data.mail))
                     } else {
                         if (data.message === "no user found") {
                             setUserNotFound(false)

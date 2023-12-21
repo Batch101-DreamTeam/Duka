@@ -5,7 +5,7 @@ const SingleMessage = (props) => {
   return (
     <View style={styles.cont}>
 
-      {props.userId == 1 ? (
+      {props.userId === 1 ? (
         <TouchableOpacity style={styles.me}>
           <Text
             style={styles.myText}

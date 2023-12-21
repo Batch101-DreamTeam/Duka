@@ -11,7 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation, route }) {
-    // console.log("acceuil", route)
+    //console.log("acceuil", navigation)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
@@ -22,7 +22,7 @@ export default function AcceuilScreen({ navigation, route }) {
     // console.log(offer)
     const dispatch = useDispatch();
     const [offersData, setOffersData] = useState([]);
-    console.log(resultSearchUser);
+    //console.log(resultSearchUser);
     useFocusEffect(
         React.useCallback(() => {
             if (resultSearchUser) {
@@ -75,6 +75,7 @@ export default function AcceuilScreen({ navigation, route }) {
             category={data.category}
             id={data._id}
             navigation={navigation}
+            date={data.dateOfCreation}
             route={route}
             isLiked={isLiked}
         />;

@@ -78,8 +78,8 @@ export default function InputSearch(navigation) {
                     // setCategory(null);
                     // setLocations(null);
                     setModalVisible(false);
-                    // setPriceChoice(null)
                 } 
+
                 else {
                     setIsResult(false)
                     setResult([])
