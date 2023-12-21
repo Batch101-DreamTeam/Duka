@@ -62,9 +62,10 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
         dispatch(newSearch())
         dispatch(nameSearch())
     }
-
     const offers = offersData && offersData.map((data, i) => {
-        const isLiked = Favorites?.some((offer) => offer.id === data._id);
+        const isLiked = Favorites?.some((offer) => {
+            //    console.log(offer._id)
+            return offer.id === data._id});
         return <ResultSearch
             key={i}
             sellerName={data.sellerName}
@@ -83,8 +84,6 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     }
     );
     return (
-
-
 
         <View style={styles.container}>
 
