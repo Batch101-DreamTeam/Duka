@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-  value: { name: null, mail: null, token: null, photos: [], favorites: [] },
+  value: { name: null, mail: null, token: null, photos: [], favorites: [], profilePhoto: "" },
 };
 
 export const userSlice = createSlice({
@@ -55,8 +55,15 @@ export const userSlice = createSlice({
       state.value.favorites = action.payload;
     },
 
+    addProfilePhoto: (state, action) => {
+      state.value.profilePhoto=action.payload
+    },
+    removeProfilePhoto: (state, action) => {
+      state.value.profilePhoto = "";
+    },
+
   },
 });
 
-export const { deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto } = userSlice.actions;
+export const { deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto, addProfilePhoto, removeProfilePhoto } = userSlice.actions;
 export default userSlice.reducer;

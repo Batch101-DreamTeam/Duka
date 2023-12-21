@@ -11,7 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation, route }) {
-    console.log("ici", navigation)
+    //console.log("acceuil", navigation)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
