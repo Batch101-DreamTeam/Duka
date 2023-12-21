@@ -203,7 +203,9 @@ router.post('/search/Bycate', async (req, res, next) => {
             query.locations = { $all: [cityChoice] };
         }
         if (nameOfProdChoice) {
-            query.offerTitle = nameOfProdChoice
+            const secure = nameOfProdChoice.trim()
+            console.log('d'+secure+'f')
+            query.offerTitle =   { $regex: secure, $options: 'i' } 
         }
 
         const resultQuery = await Offer.find(query);

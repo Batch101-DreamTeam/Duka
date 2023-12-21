@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { newSearch, nameSearch } from '../reducers/offer'
 import { SelectList } from 'react-native-dropdown-select-list';
 import { ServerContainer, useFocusEffect } from '@react-navigation/native';
-const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile",]
 const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
 // const pricesRange = [10, ', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
 // import RNPickerSelect from 'react-native-picker-select';
@@ -49,7 +48,6 @@ export default function InputSearch(navigation) {
         }, [modalVisible]))
 
 
-    let init = "nop";
     const handleSubmit = () => {
         // console.log("ok")
         // const filterString = searchWord.trim()
@@ -79,7 +77,6 @@ export default function InputSearch(navigation) {
                     // setLocations(null);
                     setModalVisible(false);
                 } 
-
                 else {
                     setIsResult(false)
                     setResult([])

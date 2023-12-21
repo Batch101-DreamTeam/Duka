@@ -10,12 +10,13 @@ import { newSearch, nameSearch } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function AcceuilScreen({ navigation, route }) {
+export default function AcceuilScreen({ navigation, route }) {// ne pas mettre PROPS
     //console.log("acceuil", navigation)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
+    //console.log('fav', Favorites)
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
@@ -32,16 +33,16 @@ export default function AcceuilScreen({ navigation, route }) {
                 console.log(backendAddress)
                 fetch(`${backendAddress}/offers/allOffers`, {
                     method: 'GET',
-                    headers: { 
+                    headers: {
                         'Cache-Control': 'no-cache',
-                      }
+                    }
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log("alors fetch")
+                        // console.log("alors fetch")
                         if (data.offers) {
                             setOffersData(data.offers);
-                            console.log('rechaokrge')
+                            // console.log('rechaokrge')
                             // setArticlesData(data.articles.filter((data, i) => i > 0));
                         }
                         else {
@@ -61,9 +62,10 @@ export default function AcceuilScreen({ navigation, route }) {
         dispatch(newSearch())
         dispatch(nameSearch())
     }
-
     const offers = offersData && offersData.map((data, i) => {
-        const isLiked = Favorites?.some((offer) => offer.id === data._id);
+        const isLiked = Favorites?.some((offer) => {
+            //    console.log(offer._id)
+            return offer.id === data._id});
         return <ResultSearch
             key={i}
             sellerName={data.sellerName}
@@ -82,8 +84,6 @@ export default function AcceuilScreen({ navigation, route }) {
     }
     );
     return (
-
-
 
         <View style={styles.container}>
 

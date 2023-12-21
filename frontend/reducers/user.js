@@ -27,7 +27,7 @@ export const userSlice = createSlice({
       }
     },
     removePhoto: (state, action) => {
-      state.value.photos = state.value.photos.filter((data) => data !== action.payload);
+      state.value.photos = state.value.photos?.filter((data) => data !== action.payload);
     },
     deleteAllPhoto: (state, action) => {
       state.value.photos = []
@@ -35,16 +35,17 @@ export const userSlice = createSlice({
 
     addFavorites: (state, action) => {
   
-       if(state.value.favorites.includes(action.payload.id) || !state.value.token){
+       if(state.value.favorites?.includes(action.payload._id) || !state.value.token){
         console.log('already Had')
         return 
       }
       else if(state.value.token){
-        state.value.favorites.push(action.payload);
+        state.value.favorites?.push(action.payload);
     }
     },
+
     suppFavorites: (state, action) => {
-      state.value.favorites = state.value.favorites.filter((data) => data.id !== action.payload.id);
+      state.value.favorites = state.value.favorites?.filter((data) => data.id !== action.payload.id);
       console.log('tryed   eqsfkhzsrmrkgf')
     },
     deleteAllfavs: (state, action) => {

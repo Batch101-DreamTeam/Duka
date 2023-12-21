@@ -15,7 +15,9 @@ import Header from "./components/Header.js";
 import Photo from "./components/Photo.js";
 import MesVentes from "./screens/MesVentes.js";
 import FicheVente from "./components/FicheVente.js";
+import InscriptionConnection from "./components/InscriptionConnection.js";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import DashboardVendeur from "./components/DashboardVendeur.js";
 
 // navigation.goBack() (pour le retour en arriere (stack) pour le bouton dans le header)
 // redirection automatique si utilisateur non connecté:  return <Redirect to="/Message" />
@@ -64,6 +66,8 @@ export const Main = () => {
       <Stack.Screen name="MesVentes" component={MesVentes} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="FicheVente" component={FicheVente} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="OfferScreen" component={OfferScreen} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="InscriptionConnection" component={InscriptionConnection} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="DashboardVendeur" component={DashboardVendeur} screenOptions={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

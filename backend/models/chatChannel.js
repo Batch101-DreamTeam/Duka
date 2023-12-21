@@ -6,8 +6,7 @@ const messageSchema = mongoose.Schema({
     createdAt: Date
 })
 
-// host et traveller sont des clés liées à pusher (système de chat)
-// name concaténation des deux ID utilisateurs  unique 
+
 const ChatChannelShema = mongoose.Schema({
     buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     seller: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },

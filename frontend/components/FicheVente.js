@@ -36,8 +36,13 @@ export default function FicheVente(props, { route }) {
     const priceOffer = dataOffers.price
     // const images = dataOffers.images[0] // mapper les photos pour toutes les afficher par la suite
     const imagesToMap = dataOffers.images
-    const date = dataOffers.date
-    console.log(date)
+    const dateData = dataOffers.date
+    const date = new Date(dateData)
+    let jour = date.getDate()
+    let mois = date.getMonth() + 1
+    let annee = date.getFullYear()
+    let dateMiseEnVente = `${jour}/${mois}/${annee}`
+
 
     const [modify, setModify] = useState(false) // affichage conditionel en cours de modification
 
@@ -60,7 +65,7 @@ export default function FicheVente(props, { route }) {
     const [isOwner, setIsOwner] = useState(false)
 
 
-
+    console.log(dateMiseEnVente)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
@@ -228,6 +233,7 @@ export default function FicheVente(props, { route }) {
                             )}
                         </View>
                     </View>
+                    <Text style={{ color: 'white', marginLeft: '90%', marginTop: '28%' }}>{i + 1}/{photoReducer.length}</Text>
                 </ImageBackground>
             </TouchableOpacity>
         );
@@ -261,7 +267,7 @@ export default function FicheVente(props, { route }) {
                         </View >)
                             : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.price} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
                     </View>
-
+                    <Text>Date de mise en ligne: {dateMiseEnVente}</Text>
                     {!modify ? <View >
                         <Text style={styles.list} >{categoryOffer} </Text>
                     </View> :
@@ -406,7 +412,7 @@ const styles = StyleSheet.create({
     },
 
     detail: {
-        fontSize: 28,
+        fontSize: 25,
     },
 
     product: {
@@ -549,12 +555,12 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     description: {
-        fontSize: 18,
+        fontSize: 16,
     },
     list: {
         fontSize: 15
     },
     price: {
-        fontSize: 15
+        fontSize: 16
     },
 })

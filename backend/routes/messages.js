@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 const Pusher = require('pusher');
-const Offer = require("../models/offer");
+// const Offer = require("../models/offer");
 const User = require('../models/user')
+const ChatChannel = require("../models/ChatChannel")
 
 
 
@@ -16,18 +17,6 @@ const pusher = new Pusher({
 });
 
 
-// const pusher = new Pusher({
-//     appId: '1725512',
-//     key: '3295d486d5ad2af1a1af',
-//     secret: '0b5b1433dbebe12b4bfe',
-//     cluster: 'eu',
-//     useTLS: false,
-//     encryptionMasterKeyBase64: "DkiB1alywjEFoxRKaOeJKZzHSUFqU19TbuJ7Nj2Gl4k=",
-// });
-
-// // console.log(pusher)
-
-
 // Join chat
 router.put('/:chatname/:username', async (req, res) => {
     await pusher.trigger(req.params.chatname, 'join', {
@@ -38,29 +27,66 @@ router.put('/:chatname/:username', async (req, res) => {
 });
 
 // Leave chat
-// router.delete('/:chatname/:username', async (req, res) => {
-//     await pusher.trigger(req.params.chatname, 'leave', {
-//         username: req.params.username,
-//     });
+router.delete('/:chatname/:username', async (req, res) => {
+    await pusher.trigger(req.params.chatname, 'leave', {
+        username: req.params.username,
+    });
 
-//     res.json({ result: true });
-// });
+    res.json({ result: true });
+});
 
 // Send message
-// router.post('/', async (req, res) => {
-//     const { text, username, chatname, createdAt } = req.body;
-//     await pusher.trigger(chatname, 'message', req.body);
+router.post('/', async (req, res) => {
+    const tokenBuyer = req.body.tokenBuyer;
+    const tokenSeller = req.body.tokenSeller;
 
-//     ChatChannel.updateOne(
-//         { name: chatname },
-//         { $push: { messages: { username, text, createdAt } } }
-//     ).exec();
 
-//     res.json({ result: true });
-// });
+    const { text, username, chatname, createdAt } = req.body;
+    const alreadyFound = await ChatChannel.findOne({ name: chatname });
+    await pusher.trigger(chatname, 'message', req.body);
+
+    const buyer = await User.findOne({ token: tokenBuyer })
+        .populate('_id')
+
+
+    const seller = await User.findOne({ token: tokenSeller })
+        .populate('_id')
+
+    if (!alreadyFound) {
+
+        const newChatChannel = new ChatChannel({
+            name: chatname,
+            buyer: buyer._id,
+            seller: seller._id,
+            dateOfCreation: createdAt,
+            online: true,
+            messages: {
+                username: username,
+                text: text,
+                createdAt: createdAt,
+            },
+
+        })
+        newChatChannel.save().then(() => {
+            console.log('Message saved!');
+        });
+        res.json({ result: true });
+    }
+    else {
+        ChatChannel.updateOne(
+            { name: chatname },
+            { $push: { messages: { username, text, createdAt } } }
+        ).exec();
+        res.status(400).json({ result: false, message: "chat existe!" })
+        return
+    }
+    ;
+
+
+});
 
 router.get('/previousMessages/:chatname', async (req, res) => {
-    // console.log(chatname)
+
     ChatChannel.findOne({ name: req.params.chatname }).then((resp) => {
         console.log(resp)
         if (resp) {
@@ -76,7 +102,7 @@ router.get('/previousMessages/:chatname', async (req, res) => {
         }
     });
 })
-//GET /:token - User's chats  
+
 router.get(`/:token`, (req, res) => {
     User.findOne({ token: req.params.token })
         .populate({
