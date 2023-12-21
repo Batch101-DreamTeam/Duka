@@ -62,7 +62,8 @@ export default function ProfilScreen({ navigation }) {
     );
     useFocusEffect(
         React.useCallback(() => {
-            fetch(`${backendAddress}/users/getProfilInfos/${token}`)
+            console.log('AVANT LE FETCH')
+            fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
                 .then(response => response.json())
                 .then(profileInfos => {
 
@@ -91,7 +92,7 @@ export default function ProfilScreen({ navigation }) {
 
     //Mettre à jour son profil
     const updateProfilInfo = () => {
-        fetch(`${backendAddress}/users/modifyProfil/${token}`, {
+        fetch(`${backendAddress}/users/modifyProfil/${user.token}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -151,6 +152,9 @@ export default function ProfilScreen({ navigation }) {
         }
     };
 
+
+
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -165,7 +169,7 @@ export default function ProfilScreen({ navigation }) {
                                 <Text style={styles.h1}>Mon profil</Text>
 
                                 <View style={styles.userBlock}>
-                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
+                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(!modifyField)}>
                                         <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
                                     </TouchableOpacity>
                                     {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
@@ -188,13 +192,13 @@ export default function ProfilScreen({ navigation }) {
                                         <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
                                             <View style={styles.modalView}>
                                                 <TouchableOpacity style={styles.send} onPress={pickImage}>
-                                                    <Foundation name="photo" size={24} color="white" style={styles.iconModal} />
+                                                    <Foundation name="photo" size={24} color="black" style={styles.iconModal} />
                                                     <Text style={styles.whiteSmall}>
                                                         A partir de la bibliothèque
                                                     </Text>
                                                 </TouchableOpacity >
                                                 <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
-                                                    <FontAwesome name="camera" size={24} color="white" style={styles.iconModal} />
+                                                    <FontAwesome name="camera" size={24} color="black" style={styles.iconModal} />
                                                     <Text style={styles.whiteSmall}>
                                                         Prendre une photo
                                                     </Text>
@@ -257,7 +261,7 @@ export default function ProfilScreen({ navigation }) {
                 visible={openTakePhotoModal}
                 onRequestClose={() => {
                     setOpenTakePhotoModal(!openTakePhotoModal);
-                    console.log("MODALE BIEN VISIBLE")
+                    // console.log("MODALE BIEN fermee")
                 }}>
 
                 <Photo closeModal={closeTakePhotoModal} />
@@ -520,6 +524,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     iconModal: {
-        marginRight: 10
+        marginRight: 10,
     },
 });
