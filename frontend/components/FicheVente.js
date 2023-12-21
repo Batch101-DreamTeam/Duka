@@ -244,12 +244,12 @@ export default function FicheVente(props, { route }) {
 
                         {!modify ?
                             <Text style={styles.detail} >{offerTitle}</Text>
-                            : <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.inputSearch} placeholder=" Nom" maxLength={200}></TextInput>}
+                            : <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.detail} placeholder=" Nom" maxLength={200}></TextInput>}
                     </View>
                     <View >
                         {!modify ?
                             <Text style={styles.description}>{descriptionOffer}</Text>
-                            : <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.inputSearch} placeholder=" Description" maxLength={400}></TextInput>}
+                            : <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.description} placeholder=" Description" maxLength={400}></TextInput>}
                     </View>
                     <View >
 
@@ -257,7 +257,7 @@ export default function FicheVente(props, { route }) {
                             <Text style={styles.price} >{priceOffer}</Text>
                             <Text style={{ marginLeft: '5%' }}>CFA</Text>
                         </View >)
-                            : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
+                            : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.price} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
                     </View>
                     {!modify ? <View >
                         <Text style={styles.list} >{categoryOffer} </Text>
@@ -268,7 +268,7 @@ export default function FicheVente(props, { route }) {
                             save="value"
                             placeholder={category}
                             search={false}
-                            maxHeight={150}
+                            maxHeight={100}
                         />)}
                     {!modify ? <View >
                         <Text style={styles.list}>{cityData} </Text>
@@ -279,12 +279,13 @@ export default function FicheVente(props, { route }) {
                             save="value"
                             placeholder={locations}
                             search={false}
+                            maxHeight={100}
                         />)}
 
                     {isOwner ?
-                        <View style={styles.blocModiSuppr}>
+                        <View >
                             {modify ?
-                                <View >
+                                <View style={styles.blocModiSuppr} >
                                     <TouchableOpacity onPress={() => confirmChange()} style={styles.send}>
                                         <Text> Confirmer les changements</Text>
                                     </TouchableOpacity>
@@ -303,7 +304,7 @@ export default function FicheVente(props, { route }) {
                                 </View>
                             }
                         </View>
-                        : <View >
+                        : <View style={styles.blocModiSuppr}>
                             <TouchableOpacity style={styles.send1}>
                                 <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
                             </TouchableOpacity>
@@ -530,6 +531,7 @@ const styles = StyleSheet.create({
     },
     blocModiSuppr: {
         alignItems: 'center',
+        marginTop: '5%'
     },
     addPicture: {
         width: 120,
@@ -537,7 +539,8 @@ const styles = StyleSheet.create({
         marginRight: 20,
         borderWidth: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: '10%'
     },
     iconModal: {
         marginRight: 10
