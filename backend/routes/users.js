@@ -114,14 +114,14 @@ router.post('/inscription', async (req, res, next) => {
 });
 
 
-router.get('/:token', async (req, res, next) => {
-  const argument = req.params.token;
+router.get('/seller/:sellerId', async (req, res, next) => {
+  const argument = req.params.sellerId;
   if (!argument) {
     res.status(400).json({ result: false, message: "wrong request" });
     return
   }
   else {
-    const target = await User.findOne({ token: argument });
+    const target = await User.findOne({ _id: argument });
     if (!target) {
       res.status(400).json({ result: false, message: 'wrong token' })
       return
