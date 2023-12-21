@@ -31,7 +31,7 @@ export default function MessageScreen(props, { navigation }) {
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState('');
     const chatname = idProduct + seller._id;
-
+    let pusher = null
 
     // Join chat
     useEffect(() => {
