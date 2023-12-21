@@ -69,6 +69,7 @@ export default function FicheVente(props, { route }) {
 
     useFocusEffect(
         React.useCallback(() => {
+            //console.log('ici')
             dispatch(deleteAllPhoto())
             setName(offerTitle)
             setDescription(descriptionOffer)

@@ -97,7 +97,7 @@ const TabNavigator = () => {
       headerShown: false,
 
     })}>
-      <Tab.Screen name="Acceuil" component={AcceuilScreen} />
+      <Tab.Screen name="Acceuil" component={Main} />
       <Tab.Screen name="Favoris" component={FavorisScreen} />
       <Tab.Screen name="Vendre" component={VendreScreen} />
       <Tab.Screen name="Message" component={MessageScreen} />
