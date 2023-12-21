@@ -1,11 +1,16 @@
 import { StyleSheet, Alert, ImageBackground, Text, View, Pressable, Modal, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
-import { useState } from 'react';
+import React,{ useState } from 'react';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
 import { RemoteDataSetExample2 } from '../components/autodrop';
 import { useDispatch, useSelector } from 'react-redux';
 import { newSearch, nameSearch } from '../reducers/offer'
+import { SelectList } from 'react-native-dropdown-select-list';
+import { ServerContainer, useFocusEffect } from '@react-navigation/native';
+const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile",]
+const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
+// const pricesRange = [10, ', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
 // import RNPickerSelect from 'react-native-picker-select';
 // import { Dropdown } from './Dropdown';
 import { BACKEND_ADDRESS } from "@env"
@@ -26,35 +31,54 @@ export default function InputSearch(navigation) {
     const [result, setResult] = useState("")
     const dispatch = useDispatch()
 
+
     const [modalVisible, setModalVisible] = useState(false);
     const [searchWord, setSearchWord] = useState('');
+    const [category, setCategory] = useState('');
+    const [location, setLocations] = useState('');
+    const [priceChoice, setPriceChoice] = useState(null);
 
     // const offer = useSelector((state) => state.offer.value);
     //console.log(offer.resultSearch.searchOnWord)
-    console.log("ok")
+   const updatePrice = ()=>{
+       
+   }
+    useFocusEffect(
+        React.useCallback(() => {
+        return(()=> console.log('bye'))
+        }, [modalVisible]))
 
 
+    let init = "nop";
     const handleSubmit = () => {
-        console.log("ok")
-        if (searchWord.length === 0) {
-            return;
-        }
+        // console.log("ok")
+        // const filterString = searchWord.trim()
+        // if (filterString.length === 0) {
+        //     return;
+        // }
         fetch(`${backendAddress}/offers/search/Bycate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache',
             },
-            body: JSON.stringify({ name: searchWord }),
+            body: JSON.stringify({
+                name: searchWord,
+                category: category,
+                city: location,
+                price: priceChoice
+            }),
         }).then(response => response.json())
             .then((data) => {
                 if (data?.result) {
-                    //console.log(data)
                     setResult(data.resultQuery)
                     dispatch(newSearch(data.resultQuery))
                     dispatch(nameSearch(searchWord))
-                    setSearchWord('');
+                    // setSearchWord(null);
+                    // setCategory(null);
+                    // setLocations(null);
                     setModalVisible(false);
+                    // setPriceChoice(null)
                 } 
                 else {
                     setIsResult(false)
@@ -63,6 +87,11 @@ export default function InputSearch(navigation) {
                     dispatch(nameSearch(searchWord))
                     setSearchWord('');
                     setModalVisible(false);
+                    setSearchWord(null);
+                    setCategory(null);
+                    setLocations(null);
+                    setModalVisible(false);
+                    setPriceChoice(null)
                 }
             });
 
@@ -92,28 +121,45 @@ export default function InputSearch(navigation) {
                         maxLength={200}
                     />
                 </View>
-                <View style={styles.SearchRow} >
+                <View style={styles.SearchRow}>
                     <FontAwesome name="map-marker" style={styles.iconSearch} size={20} />
                     <TextInput style={styles.inputSearch} placeholder=" Où ?" maxLength={200} />
                 </View>
 
+                <View style={styles.slectlist}>
+                    <SelectList
+                        data={store}
+                        save="value"
+                        setSelected={(val)=>setCategory(val)}
+                        placeholder='Catégorie'
+                        search={false}
+                        defaultOption={{key:null, value: 'Catégorie'}}
+                        maxHeight={150}
+                    />
+                    <SelectList
+                        setSelected={(val) => {setLocations(val)}}
+                        data={citiesData}
+                        save="value"
+                        placeholder='Ville'
+                        search={false}
+                    />
+                    <TextInput 
+                        style={styles.numbInput}
+                        keyboardType = 'number-pad'
+                        onChangeText = {(e)=> { setPriceChoice(e)}}
+                        value = {priceChoice}
+                        placeholder='prix'
+                    />
+                </View>
 
-                <AutocompleteDropdown
-                    style={{
-                        color: '#fc0',
-                        backgroundColor: 'yellow',
-                    }}
-                    clearOnFocus={false}
-                    closeOnBlur={true}
-                    closeOnSubmit={false}
-                    initialValue={{ id: '2' }} // or just '2'
-                    onSelectItem={setSelectedItem}
-                    dataSet={[
-                        { id: '1', title: 'Alpha' },
-                        { id: '2', title: 'Beta' },
-                        { id: '3', title: 'Gamma' },
-                    ]}
-                />
+                <TouchableOpacity style={styles.margiT} onPress={()=> console.log({
+                name: searchWord,
+                category: category,
+                city: location
+            })}> 
+                <Text>sending</Text>
+
+                </TouchableOpacity>
 
                 <RemoteDataSetExample2 />
 
@@ -142,6 +188,7 @@ export default function InputSearch(navigation) {
                     height: '100%',
                     // justifyContent: 'center',
                     alignItems: 'center',
+
                 }}>
                 <Text style={styles.inputTextSearch}  >
 
@@ -176,7 +223,16 @@ export default function InputSearch(navigation) {
 }
 
 const styles = StyleSheet.create({
-
+    numbInput:{
+        // color: 'red',
+        // backgroundColor: 'red',
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 5,
+        maxHeight: 45,
+        borderColor: 'grey'
+       
+    },
     moduleSearch: {
         backgroundColor: 'red',
         marginTop: 0,
@@ -184,7 +240,17 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center',
     },
-
+    margiT:{
+        marginTop: 50,
+        borderWidth: 2,
+    },
+    slectlist:{
+       flexDirection: 'row',
+       justifyContent:'space-between',
+    //    backgroundColor: 'green',
+       width: "100%",
+       flex: 1
+    },
     SearchRow: {
         flexDirection: 'row',
         width: '80%',

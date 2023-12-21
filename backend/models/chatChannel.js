@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 // name concaténation des deux ID utilisateurs  unique 
 const chatChannelShema = mongoose.Schema({
     host: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
-    // changer les noms host = seller  traveller = buyer 
     traveller: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'messages' }],
     dateOfCreation: Date,

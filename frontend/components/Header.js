@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } from '../reducers/user'
 import React, { useState, useEffect, useRef } from 'react';
 
-
 export default function Header({ navigation }) {
 
     const dispatch = useDispatch();
