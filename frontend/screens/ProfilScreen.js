@@ -115,14 +115,6 @@ const dispatch = useDispatch();
         navigation.replace('VendreScreen')
     }
 
-    const deletePhotoDisplay = (picture) => {
-        dispatch(removePhoto(picture))
-    }
-    const openModalPhoto = (data) => {
-        setOpenPhoto(true)
-        setDisplayOpenPhoto(data)
-    }
-
     const closeTakePhotoModal = () => {
         setOpenTakePhotoModal(false);
         setModalVisible(false)
@@ -177,7 +169,7 @@ const dispatch = useDispatch();
                                      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
                                         <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} />
                                     </TouchableOpacity>
-                                        <Image source={{uri:photoProfileReducer}}style={styles.pictureProfile} />
+                                        {photoProfileReducer && <Image source={{uri:photoProfileReducer}}style={styles.pictureProfile} />}
 
                                     <Modal
                     animationType="slide"
