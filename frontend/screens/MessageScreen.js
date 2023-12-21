@@ -18,8 +18,8 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function MessageScreen(props, { navigation }) {
-    console.log("regarde ici", props.route)
-    const idProduct = props.route.id;
+    console.log("regarde ici", props.route.params.data.id)
+    const idProduct = props.route.params.data.id;
     const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
     let pusher = null;
     const isFocused = useIsFocused();

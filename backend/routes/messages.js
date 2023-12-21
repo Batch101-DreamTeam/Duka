@@ -88,7 +88,7 @@ router.post('/', async (req, res) => {
 router.get('/previousMessages/:chatname', async (req, res) => {
 
     ChatChannel.findOne({ name: req.params.chatname }).then((resp) => {
-        console.log(resp)
+        //console.log(resp)
         if (resp) {
             res.json({
                 result: true,
