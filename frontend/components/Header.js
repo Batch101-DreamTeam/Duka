@@ -4,19 +4,32 @@ import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } from '../reducers/user'
 import React, { useState, useEffect, useRef } from 'react';
+import Connection from './Connection';
+import Inscription from './Inscription';
 
 
 
 export default function Header(props, { navigation }) {
-    console.log(navigation)
+
+
     const dispatch = useDispatch();
+
+    const user = useSelector((state) => state.user.value);
+    const token = user.token
+
+
     const logout = () => {
-        dispatch(updateName(null))
-        dispatch(updateToken(null))
-        dispatch(updateMail(null))
-        dispatch(deleteAllPhoto())
-        dispatch(deleteAllfavs())
+        if (token) {
+            dispatch(updateName(null))
+            dispatch(updateToken(null))
+            dispatch(updateMail(null))
+            dispatch(deleteAllfavs())
+        } else {
+            props.navigation.navigate("InscriptionConnection", { navigation: props.navigation })
+        }
+
     }
+
 
     return (
         <>
