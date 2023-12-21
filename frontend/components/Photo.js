@@ -34,10 +34,10 @@ export default function Photo(props) {
 
     }, [isFocused]);
 
-
     useEffect(() => {
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
+            console.log(status)
             setHasPermission(status === 'granted');
         })();
     }, []);

@@ -184,7 +184,7 @@ router.delete('/deleteOffer/:idProduct', async (req, res) => {
 // filtre
 router.post('/search/Bycate', async (req, res, next) => {
     try {
-        const max = 1000;
+        const max = 100000;
         const priceChoice = parseInt(req.body.price) || max;
         const nameOfProdChoice = req.body.name;
         const cateChoice = req.body.category;
@@ -193,7 +193,7 @@ router.post('/search/Bycate', async (req, res, next) => {
         let query = {};
 
         // Créer dynamiquement la requête en fonction des critères renseignés
-        if (priceChoice !== max) {
+        if (priceChoice) {
             query.price = { $lt: priceChoice };
         }
         if (cateChoice) {

@@ -21,7 +21,6 @@ export default function AcceuilScreen({ navigation, route }) {
     const resultSearchUser = offer.resultSearch
     // console.log(offer)
     const dispatch = useDispatch();
-
     const [offersData, setOffersData] = useState([]);
     //console.log(resultSearchUser);
     useFocusEffect(
@@ -33,9 +32,9 @@ export default function AcceuilScreen({ navigation, route }) {
                 console.log(backendAddress)
                 fetch(`${backendAddress}/offers/allOffers`, {
                     method: 'GET',
-                    // headers: { 
-                    //     'Cache-Control': 'no-cache',
-                    //   }
+                    headers: { 
+                        'Cache-Control': 'no-cache',
+                      }
                 })
                     .then(response => response.json())
                     .then(data => {

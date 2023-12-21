@@ -6,6 +6,7 @@ import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } fr
 import React, { useState, useEffect, useRef } from 'react';
 
 
+
 export default function Header(props, { navigation }) {
     console.log(navigation)
     const dispatch = useDispatch();
