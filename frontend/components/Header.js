@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,7 @@ export default function Header(props, { navigation }) {
             dispatch(updateMail(null))
             dispatch(deleteAllfavs())
         } else {
-            props.navigation.navigate("InscriptionConnection", { navigation: props.navigation })
+            props.navigation.navigate("InscriptionConnection", { navigation: navigation })
         }
 
     }

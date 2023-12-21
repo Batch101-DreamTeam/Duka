@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 //host et traveller sont des clés liées à pusher (système de chat)
 const userShema = mongoose.Schema({
       username: String,
-      contact:String, 
+      contact: String,
       isAdmin: Boolean,
-      description:String,
-      onSale: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers'}],
+      description: String,
+      onSale: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers' }],
       // defaullt false
       mail: {
             type: String,
             unique: true // `email` must be unique
-          },
+      },
       password: String,
       // chiffré 
       token: String,

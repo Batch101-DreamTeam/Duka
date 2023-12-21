@@ -19,15 +19,19 @@ export default function InscriptionConnection(props, { navigation }) {
 
     useEffect(() => {
         if (isTokenAvailable) {
-            navigation.goBack();
+            props.navigation.goBack();
         }
     }, [isTokenAvailable, navigation]);
     return (
         <View style={styles.container}>
             {!isTokenAvailable &&
                 <View>
+
                     <Connection />
+
+
                     <Inscription />
+
                 </View>
             }
         </View>
