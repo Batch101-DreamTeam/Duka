@@ -39,10 +39,10 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log("alors fetch")
+                        // console.log("alors fetch")
                         if (data.offers) {
                             setOffersData(data.offers);
-                            console.log('rechaokrge')
+                            // console.log('rechaokrge')
                             // setArticlesData(data.articles.filter((data, i) => i > 0));
                         }
                         else {

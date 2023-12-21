@@ -20,6 +20,7 @@ const backendAddress = BACKEND_ADDRESS;
 export default function MessageScreen({ navigation }) {
 
     const idProduct = '658015ffc0219a07a6ef8a49';
+    const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
     let pusher = null;
     const isFocused = useIsFocused();
     const user = useSelector((state) => state.user.value);
@@ -29,16 +30,7 @@ export default function MessageScreen({ navigation }) {
     const [seller, setSeller] = useState([]);
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState('');
-    const chatname = idProduct;
-    console.log("la variabled'état : ", messages)
-    // const theOther =
-    //     seller.username === user.firstname
-    //         ? user
-    //         : seller;
-    // console.log(user)
-    // console.log(seller)
-    // console.log(user.name)
-    // console.log(pusher)
+    const chatname = idProduct + seller._id;
 
 
     // Join chat
@@ -50,6 +42,7 @@ export default function MessageScreen({ navigation }) {
                 const data = await response.json();
                 setSeller(data.message.seller);
                 setProduct(data.message);
+
 
 
                 pusher = new Pusher('3295d486d5ad2af1a1af', { cluster: 'eu' });
@@ -73,13 +66,7 @@ export default function MessageScreen({ navigation }) {
         }
     }, [isFocused]);
 
-    if (seller.length && product.length && !objInfo.sellerName) {
-        setObjInfo({
-            sellerName: seller.username,
-            offerTitle: product.offerTitle,
-            images: product.images[0]
-        })
-    }
+
 
 
     // Leave chat
@@ -93,18 +80,20 @@ export default function MessageScreen({ navigation }) {
     }, []);
 
     const handleReceiveMessage = async (data) => {
-        console.log("La data :", data)
+
         setMessages((messages) => [...messages, data]);
-        console.log(messages)
+
     };
 
     const handleSendMessage = () => {
-        console.log('coucou')
+
         if (!messageText) {
             return;
         }
 
         const payload = {
+            tokenBuyer: user.token,
+            tokenSeller: seller.token,
             text: messageText,
             username: user.name,
             chatname: chatname,
@@ -116,7 +105,7 @@ export default function MessageScreen({ navigation }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
-        console.log(payload)
+        console.log(messageText)
         setMessageText('');
     };
 
@@ -137,11 +126,11 @@ export default function MessageScreen({ navigation }) {
             <Header />
             <View style={styles.infos}>
                 <View style={styles.infosArticle}>
-                    {/* <Text style={styles.white}>Vendeur : {objInfo.sellerName}  </Text>
-                    <Text style={styles.white}> Produit: {objInfo.offerTitle} </Text> */}
+                    <Text style={styles.white}>Vendeur : {seller.username}  </Text>
+                    <Text style={styles.white}> Produit: {product.offerTitle} </Text>
                 </View>
                 <View style={styles.photoArticle}>
-                    {/* <Image style={styles.image} source={{ uri: objInfo.images[0] }} /> */}
+                    <Image style={styles.image} source={{ uri: imgProduct }} />
 
                 </View>
 
@@ -185,9 +174,6 @@ const styles = StyleSheet.create({
     scrollView: {
         backgroundColor: 'white',
         padding: 3,
-        // marginHorizontal: 2,
-        // marginVertical: 2,
-        // minHeight: '40%',
         maxHeight: '100%',
     },
     SearchRow: {
@@ -241,9 +227,7 @@ const styles = StyleSheet.create({
     },
     white: {
         color: 'white',
-        // filter: 'brightness(1.75)
-        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        // zIndex: 100,
+
     },
     image: {
         height: 60,
