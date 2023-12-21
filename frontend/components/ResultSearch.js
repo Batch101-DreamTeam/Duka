@@ -17,7 +17,7 @@ export default function ResultSearch(props) {
   const user = useSelector((state) => state.user.value);
   const token = user.token;
 
-  console.log('id ', props.id , 'like ', props.isLiked)
+  // console.log('id ', props.id , 'like ', props.isLiked)
 
   const suppLike = () => {
     if (!token) {
@@ -37,8 +37,8 @@ export default function ResultSearch(props) {
   };
 
   useEffect(() => {
-    if (props.isLiked == true){
-     setIsliked(true);
+    if (props.isLiked == true) {
+      setIsliked(true);
     }
   });
 
