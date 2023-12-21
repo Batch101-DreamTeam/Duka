@@ -73,7 +73,7 @@ export default function ProfilScreen({ navigation }) {
                             contact: profileInfos.contact,
                             description: profileInfos.description,
                             mail: profileInfos.mail,
-                            avatar: profileInfos.avatar,
+                            avatar: profileInfos.avatarUrl,
                             location: profileInfos.location,
                             favorites: profileInfos.favorites,
                         });
@@ -91,7 +91,21 @@ export default function ProfilScreen({ navigation }) {
     );
 
     //Mettre à jour son profil
-    const updateProfilInfo = () => {
+    const updateProfilInfo = async() => {
+
+        const formData = new FormData();
+        formData.append('photoFromFront', {
+            uri: photoProfileReducer,
+            name: 'photo.jpg',
+            type: 'image/jpeg',
+        });
+
+        const response = await fetch(`${backendAddress}/offers/upload`, { // http://172.16.0.153:3000/offers/upload
+            method: 'POST',
+            body: formData,
+        })
+        const photoSaveCloudinaty = await response.json()
+
         fetch(`${backendAddress}/users/modifyProfil/${user.token}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -99,6 +113,7 @@ export default function ProfilScreen({ navigation }) {
                 username: updatedUsername,
                 contact: updatedContact,
                 description: updatedDescription,
+                avatar: photoSaveCloudinaty.url
             }),
         })
             .then(response => response.json())
