@@ -30,7 +30,7 @@ export default function AcceuilScreen({ navigation, route }) {
                 setOffersData(resultSearchUser)
             } else {
                 // setOffersData([]);
-                //console.log(backendAddress)
+                console.log(backendAddress)
                 fetch(`${backendAddress}/offers/allOffers`, {
                     method: 'GET',
                     // headers: { 
