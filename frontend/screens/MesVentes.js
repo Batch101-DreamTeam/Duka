@@ -15,7 +15,6 @@ export default function MesVentes({ navigation, route }) {
     useFocusEffect(
         React.useCallback(() => {
             const fetchData = async () => {
-
                 const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
                 const newData = await response.json();
                 setOffersData(newData.offers);
