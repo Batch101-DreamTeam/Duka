@@ -10,7 +10,7 @@ import {
 import Header from "../components/Header";
 import FontAwesome from "react-native-vector-icons/FontAwesome/";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Connection from "../components/Connection";
 import Inscription from "../components/Inscription";
 import { useFocusEffect } from "@react-navigation/native";
@@ -21,11 +21,12 @@ const backendAddress = BACKEND_ADDRESS;
 
 export default function FavorisScreen({ navigation, route }) {
   const user = useSelector((state) => state.user.value);
-  const token = user.token;
-  const Favorites = user.favorites;
+  const token = user?.token;
+  const Favorites = user?.favorites;
   const dispatch = useDispatch();
+  console.log(Favorites)
 
-  const displayFav = Favorites.map((el, i) => {
+  const displayFav = Favorites?.map((el, i) => {
     return <ResultSearch 
     key={i}
     sellerName={el.sellerName}
@@ -41,6 +42,12 @@ export default function FavorisScreen({ navigation, route }) {
     isLiked={true}
     >  </ResultSearch>;
   });
+  // useFocusEffect(
+  //   React.useCallback(()=>{
+  //     console.log('haha')
+  //     dispatch(getFavorites())
+  //   })
+  // )
 
   useFocusEffect(() => {
     return () => {
@@ -82,7 +89,7 @@ export default function FavorisScreen({ navigation, route }) {
     </View>
    )
  }
-  else if (!Favorites.length && token) {
+  else if (!Favorites?.length && token) {
     display = (
       <View style={styles.containerContent}>
         <Text style={styles.margin}> No offer added yet ?</Text>

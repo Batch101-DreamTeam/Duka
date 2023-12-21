@@ -60,6 +60,7 @@ router.post('/connexion', async (req, res, next) => {
         mail: alreadyFound.mail,
         token: alreadyFound.token,
         avatar: alreadyFound.avatarUrl,
+        favorites: alreadyFound.favorites,
       }
     })
   }
@@ -146,6 +147,8 @@ router.put('/setFavorites', async (req, res, next) => {
     res.status(400).json({ result: false })
   }
 });
+
+
 
 // Route permettant correspondant au bouton Enregistrer les modifications de profil et de mettre à jour la BDD
 

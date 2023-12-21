@@ -51,9 +51,9 @@ export default function ProfilScreen({ navigation }) {
     const [modifyField, setModifyField] = useState(false);
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
-    const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
+    const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modale pour prendre une photo
     const [modalVisible, setModalVisible] = useState(false);
-    // console.log(user)
+
     useFocusEffect(
         React.useCallback(() => {
             setModalVisible(false);
@@ -83,7 +83,7 @@ export default function ProfilScreen({ navigation }) {
                     }
                 })
                 .catch(error => {
-                    console.error("Error fetching profile information:", error);
+                    // console.error("Error fetching profile information:", error);
 
                 });
 
@@ -124,12 +124,10 @@ export default function ProfilScreen({ navigation }) {
 
     const takePicture = () => {
         setOpenTakePhotoModal(true)
-        console.log("ici")
-        //navigation.navigate('Photo', { from: 'VendreScreen' })
     }
-    const refresh = () => { // ne fonctionne pas
-        navigation.replace('VendreScreen')
-    }
+    // const refresh = () => { // ne fonctionne pas
+    //     navigation.replace('VendreScreen')
+    // }
 
     const closeTakePhotoModal = () => {
         setOpenTakePhotoModal(false);
@@ -176,16 +174,16 @@ export default function ProfilScreen({ navigation }) {
                                 <Text style={styles.h1}>Mon profil</Text>
 
                                 <View style={styles.userBlock}>
-                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(!modifyField)}>
+                                    <TouchableOpacity onPress={() => setModifyField(!modifyField)} style={styles.button} activeOpacity={0.8} >
                                         <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
                                     </TouchableOpacity>
                                     {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
                                     {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
                                     <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
-                                        <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} />
-                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture} activeOpacity={0.8} >
+                                        {/* <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} /> */}
                                     {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={styles.pictureProfile} />}
+                                    </TouchableOpacity>
 
                                     <Modal
                                         animationType="slide"
@@ -212,7 +210,6 @@ export default function ProfilScreen({ navigation }) {
                                                 </TouchableOpacity >
                                             </View>
                                         </Pressable>
-                                        {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
                                     </Modal>
                                 </View>
                                 <Text style={styles.h2}>Description</Text>
@@ -336,7 +333,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop: 0,
-        // backgroundColor:'red'
+        // backgroundColor:'blue'
     },
 
     pictureProfile: {
@@ -344,12 +341,31 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 80,
-        marginTop: -125,
+        marginTop: -110,
+        marginLeft: -180,
+        paddingLeft:-10,
         // marginBottom: 100,
         // marginRight: 220,
-        marginLeft: -260
     },
+    addPicture: {
+        width: "auto",
+        height: "auto",
+        borderRadius: 80,
+        marginLeft:'0%',
+        marginTop: -20,
+        backgroundColor: 'red'
+    },
+    
+    modifyProfilePhotoPen: {
+        marginLeft: 0,
+        marginBottom: 0,
+        marginTop: -80,
+        width: 30,
+        height: 30,
+        margin: 10,
+        color: '#BAB700',
 
+    },
     name: {
         // height: 35,
         marginTop: -40,
@@ -407,15 +423,6 @@ const styles = StyleSheet.create({
 
     },
 
-    modifyProfilePhotoPen: {
-        marginLeft: -115,
-        marginBottom: 0,
-        marginTop: -100,
-        width: 50,
-        height: 50,
-        color: '#BAB700',
-
-    },
 
     modifyPenDescription: {
         marginTop: -30,
@@ -495,15 +502,6 @@ const styles = StyleSheet.create({
 
     photoReducer: {
         flexDirection: 'row'
-    },
-    addPicture: {
-        width: '60%',
-        height: '55%',
-        // borderWidth: 1,
-        margin: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'yellow'
     },
     ModalAcceuil: {
         backgroundColor: 'transparent',
