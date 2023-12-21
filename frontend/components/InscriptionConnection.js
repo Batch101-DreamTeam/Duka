@@ -12,22 +12,26 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function InscriptionConnection(props, { navigation }) {
-    console.log('ici', props)
+    //console.log('ici', props)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const isTokenAvailable = !!token
 
     useEffect(() => {
         if (isTokenAvailable) {
-            navigation.goBack();
+            props.navigation.goBack();
         }
     }, [isTokenAvailable, navigation]);
     return (
         <View style={styles.container}>
             {!isTokenAvailable &&
                 <View>
+
                     <Connection />
+
+
                     <Inscription />
+
                 </View>
             }
         </View>
