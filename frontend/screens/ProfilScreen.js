@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground, Pressable} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground, Pressable } from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Inscription from '../components/Inscription';
@@ -52,7 +52,7 @@ const dispatch = useDispatch();
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
     const [modalVisible, setModalVisible] = useState(false);
-// console.log(user)
+    // console.log(user)
     useFocusEffect(
         React.useCallback(() => {
             setModalVisible(false);
@@ -61,36 +61,36 @@ const dispatch = useDispatch();
     );
     useFocusEffect(
         React.useCallback(() => {
-            fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
-                        .then(response => response.json())
-            .then(profileInfos => {
- 
-                if (profileInfos.result) {
-                    setProfileData({
-                        username: profileInfos.username,
-                        contact: profileInfos.contact,
-                        description: profileInfos.description,
-                        mail: profileInfos.mail,
-                        avatar: profileInfos.avatar,
-                        location: profileInfos.location,
-                        favorites: profileInfos.favorites,
-                    });
-                    setUpdatedUsername(profileInfos.username)
-                    setUpdatedContact(profileInfos.contact)
-                    setUpdatedDescription(profileInfos.description)
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching profile information:", error);
-         
-            });
-    
+            fetch(`${backendAddress}/users/getProfilInfos/${token}`)
+                .then(response => response.json())
+                .then(profileInfos => {
+
+                    if (profileInfos.result) {
+                        setProfileData({
+                            username: profileInfos.username,
+                            contact: profileInfos.contact,
+                            description: profileInfos.description,
+                            mail: profileInfos.mail,
+                            avatar: profileInfos.avatar,
+                            location: profileInfos.location,
+                            favorites: profileInfos.favorites,
+                        });
+                        setUpdatedUsername(profileInfos.username)
+                        setUpdatedContact(profileInfos.contact)
+                        setUpdatedDescription(profileInfos.description)
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching profile information:", error);
+
+                });
+
         }, [])
     );
 
     //Mettre à jour son profil
     const updateProfilInfo = () => {
-        fetch(`${backendAddress}/users/modifyProfil/${user.token}`, {
+        fetch(`${backendAddress}/users/modifyProfil/${token}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: '#60935D'
     },
-    
+
     scrollView: {
         alignItems: 'center',
         paddingBottom: 20,

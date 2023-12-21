@@ -11,13 +11,13 @@ import { useEffect, useState } from "react";
 export default function ResultSearch(props) {
   //console.log("props", props)
   const { navigation } = props;
-  // console.log(props)
+  // console.log("ici", props)
   const [isLiked, setIsliked] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const token = user.token;
 
-  console.log('id ', props.id , 'like ', props.isLiked)
+  //console.log('id ', props.id, 'like ', props.isLiked)
 
   const suppLike = () => {
     if (!token) {
@@ -37,8 +37,8 @@ export default function ResultSearch(props) {
   };
 
   useEffect(() => {
-    if (props.isLiked == true){
-     setIsliked(true);
+    if (props.isLiked == true) {
+      setIsliked(true);
     }
   });
 

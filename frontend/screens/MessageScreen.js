@@ -1,273 +1,177 @@
-// import {
-//     Pusher,
-//     PusherMember,
-//     PusherChannel,
-//     PusherEvent,
-// } from '@pusher/pusher-websocket-react-native';
+
 import {
-    View, StyleSheet, Text, ScrollView, TextInput, Pressable
+    KeyboardAvoidingView, View, StyleSheet, Text, ScrollView, TextInput, Pressable, Image, TouchableOpacity
 } from 'react-native';
-import NetInfo from "@react-native-community/netinfo";
+// import NetInfo from "@react-native-community/netinfo";
 import { useIsFocused } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import Pusher from 'pusher-js/react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import InfoContainer from '../components/messagesElements/InfoContainer';
+// import InfoContainer from '../components/messagesElements/InfoContainer';
 import SingleMessage from '../components/messagesElements/SingleMessage';
 import Header from '../components/Header';
+// import ButtonIcon from '../components/buttons/ButtonIcon';
 import { Ionicons } from '@expo/vector-icons';
 import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
-// const pusher = Pusher.getInstance();
 
-// await pusher.init({
-//     apiKey: "3295d486d5ad2af1a1af",
-//     cluster: "eu"
-// });
-
-// await pusher.connect();
-// await pusher.subscribe({
-//     channelName: "my-channel",
-//     onEvent: () => {
-//         console.log(`Event received: ${event}`);
-//     }
-// });
 
 export default function MessageScreen({ navigation }) {
 
+    const idProduct = '658015ffc0219a07a6ef8a49';
     let pusher = null;
     const isFocused = useIsFocused();
     const user = useSelector((state) => state.user.value);
+    // console.log(user)
+    const [objInfo, setObjInfo] = useState({});
+    const [product, setProduct] = useState([]);
+    const [seller, setSeller] = useState([]);
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState('');
+    const chatname = idProduct;
+    console.log("la variabled'état : ", messages)
+    // const theOther =
+    //     seller.username === user.firstname
+    //         ? user
+    //         : seller;
+    // console.log(user)
+    // console.log(seller)
+    // console.log(user.name)
+    // console.log(pusher)
 
-    const chatname = 'nono';
-    const theOther = 'didi';
-    // params.chat.traveler.firstname === user.firstname
-    //     ? params.chat.host
-    //     : params.chat.traveler;
 
     // Join chat
     useEffect(() => {
         if (isFocused) {
+
             (async () => {
+                const response = await fetch(`${backendAddress}/offers/search/${idProduct}`)
+                const data = await response.json();
+                setSeller(data.message.seller);
+                setProduct(data.message);
+
+
                 pusher = new Pusher('3295d486d5ad2af1a1af', { cluster: 'eu' });
-                fetch(`${backendAddress}/messages/previousMessages/${chatname}`)
-                    .then((resp) => resp.json())
-                    .then((data) => {
-                        setMessages(data.messages);
-                    });
-                fetch(`${backendAddress}/messages/${chatname}/${user.firstname}`, {
+                const respon = await fetch(`${backendAddress}/messages/previousMessages/${chatname}`)
+                const dataPrev = await respon.json();
+                setMessages(dataPrev.messages)
+
+
+                const resp = await fetch(`${backendAddress}/messages/${chatname}/${user.name}`, {
                     method: 'PUT',
                 })
-                    .then((resp) => resp.json())
-                    .then(() => {
-                        const subscription = pusher.subscribe(chatname);
+                const dataMess = await resp.json();
 
-                        subscription.bind('pusher:subscription_succeeded', () => {
-                            subscription.bind('message', handleReceiveMessage);
-                        });
-                    });
+                const subscription = pusher.subscribe(chatname);
+
+                subscription.bind('pusher:subscription_succeeded', () => {
+                    subscription.bind('message', handleReceiveMessage);
+                });
+
             })();
         }
     }, [isFocused]);
+
+    if (seller.length && product.length && !objInfo.sellerName) {
+        setObjInfo({
+            sellerName: seller.username,
+            offerTitle: product.offerTitle,
+            images: product.images[0]
+        })
+    }
+
 
     // Leave chat
     useEffect(() => {
         return async () => {
             await pusher.disconnect();
-            fetch(`${backendAddress}/chats/${chatname}/${user.firstname}`, {
+            fetch(`${backendAddress}/messages/${chatname}/${user.name}`, {
                 method: 'DELETE',
             });
         };
     }, []);
 
     const handleReceiveMessage = async (data) => {
+        console.log("La data :", data)
         setMessages((messages) => [...messages, data]);
+        console.log(messages)
     };
 
     const handleSendMessage = () => {
+        console.log('coucou')
         if (!messageText) {
             return;
         }
 
         const payload = {
             text: messageText,
-            username: user.firstname,
-            chatname: params.chat.traveler._id + params.chat.host._id,
-            // createdAt: new Date(),
-            // id: Math.floor(Math.random() * 100000),
+            username: user.name,
+            chatname: chatname,
+            createdAt: new Date(),
+            id: Math.floor(Math.random() * 100000),
         };
-        fetch(`${backendAddress}/chats/message`, {
+        fetch(`${backendAddress}/messages`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
-
+        console.log(payload)
         setMessageText('');
     };
 
-    // const pusher = new Pusher('3295d486d5ad2af1a1af', {
-    //     cluster: 'eu',
-    //     encrypted: true
-    // });
-    // console.log(pusher)
 
-    const data = [
-        {
-            userC: 1,
-            online: true,
-            messageContent: "message 1",
-            dateOfCreation: Date
-        },
-        {
-            userId: 2,
-            online: true,
-            messageContent: "message 2",
-            dateOfCreation: Date
-        },
-        {
-            userId: 2,
-            online: true,
-            messageContent: "message 3",
-            dateOfCreation: Date
-        },
-        {
-            userId: 1,
-            online: true,
-            messageContent: "message 4",
-            dateOfCreation: Date
-        },
-        {
-            userId: 1,
-            online: true,
-            messageContent: "message 5",
-            dateOfCreation: Date
-        },
-        {
-            userId: 2,
-            online: true,
-            messageContent: "message 6",
-            dateOfCreation: Date
-        },
-        {
-            userId: 1,
-            online: true,
-            messageContent: "message 7",
-            dateOfCreation: Date
-        },
-        {
-            userId: 2,
-            online: true,
-            messageContent: "message 8",
-            dateOfCreation: Date
-        },
-        {
-            userId: 1,
-            online: true,
-            messageContent: "message 9",
-            dateOfCreation: Date
-        },
-    ];
+    const messagesTextJsx = messages.map((message, i) => {
+        const userId = message.username === user.name ? 1 : 2
+        return (
+            <SingleMessage key={i} userId={userId} messageContent={message.text} />
+        )
+    })
 
-    // const displayMessages = data
-    //     .filter(message => message.online)
-    //     .map((singleMessage, i) => (
-    //         <SingleMessage key={i} {...singleMessage} />
-    //     ));
-    // console.log(displayMessages)
-    // let singleMessage = <SingleMessage />
+
+
+
     return (
+        // objInfo.sellerName &&
         <View style={styles.container}>
             <Header />
-            <InfoContainer />
-            <View style={styles.inset}>
-                <ScrollView
-                    ref={(ref) => {
-                        this.scrollView = ref;
-                    }}
-                    onContentSizeChange={() =>
-                        this.scrollView.scrollToEnd({ animated: true })
-                    }
-                    style={styles.scroller}>
-                    {data.map((singleMessage, i) => (
-                        <View
-                            style={styles.scrollView}
-                            key={i}
-                        // style={[
-                        // 	styles.messageWrapper,
-                        // 	{
-                        // 		...(message.username === user.firstname
-                        // 			? styles.messageSent
-                        // 			: styles.messageRecieved),
-                        // 	},
-                        // ]}
-                        >
-                            {/* {message.username !== user.firstname && (
-								<Image
-									source={{
-										uri: theOther.avatarUrl,
-									}}
-									style={styles.smallAvatar}
-								/>
-							)} */}
-                            <View
-                            // style={[
-                            // 	styles.message,
-                            // 	{
-                            // 		...(message.username === user.firstname
-                            // 			? styles.messageSentBg
-                            // 			: styles.messageRecievedBg),
-                            // 	},
-                            // ]}
-                            >
-                                <Text style={styles.messageText}>{singleMessage.messageContent}</Text>
-                            </View>
-                            {/* <Text style={styles.timeText}>
-                                {new Date(message.createdAt).getHours()}:
-                                {String(new Date(message.createdAt).getMinutes()).padStart(
-                                    2,
-                                    '0'
-                                )}
-                            </Text> */}
-                        </View>
-                    ))}
-                </ScrollView>
-
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        onChangeText={(value) => setMessageText(value)}
-                        value={messageText}
-                        style={styles.input}
-                        autoFocus
-                    />
-
-
-                    <Pressable style={styles.SearchRow} >
-                        <View style={styles.blocMessage}>
-                            <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
-                            <TextInput
-                                onChangeText={(value) => setMessageText(value)}
-                                value={messageText}
-
-                                autoFocus
-                                style={styles.message}
-                                placeholder="message"
-                                maxLength={200}
-                            />
-                        </View>
-                        <Ionicons name="send" size={24} color="black" onpress={() => handleSendMessage()} />
-                    </Pressable>
+            <View style={styles.infos}>
+                <View style={styles.infosArticle}>
+                    {/* <Text style={styles.white}>Vendeur : {objInfo.sellerName}  </Text>
+                    <Text style={styles.white}> Produit: {objInfo.offerTitle} </Text> */}
                 </View>
-            </View>
-            {/* <ScrollView
-                style={styles.scrollView}
-            > */}
-            {/* {data && displayMessages} */}
-            {/* </ScrollView> */}
+                <View style={styles.photoArticle}>
+                    {/* <Image style={styles.image} source={{ uri: objInfo.images[0] }} /> */}
 
+                </View>
+
+            </View>
+            <ScrollView style={styles.scrollView}>
+                {messagesTextJsx}
+            </ScrollView>
+            <View style={styles.SearchRow} >
+                <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
+                <TextInput
+                    onChangeText={(value) => setMessageText(value)}
+                    value={messageText}
+                    style={styles.inputSearch}
+                    placeholder="message"
+                    autoFocus
+                    maxLength={200}
+                />
+                <TouchableOpacity
+                    //   style={styles.rotate}
+                    // title="Flip" 
+                    onPress={() => handleSendMessage()}>
+                    <Ionicons
+                        name="send" size={24}
+                        color="black"
+                    />
+                </TouchableOpacity>
+            </View>
         </View>
+
+
     )
 }
 
@@ -277,6 +181,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: 'black',
     },
+
     scrollView: {
         backgroundColor: 'white',
         padding: 3,
@@ -322,4 +227,27 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    infos: {
+        // flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        height: 70,
+        // backgroundColor: 'rgba(52, 52, 52)',
+        backgroundColor: 'grey',
+        // opacity: 0.9,
+        padding: '1%',
+        marginTop: 1,
+    },
+    white: {
+        color: 'white',
+        // filter: 'brightness(1.75)
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // zIndex: 100,
+    },
+    image: {
+        height: 60,
+        width: 80,
+    },
+
 })
