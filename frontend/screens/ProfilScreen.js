@@ -178,7 +178,7 @@ export default function ProfilScreen({ navigation }) {
                                     <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
                                         <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} />
                                     </TouchableOpacity>
-                                    <Image source={{ uri: photoProfileReducer }} style={styles.pictureProfile} />
+                                    {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={styles.pictureProfile} />}
 
                                     <Modal
                                         animationType="slide"
@@ -261,10 +261,14 @@ export default function ProfilScreen({ navigation }) {
                 visible={openTakePhotoModal}
                 onRequestClose={() => {
                     setOpenTakePhotoModal(!openTakePhotoModal);
-                    // console.log("MODALE BIEN fermee")
+                    //console.log(modalVisible)
                 }}>
 
+
                 <Photo closeModal={closeTakePhotoModal} />
+
+
+
             </Modal>
 
         </KeyboardAvoidingView>
