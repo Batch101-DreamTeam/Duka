@@ -4,7 +4,7 @@ var router = express.Router();
 const Pusher = require('pusher');
 // const Offer = require("../models/offer");
 const User = require('../models/user')
-const ChatChannel = require("../models/ChatChannel")
+const ChatChannel = require('../models/chatChannel')
 
 
 
