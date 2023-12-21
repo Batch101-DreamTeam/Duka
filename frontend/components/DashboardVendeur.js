@@ -11,29 +11,16 @@ import Connection from './Connection';
 const backendAddress = BACKEND_ADDRESS;
 
 
-export default function InscriptionConnection(props, { navigation }) {
-    //console.log('ici', props)
+export default function DashboardVendeur(props, { navigation }) {
+    console.log('ici', props)
     const user = useSelector((state) => state.user.value);
     const token = user.token
-    const isTokenAvailable = !!token
 
-    useEffect(() => {
-        if (isTokenAvailable) {
-            props.navigation.goBack();
-        }
-    }, [isTokenAvailable, navigation]);
+
     return (
         <View style={styles.container}>
-            {!isTokenAvailable &&
-                <View>
+            <Text>Mes dernières offres de vente</Text>
 
-                    <Connection />
-
-
-                    <Inscription />
-
-                </View>
-            }
         </View>
     );
 }

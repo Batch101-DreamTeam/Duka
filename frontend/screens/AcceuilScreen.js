@@ -10,12 +10,13 @@ import { newSearch, nameSearch } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function AcceuilScreen({ navigation, route }) {
+export default function AcceuilScreen({ navigation, route }) {// ne pas mettre PROPS
     //console.log("acceuil", navigation)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
+    //console.log('fav', Favorites)
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
@@ -32,9 +33,9 @@ export default function AcceuilScreen({ navigation, route }) {
                 console.log(backendAddress)
                 fetch(`${backendAddress}/offers/allOffers`, {
                     method: 'GET',
-                    headers: { 
+                    headers: {
                         'Cache-Control': 'no-cache',
-                      }
+                    }
                 })
                     .then(response => response.json())
                     .then(data => {

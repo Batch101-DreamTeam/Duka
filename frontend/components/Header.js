@@ -4,8 +4,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } from '../reducers/user'
 import React, { useState, useEffect, useRef } from 'react';
-import Connection from './Connection';
-import Inscription from './Inscription';
 
 
 
@@ -45,7 +43,7 @@ export default function Header(props, { navigation }) {
                     <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
                         <AntDesign name="logout" size={20} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('MesVentes')} style={styles.iconRightHeader}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('DashboardVendeur')} style={styles.iconRightHeader}>
                         <AntDesign name="infocirlce" size={20} color="white" />
                     </TouchableOpacity>
                 </View>

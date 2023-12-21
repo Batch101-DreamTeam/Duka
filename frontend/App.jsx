@@ -66,6 +66,7 @@ export const Main = () => {
       <Stack.Screen name="FicheVente" component={FicheVente} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="OfferScreen" component={OfferScreen} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="InscriptionConnection" component={InscriptionConnection} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="DashboardVendeur" component={InscriptionConnection} screenOptions={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
