@@ -36,7 +36,8 @@ export default function FicheVente(props, { route }) {
     const priceOffer = dataOffers.price
     // const images = dataOffers.images[0] // mapper les photos pour toutes les afficher par la suite
     const imagesToMap = dataOffers.images
-    //console.log(imagesToMap)
+    const date = dataOffers.date
+    console.log(date)
 
     const [modify, setModify] = useState(false) // affichage conditionel en cours de modification
 
@@ -260,6 +261,7 @@ export default function FicheVente(props, { route }) {
                         </View >)
                             : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.price} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
                     </View>
+
                     {!modify ? <View >
                         <Text style={styles.list} >{categoryOffer} </Text>
                     </View> :

@@ -112,7 +112,7 @@ export default function VendreScreen({ route, navigation }) {
                     category: category,
                     description: description,
                     price: price,
-                    dateOfCreation: dateOfTheDay,
+                    date: dateOfTheDay,
                     locations: locations,
                 }),
             })

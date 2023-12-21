@@ -76,6 +76,7 @@ export default function AcceuilScreen({ navigation, route }) {
             category={data.category}
             id={data._id}
             navigation={navigation}
+            date={data.dateOfCreation}
             route={route}
             isLiked={isLiked}
         />;
