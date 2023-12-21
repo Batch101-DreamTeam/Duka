@@ -11,11 +11,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation, route }) {
-    //console.log("acceuil", navigation)
+    // console.log("acceuil", navigation)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
+
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
@@ -38,7 +39,7 @@ export default function AcceuilScreen({ navigation, route }) {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log("alors fetch")
+                        // console.log("alors fetch")
                         if (data.offers) {
                             setOffersData(data.offers);
                             console.log('rechaokrge')
@@ -61,9 +62,10 @@ export default function AcceuilScreen({ navigation, route }) {
         dispatch(newSearch())
         dispatch(nameSearch())
     }
-
     const offers = offersData && offersData.map((data, i) => {
-        const isLiked = Favorites?.some((offer) => offer.id === data._id);
+        const isLiked = Favorites?.some((offer) => {
+            //    console.log(offer._id)
+            return offer.id === data._id});
         return <ResultSearch
             key={i}
             sellerName={data.sellerName}
@@ -82,8 +84,6 @@ export default function AcceuilScreen({ navigation, route }) {
     }
     );
     return (
-
-
 
         <View style={styles.container}>
 
