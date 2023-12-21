@@ -41,8 +41,9 @@ export default function ProfilScreen({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
     const photoProfileReducer = user.profilePhoto
+    const token = user.token
 
-const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const [updatedUsername, setUpdatedUsername] = useState('');
     const [updatedContact, setUpdatedContact] = useState('');
@@ -170,38 +171,38 @@ const dispatch = useDispatch();
                                     {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
                                     {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
                                     <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                     <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
+                                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture}>
                                         <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} />
                                     </TouchableOpacity>
-                                        <Image source={{uri:photoProfileReducer}}style={styles.pictureProfile} />
+                                    <Image source={{ uri: photoProfileReducer }} style={styles.pictureProfile} />
 
                                     <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        setModalVisible(!modalVisible);
-                        //console.log(modalVisible)
-                    }}>
-                        
-                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
-                        <View style={styles.modalView}>
-                            <TouchableOpacity style={styles.send} onPress={pickImage}>
-                                <Foundation name="photo" size={24} color="white" style={styles.iconModal} />
-                                <Text style={styles.whiteSmall}>
-                                    A partir de la bibliothèque
-                                </Text>
-                            </TouchableOpacity >
-                            <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
-                                <FontAwesome name="camera" size={24} color="white" style={styles.iconModal} />
-                                <Text style={styles.whiteSmall}>
-                                    Prendre une photo
-                                </Text>
-                            </TouchableOpacity >
-                        </View>
-                    </Pressable>
-                    {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
-                </Modal>
+                                        animationType="slide"
+                                        transparent={true}
+                                        visible={modalVisible}
+                                        onRequestClose={() => {
+                                            setModalVisible(!modalVisible);
+                                            //console.log(modalVisible)
+                                        }}>
+
+                                        <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
+                                            <View style={styles.modalView}>
+                                                <TouchableOpacity style={styles.send} onPress={pickImage}>
+                                                    <Foundation name="photo" size={24} color="white" style={styles.iconModal} />
+                                                    <Text style={styles.whiteSmall}>
+                                                        A partir de la bibliothèque
+                                                    </Text>
+                                                </TouchableOpacity >
+                                                <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
+                                                    <FontAwesome name="camera" size={24} color="white" style={styles.iconModal} />
+                                                    <Text style={styles.whiteSmall}>
+                                                        Prendre une photo
+                                                    </Text>
+                                                </TouchableOpacity >
+                                            </View>
+                                        </Pressable>
+                                        {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
+                                    </Modal>
                                 </View>
                                 <Text style={styles.h2}>Description</Text>
                                 <View style={styles.descriptionBloc}>
@@ -487,7 +488,7 @@ const styles = StyleSheet.create({
         margin: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'yellow'
+        backgroundColor: 'yellow'
     },
     ModalAcceuil: {
         backgroundColor: 'transparent',
