@@ -8,14 +8,14 @@ import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 
 export default function MesVentes({ navigation, route }) {
-
+    //console.log('ici')
     const [offersData, setOffersData] = useState([]);
     const user = useSelector((state) => state.user.value);
     const token = user.token
     useFocusEffect(
         React.useCallback(() => {
             const fetchData = async () => {
-                console.log('ici')
+
                 const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
                 const newData = await response.json();
                 setOffersData(newData.offers);
@@ -23,9 +23,9 @@ export default function MesVentes({ navigation, route }) {
             fetchData();
         }, [])
     );
-    const handleNavigate = (data) => {
-        navigation.navigate("FicheVente", { dataOffers: data });
-    };
+    // const handleNavigate = (data) => {
+    //     navigation.navigate("FicheVente", { dataOffers: data });
+    // };
 
 
     const offers = offersData && offersData.map((data, i) => {

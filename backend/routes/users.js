@@ -166,10 +166,10 @@ router.put('/modifyProfil/:idToken', async (req, res) => {
         username: req.body.username,
         contact: req.body.contact,
         description: req.body.description,
+        avatarUrl: req.body.avatar,
         // mail: targettedUser.mail,
         // location: targettedUser.location,
         // favorites: targettedUser.favorites,
-        // avatar: req.body.avatar,
       }
       const modifyUser = await User.findOneAndUpdate({ token: profilFields }, profilDetails, { new: true })
       res.status(200).json({ result: true, message: modifyUser })

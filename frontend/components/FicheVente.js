@@ -36,7 +36,13 @@ export default function FicheVente(props, { route }) {
     const priceOffer = dataOffers.price
     // const images = dataOffers.images[0] // mapper les photos pour toutes les afficher par la suite
     const imagesToMap = dataOffers.images
-    //console.log(imagesToMap)
+    const dateData = dataOffers.date
+    const date = new Date(dateData)
+    let jour = date.getDate()
+    let mois = date.getMonth() + 1
+    let annee = date.getFullYear()
+    let dateMiseEnVente = `${jour}/${mois}/${annee}`
+
 
     const [modify, setModify] = useState(false) // affichage conditionel en cours de modification
 
@@ -59,7 +65,7 @@ export default function FicheVente(props, { route }) {
     const [isOwner, setIsOwner] = useState(false)
 
 
-
+    console.log(dateMiseEnVente)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
@@ -69,6 +75,7 @@ export default function FicheVente(props, { route }) {
 
     useFocusEffect(
         React.useCallback(() => {
+            //console.log('ici')
             dispatch(deleteAllPhoto())
             setName(offerTitle)
             setDescription(descriptionOffer)
@@ -226,6 +233,7 @@ export default function FicheVente(props, { route }) {
                             )}
                         </View>
                     </View>
+                    <Text style={{ color: 'white', marginLeft: '90%', marginTop: '28%' }}>{i + 1}/{photoReducer.length}</Text>
                 </ImageBackground>
             </TouchableOpacity>
         );
@@ -244,12 +252,12 @@ export default function FicheVente(props, { route }) {
 
                         {!modify ?
                             <Text style={styles.detail} >{offerTitle}</Text>
-                            : <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.inputSearch} placeholder=" Nom" maxLength={200}></TextInput>}
+                            : <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.detail} placeholder=" Nom" maxLength={200}></TextInput>}
                     </View>
                     <View >
                         {!modify ?
                             <Text style={styles.description}>{descriptionOffer}</Text>
-                            : <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.inputSearch} placeholder=" Description" maxLength={400}></TextInput>}
+                            : <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.description} placeholder=" Description" maxLength={400}></TextInput>}
                     </View>
                     <View >
 
@@ -257,8 +265,9 @@ export default function FicheVente(props, { route }) {
                             <Text style={styles.price} >{priceOffer}</Text>
                             <Text style={{ marginLeft: '5%' }}>CFA</Text>
                         </View >)
-                            : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.inputSearch} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
+                            : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.price} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
                     </View>
+                    <Text>Date de mise en ligne: {dateMiseEnVente}</Text>
                     {!modify ? <View >
                         <Text style={styles.list} >{categoryOffer} </Text>
                     </View> :
@@ -268,7 +277,7 @@ export default function FicheVente(props, { route }) {
                             save="value"
                             placeholder={category}
                             search={false}
-                            maxHeight={150}
+                            maxHeight={100}
                         />)}
                     {!modify ? <View >
                         <Text style={styles.list}>{cityData} </Text>
@@ -279,12 +288,13 @@ export default function FicheVente(props, { route }) {
                             save="value"
                             placeholder={locations}
                             search={false}
+                            maxHeight={100}
                         />)}
 
                     {isOwner ?
-                        <View style={styles.blocModiSuppr}>
+                        <View >
                             {modify ?
-                                <View >
+                                <View style={styles.blocModiSuppr} >
                                     <TouchableOpacity onPress={() => confirmChange()} style={styles.send}>
                                         <Text> Confirmer les changements</Text>
                                     </TouchableOpacity>
@@ -303,7 +313,7 @@ export default function FicheVente(props, { route }) {
                                 </View>
                             }
                         </View>
-                        : <View >
+                        : <View style={styles.blocModiSuppr}>
                             <TouchableOpacity style={styles.send1}>
                                 <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
                             </TouchableOpacity>
@@ -402,7 +412,7 @@ const styles = StyleSheet.create({
     },
 
     detail: {
-        fontSize: 28,
+        fontSize: 25,
     },
 
     product: {
@@ -530,6 +540,7 @@ const styles = StyleSheet.create({
     },
     blocModiSuppr: {
         alignItems: 'center',
+        marginTop: '5%'
     },
     addPicture: {
         width: 120,
@@ -537,18 +548,19 @@ const styles = StyleSheet.create({
         marginRight: 20,
         borderWidth: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: '10%'
     },
     iconModal: {
         marginRight: 10
     },
     description: {
-        fontSize: 18,
+        fontSize: 16,
     },
     list: {
         fontSize: 15
     },
     price: {
-        fontSize: 15
+        fontSize: 16
     },
 })

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,16 +6,28 @@ import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } fr
 import React, { useState, useEffect, useRef } from 'react';
 
 
-export default function Header({ navigation }) {
+
+export default function Header(props, { navigation }) {
+
 
     const dispatch = useDispatch();
+
+    const user = useSelector((state) => state.user.value);
+    const token = user.token
+
+
     const logout = () => {
-        dispatch(updateName(null))
-        dispatch(updateToken(null))
-        dispatch(updateMail(null))
-        dispatch(deleteAllPhoto())
-        dispatch(deleteAllfavs())
+        if (token) {
+            dispatch(updateName(null))
+            dispatch(updateToken(null))
+            dispatch(updateMail(null))
+            dispatch(deleteAllfavs())
+        } else {
+            props.navigation.navigate("InscriptionConnection", { navigation: navigation })
+        }
+
     }
+
 
     return (
         <>
@@ -26,12 +38,12 @@ export default function Header({ navigation }) {
                 {/* <Text style={styles.duka} >dUka</Text> */}
                 <View style={styles.topRightHeader} >
                     <TouchableOpacity style={styles.iconRightHeader}>
-                        <FontAwesome name="bell" size={20} color='white'/>
+                        <FontAwesome name="bell" size={20} color='white' />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
                         <AntDesign name="logout" size={20} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('MesVentes')} style={styles.iconRightHeader}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('DashboardVendeur')} style={styles.iconRightHeader}>
                         <AntDesign name="infocirlce" size={20} color="white" />
                     </TouchableOpacity>
                 </View>
@@ -79,7 +91,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 10,
         marginRight: 10,
-        color:'white'
+        color: 'white'
     },
     iconRightHeader: {
         marginLeft: 10,

@@ -112,7 +112,7 @@ export default function VendreScreen({ route, navigation }) {
                     category: category,
                     description: description,
                     price: price,
-                    dateOfCreation: dateOfTheDay,
+                    date: dateOfTheDay,
                     locations: locations,
                 }),
             })
@@ -159,7 +159,7 @@ export default function VendreScreen({ route, navigation }) {
         setOpenPhoto(true)
         setDisplayOpenPhoto(data)
     }
-    const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer (mettre une limite max?)
+    const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer 
         return (
             <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} >
                 <ImageBackground source={{ uri: data }} style={{ width: 120, height: 120, marginRight: 20 }} >

@@ -55,7 +55,7 @@ export default function ModalScreen({ navigation }) {
                                 <Text style={styles.textStyle}>Hide Modal</Text>
                             </Pressable> */}
                             <FontAwesome name="search" style={styles.iconSearch} size={20} />
-                            <TextInput style={styles.inputSearch} placeholder=" Que cherchez-vous ?" maxLength={200} />
+                            <TextInput style={styles.inputSearch} placeholder="Que cherchez-vous ?" maxLength={200} />
                         </View>
                         <View style={styles.SearchRow} >
                             <FontAwesome name="search" style={styles.iconSearch} size={20} />

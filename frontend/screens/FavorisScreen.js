@@ -19,7 +19,7 @@ import { getFavorites } from "../reducers/user";
 import ResultSearch from "../components/ResultSearch";
 const backendAddress = BACKEND_ADDRESS;
 
-export default function FavorisScreen({ navigation }) {
+export default function FavorisScreen({ navigation, route }) {
   const user = useSelector((state) => state.user.value);
   const token = user.token;
   const Favorites = user.favorites;
@@ -27,17 +27,18 @@ export default function FavorisScreen({ navigation }) {
 
   const displayFav = Favorites.map((el, i) => {
     return <ResultSearch 
+    key={i}
+    sellerName={el.sellerName}
     offerTitle={el.offerTitle}
+    locations={el.locations}
     images={el.images}
     description={el.description}
     price={el.price}
     category={el.category}
     id={el.id}
-    isLiked={true}
-    key={el.id}
     navigation={navigation}
     route={route}
-    locations={data.locations}
+    isLiked={true}
     >  </ResultSearch>;
   });
 

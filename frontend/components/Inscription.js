@@ -110,15 +110,15 @@ export default function Inscription(navigation) {
                 <View style={styles.modalView}>
                     <TextInput onChangeText={(value) => setUsername(value)} value={username} style={styles.input} placeholder=" Nom utilisateur" />
                     <TextInput onChangeText={(value) => setEmail(value)} value={email} style={styles.input} placeholder=" email" keyboardType="email-address" />
-                    {!wrong ? < Text style={styles.erreur} > Veuillez entre une adresse mail</Text> : <></>}
+                    {!wrong ? < Text style={styles.erreur} > Veuillez entrez une adresse mail</Text> : <></>}
                     <View style={styles.password}>
-                        <TextInput onChangeText={(value) => setPassword(value)} value={password} placeholder=" Password" maxLength={200} secureTextEntry={eye ? true : false} />
+                        <TextInput onChangeText={(value) => setPassword(value)} value={password} placeholder=" Password" maxLength={200} secureTextEntry={eye ? true : false} style={styles.passwordInput} />
                         <TouchableOpacity onPress={() => showPassword()}>
                             <Ionicons name={eye ? "eye" : 'eye-off'} size={34} color="black" />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.password}>
-                        <TextInput onChangeText={(value) => setConfirmPassword(value)} value={confirmPassword} placeholder=" Password" maxLength={200} secureTextEntry={eyeTwo ? true : false} />
+                        <TextInput onChangeText={(value) => setConfirmPassword(value)} value={confirmPassword} placeholder=" Password" maxLength={200} secureTextEntry={eyeTwo ? true : false} style={styles.passwordInput} />
                         <TouchableOpacity onPress={() => showPasswordTwo()}>
                             <Ionicons name={eyeTwo ? "eye" : 'eye-off'} size={34} color="black" />
                         </TouchableOpacity>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: '#60935D',
-        width: '80%',
+        width: '100%',
         height: '10%',
         borderRadius: 5,
         marginBottom: 20
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
         fontSize: 40,
         // fontFamily: 'MontserratMedium',
         fontSize: 20,
+        borderRadius: 20
     },
     erreur: {
         color: 'red',
@@ -223,13 +224,17 @@ const styles = StyleSheet.create({
     password: {
         margin: 8,
         borderWidth: 2,
-        height: 40,
         width: 300,
         borderRadius: 10,
-        // fontFamily: 'MontserratMedium',
-        fontSize: 14,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        alignItems: 'center',
+    },
+    passwordInput: {
+        flex: 1,
+        height: 40,
+        borderRadius: 10,
+        fontSize: 14,
+        paddingLeft: 8,
     },
 
 
