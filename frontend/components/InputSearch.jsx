@@ -164,7 +164,7 @@ export default function InputSearch(navigation) {
 
                 </TouchableOpacity> */}
 
-                <RemoteDataSetExample2 />
+                {/* <RemoteDataSetExample2 /> */}
 
                 {/* <Dropdown /> */}
 
@@ -250,9 +250,12 @@ const styles = StyleSheet.create({
     slectlist: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        //    backgroundColor: 'green',
+        // backgroundColor: 'white',
         width: "100%",
-        flex: 1
+        // height: '30%',
+        // flex: 1
+        marginBottom: 20,
+        // backgroundColor: 'green',
     },
     SearchRow: {
         flexDirection: 'row',
@@ -286,12 +289,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
-        marginBottom: 48,
+        // marginTop: 22,
+        // marginBottom: 48,
 
     },
     modalView: {
-        margin: 20,
+        // margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
