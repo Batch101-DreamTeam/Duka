@@ -39,9 +39,6 @@ export default function InputSearch(navigation) {
 
     // const offer = useSelector((state) => state.offer.value);
     //console.log(offer.resultSearch.searchOnWord)
-   const updatePrice = ()=>{
-       
-   }
     useFocusEffect(
         React.useCallback(() => {
         return(()=> console.log('bye'))

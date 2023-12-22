@@ -80,6 +80,8 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             if (resultSearchUser) {
                 setOffersData(resultSearchUser)
             } else {
+                // setOffersData([]);
+                // console.log(backendAddress)
                 callOfData()
             }
         }, [resultSearchUser, Favorites])
