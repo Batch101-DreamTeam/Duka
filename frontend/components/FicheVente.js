@@ -226,7 +226,7 @@ export default function FicheVente(props, { route, navigation }) {
         });
     };
     const goToMessageOwnerOffer = () => {
-        props.navigation.navigate("Message", { data: dataOffers.id })
+        props.navigation.navigate("Message", { data: dataOffers })
     }
     //console.log(dataOffers)
 
@@ -304,7 +304,7 @@ export default function FicheVente(props, { route, navigation }) {
                         />)}
                     {!modify ? <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.list}>{cityData} </Text>
-                        {isOwner && <TouchableOpacity onPress={() => goToMessageOwnerOffer()} style={{ marginLeft: '70%' }}>
+                        {isOwner && <TouchableOpacity onPress={() => goToMessageOwnerOffer()} style={{ marginLeft: '60%' }}>
                             <FontAwesome name="envelope" size={24} color="black" />
                         </TouchableOpacity>}
                     </View> :
