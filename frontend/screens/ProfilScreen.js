@@ -64,7 +64,7 @@ export default function ProfilScreen(props, { navigation }) {
             fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
                 .then(response => response.json())
                 .then(profileInfos => {
-                    //console.log('pro', profileInfos.avatar)
+                    // console.log(profileInfos)
                     if (profileInfos.result) {
                         setProfileData({
                             username: profileInfos.username,

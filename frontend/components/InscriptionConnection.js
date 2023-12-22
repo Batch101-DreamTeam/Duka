@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput, KeyboardAvoidingView, Modal, Alert, Pressable } from 'react-native';
+import { StyleSheet, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput, KeyboardAvoidingView, Modal, Alert, Pressable, ScrollView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,20 +23,19 @@ export default function InscriptionConnection(props, { navigation }) {
         }
     }, [isTokenAvailable, navigation]);
     return (
-        <View style={styles.container}>
-            {!isTokenAvailable &&
-                <KeyboardAvoidingView>
-                <View>
 
-                    <Connection />
-
-
-                    <Inscription />
-
+                <View style={styles.container}>
+                    {!isTokenAvailable &&
+                        <SafeAreaView>
+                            <View>
+                                <Connection />
+                                
+                                <Inscription />
+                                                 
+                            </View>
+                        </SafeAreaView>
+                    }
                 </View>
-            </KeyboardAvoidingView>
-            }
-        </View>
     );
 }
 
