@@ -436,13 +436,13 @@ export default function FicheVente(props, { route, navigation }) {
                     <View style={styles.containerContent}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <Text style={styles.h1}>Profil du Vendeur</Text>
-                            <TouchableOpacity onPress={() => setModalProfilVendeur(!modalProfilVendeur)}>
+                            <TouchableOpacity onPress={() => setModalProfilVendeur(!modalProfilVendeur)} style={{ marginLeft: '5%', marginTop: '1%' }}>
                                 <AntDesign name="closecircle" size={30} color="green" />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.userBlock}>
 
-                            {avatarSeller ? <Image source={{ uri: avatarSeller }} style={{ height: '100%', width: '40%', marginLeft: '5%' }} /> : <></>}
+                            {avatarSeller ? <Image source={{ uri: avatarSeller }} style={{ height: '90%', width: '40%', marginLeft: '5%', borderRadius: 70 }} /> : <></>}
 
                             <View style={styles.allinfosProfil}>
                                 <Text style={styles.name}>Nom : {sellerNameOffer}</Text>
@@ -487,13 +487,15 @@ const styles = StyleSheet.create({
     },
 
     containerContent: {
-        width: '85%',
-        height: '82%',
+        width: '95%',
+        height: '65%',
         backgroundColor: 'white',
         borderRadius: 30,
         padding: 2,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        borderColor: 'black',
+        borderWidth: 2
+
     },
     product: {
         flex: 1,
@@ -652,7 +654,7 @@ const styles = StyleSheet.create({
     userBlock: {
         backgroundColor: '#60935D',
         width: '100%',
-        height: '20%',
+        height: '30%',
         borderRadius: 10,
         alignItems: 'center',
         flexDirection: 'row'
@@ -689,10 +691,8 @@ const styles = StyleSheet.create({
         width: 200,
         height: 35,
         borderRadius: 5,
-        fontSize: 14,
         color: 'white',
-        // borderBottomWidth: 5,
-        // fontFamily: 'MontserratMedium',
+        flexWrap: 'wrap',
     },
     descriptionBloc: {
         backgroundColor: '#60935D',
