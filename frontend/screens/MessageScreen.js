@@ -125,7 +125,7 @@ export default function MessageScreen(props, { navigation }) {
     return (
         // objInfo.sellerName &&
         <View style={styles.container}>
-            <Header navigation={navigation} />
+            <Header navigation={props.navigation} />
             <View style={styles.infos}>
                 <View style={styles.infosArticle}>
                     <Text style={styles.white}>Vendeur : {seller.username}  </Text>

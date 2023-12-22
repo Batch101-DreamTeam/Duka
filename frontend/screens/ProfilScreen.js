@@ -173,7 +173,7 @@ export default function ProfilScreen(props, { navigation }) {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}>
             <View style={styles.container}>
-                <Header navigation={navigation} />
+                <Header navigation={props.navigation} />
                 {user.token ? (
                     <View style={styles.containerContent}>
                         <View style={styles.container}>
@@ -275,12 +275,7 @@ export default function ProfilScreen(props, { navigation }) {
                     setOpenTakePhotoModal(!openTakePhotoModal);
                     //console.log(modalVisible)
                 }}>
-
-
                 <Photo closeModal={closeTakePhotoModal} />
-
-
-
             </Modal>
 
         </KeyboardAvoidingView>
