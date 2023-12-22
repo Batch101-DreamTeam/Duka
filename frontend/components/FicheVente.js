@@ -226,7 +226,7 @@ export default function FicheVente(props, { route, navigation }) {
         });
     };
     const goToMessageOwnerOffer = () => {
-        props.navigation.navigate("Message", { data: dataOffers.id })
+        props.navigation.navigate("Message", { data: dataOffers })
     }
     //console.log(dataOffers)
 
