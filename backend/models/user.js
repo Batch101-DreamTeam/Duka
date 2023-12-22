@@ -21,7 +21,7 @@ const userShema = mongoose.Schema({
       favorites: [],
       reputation: Boolean,
       // ou moyenne des notes
-      conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'chatChannels' }],
+      conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ChatChannels' }],
       dateOfCreation: Date,
       location: [String],
 });
