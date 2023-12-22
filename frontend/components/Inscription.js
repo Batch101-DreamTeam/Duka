@@ -6,7 +6,7 @@ import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import { BACKEND_ADDRESS } from "@env"
-import { ScrollView } from 'react-native';
+import { ScrollView,  } from 'react-native';
 const backendAddress = BACKEND_ADDRESS;
 
 
@@ -93,6 +93,7 @@ export default function Inscription(navigation) {
     }
 
     return (
+        
         <View style={styles.container}>
             <View style={styles.box}>
                 <Text style={styles.textBox}>   Inscription</Text>
@@ -100,6 +101,7 @@ export default function Inscription(navigation) {
             <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.btnConnexion}>
                 <Text style={styles.white}>Inscription par mail</Text>
             </TouchableOpacity>
+            <KeyboardAvoidingView>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -134,7 +136,9 @@ export default function Inscription(navigation) {
                     </TouchableOpacity >
                 </View >
             </Modal>
+            </KeyboardAvoidingView>
         </View>
+    
     );
 }
 
@@ -164,12 +168,14 @@ const styles = StyleSheet.create({
     },
 
     textBox: {
-        textAlign: 'center',
-        color: 'white',
-        height: '100%',
-        textAlignVertical: 'center',
-        // fontFamily: 'MontserratMedium',
-        fontSize: 20,
+    textAlign: "center",
+    color: "white",
+    height: "100%",
+    width:400,
+    textAlignVertical: "center",
+    // fontFamily: 'MontserratMedium',
+    fontSize: 14,
+    padding:12
     },
     white: {
         color: 'white',

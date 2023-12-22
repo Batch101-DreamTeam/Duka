@@ -27,6 +27,7 @@ export default function FavorisScreen({ navigation, route }) {
   console.log(Favorites)
 
   const displayFav = Favorites?.map((el, i) => {
+    // let isliked;
     return <ResultSearch 
     key={i}
     sellerName={el.sellerName}
@@ -115,7 +116,7 @@ export default function FavorisScreen({ navigation, route }) {
 
   }
   
-  console.log(Favorites);
+  // console.log(Favorites);
 
   return (
     <SafeAreaView style={styles.container}>

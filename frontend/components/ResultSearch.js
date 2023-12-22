@@ -16,8 +16,34 @@ export default function ResultSearch(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const token = user.token;
+  const Favorites = user.favorites;
 
   //console.log('id ', props.id, 'like ', props.isLiked)
+
+  let heart;
+  const target = Favorites?.find(el=> el.id == props.id)
+  if (target) {
+  heart = (
+      <TouchableOpacity
+        onPress={() => {
+          suppLike();
+        }}
+      >
+        <FontAwesome style={styles.red} name="heart" size={20} />
+      </TouchableOpacity>
+    );
+    
+  } else {
+    heart = (
+      <TouchableOpacity
+        onPress={() => {
+          addLike();
+        }}
+      >
+        <FontAwesome name="heart" size={20} />
+      </TouchableOpacity>
+    );
+  }
 
   const suppLike = () => {
     if (!token) {
@@ -36,12 +62,12 @@ export default function ResultSearch(props) {
     }
   };
 
-  useEffect(() => {
-    if (props.isLiked) {
-      setIsliked(true);
-    }
-  });
+  useEffect(() => {});
 
+  if (Favorites.includes(props.id)) {
+    setIsliked(true);
+  }
+  console.log(props.id);
   const handleNavigate = (data) => {
     navigation.navigate("FicheVente", { dataOffers: data, route: props.route });
   };
@@ -57,7 +83,8 @@ export default function ResultSearch(props) {
           <Text>{props.offerTitle}</Text>
           <Text>{props.description}</Text>
           <Text>{props.price} CFA</Text>
-          {isLiked ? (
+          {heart}
+          {/* {isLiked ? (
             <TouchableOpacity
               onPress={() => {
                 suppLike();
@@ -73,7 +100,7 @@ export default function ResultSearch(props) {
             >
               <FontAwesome name="heart" size={20} />
             </TouchableOpacity>
-          )}
+          )} */}
         </View>
       </View>
     </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
@@ -12,6 +12,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation, route }) {// ne pas mettre PROPS
     //console.log("acceuil", navigation)
+    const [refreshing, setRefreshing] = useState(false);
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const Favorites = user.favorites;
@@ -24,39 +25,68 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const dispatch = useDispatch();
     const [offersData, setOffersData] = useState([]);
     //console.log(resultSearchUser);
+ 
+
+    const callOfData = ()=>{
+        fetch(`${backendAddress}/offers/allOffers`, {
+            method: 'GET',
+            headers: {
+                'Cache-Control': 'no-cache',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log("alors fetch")
+                if (data.offers) {
+                    setOffersData( (prev) => {return data.offers.filter((el)=> {return !Favorites?.includes(el._id)})});
+                    setRefreshing(false);
+                    // console.log('rechaokrge')
+                    // setArticlesData(data.articles.filter((data, i) => i > 0));
+                    const offers = offersData && offersData.map((data, i) => {
+
+                        //  const isLiked = Favorites.some(e => data._id.toString() == e.id)         
+                         return (<ResultSearch
+                            key={i}
+                            sellerName={data.sellerName}
+                            offerTitle={data.offerTitle}
+                            locations={data.locations}
+                            images={data.images}
+                            description={data.description}
+                            price={data.price}
+                            category={data.category}
+                            id={data._id}
+                            navigation={navigation}
+                            date={data.dateOfCreation}
+                            route={route}
+                            // isLiked={isLiked}
+                        />);
+                    })
+                }
+                else {
+                    console.log('aucune donnée')
+                    return
+                }
+            });
+    }
+
+    const onRefresh = () => {
+        console.log('res')
+        setRefreshing(true); // Démarre le rafraîchissement
+        callOfData(); // Appelle la fonction pour récupérer les nouvelles données
+      };
+
     useFocusEffect(
         React.useCallback(() => {
             if (resultSearchUser) {
                 setOffersData(resultSearchUser)
             } else {
-                // setOffersData([]);
-                console.log(backendAddress)
-                fetch(`${backendAddress}/offers/allOffers`, {
-                    method: 'GET',
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        //console.log("alors fetch")
-                        if (data.offers) {
-                            setOffersData(data.offers);
-                            console.log('rechaokrge')
-                            // setArticlesData(data.articles.filter((data, i) => i > 0));
-                        }
-                        else {
-                            console.log('aucune donnée')
-                            return
-                        }
-                    });
+                callOfData()
             }
         }, [resultSearchUser, Favorites])
     )
-
     useEffect(() => {
         return () => dispatch(newSearch(""));
-    }, []);
+    }, [Favorites]);
 
     const deleteSearch = () => {
         dispatch(newSearch())
@@ -102,7 +132,12 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                         </View>
                         {!offersData.length && <Text>Pas de résultat</Text>}
                     </View>}
-                <ScrollView style={styles.scrollView}>
+                <ScrollView style={styles.scrollView}  refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />}
+          >
 
                     <View style={styles.productList}>
                         {offers}
