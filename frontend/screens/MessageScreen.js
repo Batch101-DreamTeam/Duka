@@ -17,11 +17,11 @@ import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
 
 
-export default function MessageScreen({ navigation }) {
-
-    const idProduct = '658015ffc0219a07a6ef8a49';
+export default function MessageScreen(props, { navigation }) {
+    console.log("regarde ici", props.route.params.data.id)
+    const idProduct = props.route.params.data.id;
     const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
-    let pusher = null;
+
     const isFocused = useIsFocused();
     const user = useSelector((state) => state.user.value);
     // console.log(user)
@@ -31,7 +31,7 @@ export default function MessageScreen({ navigation }) {
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState('');
     const chatname = idProduct + seller._id;
-
+    let pusher = null
 
     // Join chat
     useEffect(() => {

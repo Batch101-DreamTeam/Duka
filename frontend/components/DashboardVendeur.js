@@ -15,7 +15,8 @@ import ResultSearch from './ResultSearch';
 const backendAddress = BACKEND_ADDRESS;
 
 
-export default function DashboardVendeur({ navigation, route }) {
+export default function DashboardVendeur(props, { navigation, route }) {
+    // console.log("nein", navigation)
     const [offersData, setOffersData] = useState([]);
     const [haveOffers, setHaveOffers] = useState(false)
     const user = useSelector((state) => state.user.value);
@@ -53,7 +54,7 @@ export default function DashboardVendeur({ navigation, route }) {
                 price={data.price}
                 category={data.category}
                 id={data._id}
-                navigation={navigation}
+                navigation={props.navigation}
                 route={route}
             />
         )
@@ -80,11 +81,11 @@ export default function DashboardVendeur({ navigation, route }) {
                                 <Text>Consuler mes derners messages</Text>
                             </TouchableOpacity >
                         </View>}
-                    <TouchableOpacity style={styles.send1} onPress={GotoAjouterVente}>
-                        <Text>Ajouter une nouvelle offre</Text>
-                    </TouchableOpacity >
                 </View>
                 : <Text>Vous devez vous connecter pour accéder à ce service</Text>}
+            <TouchableOpacity style={styles.send1} onPress={GotoAjouterVente}>
+                <Text>Ajouter une nouvelle offre</Text>
+            </TouchableOpacity >
         </View>
     );
 }

@@ -19,7 +19,7 @@ import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
 
-export default function FicheVente(props, { route }) {
+export default function FicheVente(props, { route, navigation }) {
     const dispatch = useDispatch()
     LogBox.ignoreLogs([
         'Non-serializable values were found in the navigation state',
@@ -65,7 +65,7 @@ export default function FicheVente(props, { route }) {
     const [isOwner, setIsOwner] = useState(false)
 
 
-    console.log(dateMiseEnVente)
+    //console.log(dateMiseEnVente)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
@@ -209,6 +209,10 @@ export default function FicheVente(props, { route }) {
             return newIndex >= photoReducer.length ? 0 : newIndex;
         });
     };
+
+    const goToMessage = () => {
+        props.navigation.navigate("Message", { data: dataOffers })
+    }
     const photos = photoReducer && photoReducer.map((data, i) => {
         return (
             <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} style={{ width: '100%', height: '45%' }}>
@@ -317,7 +321,7 @@ export default function FicheVente(props, { route }) {
                             <TouchableOpacity style={styles.send1}>
                                 <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.send1}>
+                            <TouchableOpacity style={styles.send1} onPress={goToMessage}>
                                 <Text>Contacter le vendeur</Text>
                             </TouchableOpacity>
                         </View>}

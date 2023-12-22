@@ -4,7 +4,7 @@ var router = express.Router();
 const Pusher = require('pusher');
 // const Offer = require("../models/offer");
 const User = require('../models/user')
-const ChatChannel = require("../models/ChatChannel")
+const ChatChannel = require('../models/chatChannel')
 
 
 
@@ -88,7 +88,7 @@ router.post('/', async (req, res) => {
 router.get('/previousMessages/:chatname', async (req, res) => {
 
     ChatChannel.findOne({ name: req.params.chatname }).then((resp) => {
-        console.log(resp)
+        //console.log(resp)
         if (resp) {
             res.json({
                 result: true,
