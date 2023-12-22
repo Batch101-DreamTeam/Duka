@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function ResultSearch(props) {
-  // console.log("props", props)
+  //console.log("props", props)
   const { navigation } = props;
   // console.log("ici", props)
   const [isLiked, setIsliked] = useState(false);

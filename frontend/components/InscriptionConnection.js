@@ -25,6 +25,7 @@ export default function InscriptionConnection(props, { navigation }) {
     return (
         <View style={styles.container}>
             {!isTokenAvailable &&
+                <KeyboardAvoidingView>
                 <View>
 
                     <Connection />
@@ -33,6 +34,7 @@ export default function InscriptionConnection(props, { navigation }) {
                     <Inscription />
 
                 </View>
+            </KeyboardAvoidingView>
             }
         </View>
     );

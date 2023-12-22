@@ -40,7 +40,7 @@ export default function Connection(navigation) {
   const EMAIL_REGEX =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const user = useSelector((state) => state.user.value);
-//   const tokens = user.token;
+  //   const tokens = user.token;
   // console.log(user)
 
   useEffect(() => {

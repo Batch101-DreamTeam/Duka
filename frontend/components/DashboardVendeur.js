@@ -16,7 +16,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function DashboardVendeur(props, { navigation, route }) {
-    console.log("nein", navigation)
+    // console.log("nein", navigation)
     const [offersData, setOffersData] = useState([]);
     const [haveOffers, setHaveOffers] = useState(false)
     const user = useSelector((state) => state.user.value);

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInpu
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Inscription from '../components/Inscription';
-import React, { useEffect, useState, Dispatch, } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Camera } from 'expo-camera';
 import Photo from '../components/Photo';
@@ -26,9 +26,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 
-
-//Créer un nouveau profil
-export default function ProfilScreen({ navigation }) {
+export default function ProfilScreen(props, { navigation }) {
     const [profileData, setProfileData] = useState({
         username: "",
         contact: "",
@@ -41,7 +39,7 @@ export default function ProfilScreen({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
     const photoProfileReducer = user.profilePhoto
-    const token = user.token
+
 
     const dispatch = useDispatch();
 
@@ -66,32 +64,34 @@ export default function ProfilScreen({ navigation }) {
             fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
                 .then(response => response.json())
                 .then(profileInfos => {
-
+                    //console.log('pro', profileInfos.avatar)
                     if (profileInfos.result) {
                         setProfileData({
                             username: profileInfos.username,
                             contact: profileInfos.contact,
                             description: profileInfos.description,
                             mail: profileInfos.mail,
-                            avatar: profileInfos.avatarUrl,
+                            avatarProfil: profileInfos.avatar,
                             location: profileInfos.location,
-                            favorites: profileInfos.favorites,
+                            // favorites: profileInfos.favorites,
                         });
+                        //console.log(profileData.avatarProfil)
                         setUpdatedUsername(profileInfos.username)
                         setUpdatedContact(profileInfos.contact)
                         setUpdatedDescription(profileInfos.description)
+                        dispatch(addProfilePhoto(profileData.avatarProfil))
                     }
                 })
                 .catch(error => {
-                    // console.error("Error fetching profile information:", error);
+                    //console.error("Error fetching profile information:", error);
 
                 });
 
         }, [])
     );
-
+    console.log('photoProfileReducer', photoProfileReducer)
     //Mettre à jour son profil
-    const updateProfilInfo = async() => {
+    const updateProfilInfo = async () => {
 
         const formData = new FormData();
         formData.append('photoFromFront', {
@@ -105,7 +105,6 @@ export default function ProfilScreen({ navigation }) {
             body: formData,
         })
         const photoSaveCloudinaty = await response.json()
-
         fetch(`${backendAddress}/users/modifyProfil/${user.token}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -174,16 +173,16 @@ export default function ProfilScreen({ navigation }) {
                                 <Text style={styles.h1}>Mon profil</Text>
 
                                 <View style={styles.userBlock}>
-                                    <TouchableOpacity onPress={() => setModifyField(!modifyField)} style={styles.button} activeOpacity={0.8} >
-                                        <FontAwesome style={styles.modifyContactSlidePen} name="pencil" size={20} color={'white'} />
-                                    </TouchableOpacity>
-                                    {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
-                                    {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
-                                    <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addPicture} activeOpacity={0.8} >
+                                    <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.8} style={{ height: '100%', width: '40%', marginLeft: '5%' }} >
                                         {/* <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} /> */}
-                                    {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={styles.pictureProfile} />}
+                                        {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={{ height: '90%', width: '90%', borderRadius: 80 }} />}
                                     </TouchableOpacity>
+
+                                    <View style={styles.allinfosProfil}>
+                                        {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
+                                        {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
+                                        <Text style={styles.mail}>email :  {profileData.mail}</Text>
+                                    </View>
 
                                     <Modal
                                         animationType="slide"
@@ -215,9 +214,6 @@ export default function ProfilScreen({ navigation }) {
                                 <Text style={styles.h2}>Description</Text>
                                 <View style={styles.descriptionBloc}>
                                     {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value) => setUpdatedDescription(value)} style={styles.textInputDescription} />}
-                                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => setModifyField(true)}>
-                                        <FontAwesome style={styles.modifyPenDescription} name="pencil" size={20} color={'white'} />
-                                    </TouchableOpacity>
                                 </View>
                                 <Text style={styles.h2}>Lieux favoris</Text>
                                 <View style={styles.localisationContainer}>
@@ -226,26 +222,28 @@ export default function ProfilScreen({ navigation }) {
                                             <Text style={styles.whiteText}>{profileData.location}</Text>
                                         </TouchableOpacity>
                                     ))}
-                                    <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                                        <FontAwesome name="plus" style={styles.plusButton} size={20} />
-                                    </TouchableOpacity>
-                                </View>
-                                <Text style={styles.h2}>Offres en cours</Text>
-                                <View style={styles.localisationContainer}>
-                                    {[1, 2, 3].map((item) => (
-                                        <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
-                                            <Text style={styles.whiteText}>{profileData.favorites}</Text>
-                                        </TouchableOpacity>
-                                    )
 
-                                    )}
                                 </View>
+
                                 <View>
-                                    <TouchableOpacity onPress={() => updateProfilInfo()} activeOpacity={0.8} style={styles.btn}>
+                                    {!modifyField ? <TouchableOpacity onPress={() => setModifyField(true)} activeOpacity={0.8} style={styles.btn}>
                                         <Text style={styles.white}>
-                                            Enregistrer les modifications
+                                            Modifier le profil
                                         </Text>
                                     </TouchableOpacity >
+                                        : <View>
+                                            <TouchableOpacity onPress={() => setModifyField(false)} activeOpacity={0.8} style={styles.btn}>
+                                                <Text style={styles.white}>
+                                                    Annuler
+                                                </Text>
+                                            </TouchableOpacity >
+                                            <TouchableOpacity onPress={() => updateProfilInfo()} activeOpacity={0.8} style={styles.btn}>
+                                                <Text style={styles.white}>
+                                                    Enregistrer les modifications
+                                                </Text>
+                                            </TouchableOpacity >
+                                        </View>
+                                    }
 
                                 </View>
                             </ScrollView>
@@ -285,21 +283,16 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'flex-start',
         backgroundColor: 'white'
 
     },
 
-    containerContent: {
-        flex: 1,
-        backgroundColor: '',
+    allinfosProfil: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        marginLeft: '5%'
     },
-
-    plusButton: {
-        marginLeft: 230,
-        color: '#BAB700',
-    },
-
     localisationContainer: {
         flexDirection: 'row',
         backgroundColor: '#60935D',
@@ -310,20 +303,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
 
-    header: {
-        height: '100%',
-        width: '100%',
-        // height: '7%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        // borderBottomWidth: 1,
-        marginBottom: 10,
-        backgroundColor: '#60935D'
-    },
-
     scrollView: {
         alignItems: 'center',
-        paddingBottom: 20,
+        flex: 1,
     },
 
     userBlock: {
@@ -332,52 +314,29 @@ const styles = StyleSheet.create({
         height: '20%',
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: 0,
+
+        flexDirection: 'row'
         // backgroundColor:'blue'
     },
 
-    pictureProfile: {
-        // backgroundColor: 'purple',
-        width: 100,
-        height: 100,
-        borderRadius: 80,
-        marginTop: -110,
-        marginLeft: -180,
-        paddingLeft:-10,
-        // marginBottom: 100,
-        // marginRight: 220,
-    },
     addPicture: {
         width: "auto",
         height: "auto",
         borderRadius: 80,
-        marginLeft:'0%',
+        marginLeft: '0%',
         marginTop: -20,
         backgroundColor: 'red'
     },
-    
-    modifyProfilePhotoPen: {
-        marginLeft: 0,
-        marginBottom: 0,
-        marginTop: -80,
-        width: 30,
-        height: 30,
-        margin: 10,
-        color: '#BAB700',
 
-    },
     name: {
         // height: 35,
-        marginTop: -40,
+        marginTop: '5%',
         marginBottom: 20,
         borderRadius: 5,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         fontSize: 18,
         color: 'white',
         borderBottomWidth: 1,
-        // fontFamily: 'MontserratMedium',
-        marginLeft: 100,
-        // backgroundColor:'#BAB700'
     },
 
     tel: {
@@ -388,7 +347,7 @@ const styles = StyleSheet.create({
         color: 'white',
         // borderBottomWidth: 5,
         // fontFamily: 'MontserratMedium',
-        marginLeft: 165,
+
         // backgroundColor:"red"
     },
 
@@ -401,7 +360,6 @@ const styles = StyleSheet.create({
         color: 'white',
         // borderBottomWidth: 5,
         // fontFamily: 'MontserratMedium',
-        marginLeft: 165
     },
 
     descriptionBloc: {
@@ -413,22 +371,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
 
-    modifyContactSlidePen: {
-        marginLeft: 350,
-        marginBottom: 0,
-        marginTop: 20,
-        width: 50,
-        height: 50,
-        color: '#BAB700',
-
-    },
-
-
-    modifyPenDescription: {
-        marginTop: -30,
-        marginLeft: 300,
-        color: '#BAB700'
-    },
 
     h1: {
         // fontFamily: 'MontserratMedium',
@@ -455,6 +397,7 @@ const styles = StyleSheet.create({
         // fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'black',
+
     },
 
     whiteText: {
@@ -469,7 +412,8 @@ const styles = StyleSheet.create({
         width: 200,
         height: 30,
         marginLeft: 130,
-        marginTop: -55,
+        marginTop: '10%'
+
     },
 
     textInputTel: {
