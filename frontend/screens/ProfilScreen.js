@@ -47,6 +47,7 @@ export default function ProfilScreen(props, { navigation }) {
     const [updatedContact, setUpdatedContact] = useState('');
     const [updatedDescription, setUpdatedDescription] = useState('');
     const [modifyField, setModifyField] = useState(false);
+    const [profilPicture, setProfilPicture] = useState('');
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modale pour prendre une photo
@@ -54,6 +55,7 @@ export default function ProfilScreen(props, { navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
+            setModifyField(false)
             setModalVisible(false);
             dispatch(deleteAllPhoto())
         }, [])
@@ -79,6 +81,8 @@ export default function ProfilScreen(props, { navigation }) {
                         setUpdatedUsername(profileInfos.username)
                         setUpdatedContact(profileInfos.contact)
                         setUpdatedDescription(profileInfos.description)
+                        setUpdatedDescription(profileInfos.description)
+                        setProfilPicture(profileData.avatarProfil)
                         dispatch(addProfilePhoto(profileData.avatarProfil))
                     }
                 })
@@ -175,12 +179,12 @@ export default function ProfilScreen(props, { navigation }) {
                                 <View style={styles.userBlock}>
                                     <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.8} style={{ height: '100%', width: '40%', marginLeft: '5%' }} >
                                         {/* <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} /> */}
-                                        {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={{ height: '90%', width: '90%', borderRadius: 80 }} />}
+                                        {profilPicture && <Image source={{ uri: photoProfileReducer }} style={{ height: '90%', width: '90%', borderRadius: 80 }} />}
                                     </TouchableOpacity>
 
                                     <View style={styles.allinfosProfil}>
-                                        {!modifyField ? <Text style={styles.name}>Username : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} style={styles.textInputUsername} />}
-                                        {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} style={styles.textInputTel} />}
+                                        {!modifyField ? <Text style={styles.name}>Nom : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} value={updatedUsername} style={styles.textInputUsername} />}
+                                        {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} value={updatedContact} style={styles.textInputTel} />}
                                         <Text style={styles.mail}>email :  {profileData.mail}</Text>
                                     </View>
 
@@ -213,7 +217,7 @@ export default function ProfilScreen(props, { navigation }) {
                                 </View>
                                 <Text style={styles.h2}>Description</Text>
                                 <View style={styles.descriptionBloc}>
-                                    {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value) => setUpdatedDescription(value)} style={styles.textInputDescription} />}
+                                    {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value) => setUpdatedDescription(value)} value={updatedDescription} style={styles.textInputDescription} />}
                                 </View>
                                 <Text style={styles.h2}>Lieux favoris</Text>
                                 <View style={styles.localisationContainer}>
@@ -232,16 +236,17 @@ export default function ProfilScreen(props, { navigation }) {
                                         </Text>
                                     </TouchableOpacity >
                                         : <View>
+                                            <TouchableOpacity onPress={() => updateProfilInfo()} activeOpacity={0.8} style={styles.btn1}>
+                                                <Text style={styles.white}>
+                                                    Enregistrer les modifications
+                                                </Text>
+                                            </TouchableOpacity >
                                             <TouchableOpacity onPress={() => setModifyField(false)} activeOpacity={0.8} style={styles.btn}>
                                                 <Text style={styles.white}>
                                                     Annuler
                                                 </Text>
                                             </TouchableOpacity >
-                                            <TouchableOpacity onPress={() => updateProfilInfo()} activeOpacity={0.8} style={styles.btn}>
-                                                <Text style={styles.white}>
-                                                    Enregistrer les modifications
-                                                </Text>
-                                            </TouchableOpacity >
+
                                         </View>
                                     }
 
@@ -289,7 +294,7 @@ const styles = StyleSheet.create({
 
     allinfosProfil: {
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'flex-start',
         marginLeft: '5%'
     },
@@ -336,19 +341,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         fontSize: 18,
         color: 'white',
-        borderBottomWidth: 1,
     },
 
     tel: {
-        width: 200,
-        height: 20,
-        marginTop: 0,
+        marginBottom: '2%',
         fontSize: 18,
         color: 'white',
-        // borderBottomWidth: 5,
-        // fontFamily: 'MontserratMedium',
-
-        // backgroundColor:"red"
     },
 
     mail: {
@@ -365,7 +363,7 @@ const styles = StyleSheet.create({
     descriptionBloc: {
         backgroundColor: '#60935D',
         width: '98%',
-        height: 110,
+        height: 80,
         borderRadius: 10,
         alignItems: 'center',
         marginTop: 20,
@@ -410,8 +408,6 @@ const styles = StyleSheet.create({
     textInputUsername: {
         backgroundColor: '#BBDFC5',
         width: 200,
-        height: 30,
-        marginLeft: 130,
         marginTop: '10%'
 
     },
@@ -419,15 +415,13 @@ const styles = StyleSheet.create({
     textInputTel: {
         backgroundColor: '#BBDFC5',
         width: 200,
-        height: 30,
-        marginLeft: 130,
         marginTop: 8,
     },
 
     textInputDescription: {
         backgroundColor: '#BBDFC5',
         width: 370,
-        height: 90,
+        height: 50,
         marginLeft: 0,
         marginTop: 15
     },
@@ -479,4 +473,16 @@ const styles = StyleSheet.create({
     iconModal: {
         marginRight: 10,
     },
+    btn1: {
+        marginTop: 20,
+        flexDirection: "row",
+        padding: 18,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        backgroundColor: "#60935D",
+        // fontFamily: 'MontserratMedium', 
+        fontSize: 20,
+    },
+
 });
