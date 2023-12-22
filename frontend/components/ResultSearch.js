@@ -40,7 +40,7 @@ export default function ResultSearch(props) {
           addLike();
         }}
       >
-        <FontAwesome name="heart" size={20} />
+        <FontAwesome name="heart" size={30} />
       </TouchableOpacity>
     );
   }
@@ -80,10 +80,10 @@ export default function ResultSearch(props) {
         )}
 
         <View style={styles.descProd}>
-          <Text>{props.offerTitle}</Text>
-          <Text>{props.description}</Text>
-          <Text>{props.price} CFA</Text>
-          {heart}
+          <Text style={styles.descTitle}>{props.offerTitle}</Text>
+          <Text style={styles.descDesc}>{props.description}</Text>
+          <Text style={styles.descPrice}>Prix : {props.price}  CFA</Text>
+          <Text style={styles.descHeart}>Ajouter aux favoris {heart}</Text>
           {/* {isLiked ? (
             <TouchableOpacity
               onPress={() => {
@@ -110,6 +110,8 @@ export default function ResultSearch(props) {
 const styles = StyleSheet.create({
   red: {
     color: "red",
+    textAlign: "right",
+
   },
   container: {
     flex: 1,
@@ -143,5 +145,28 @@ const styles = StyleSheet.create({
     padding: 5,
     // backgroundColor: 'gold',
     margin: 1,
+    fontSize: 55,
   },
+  descTitle: {
+    backgroundColor: '#60935D',
+    fontSize: 16,
+    padding: 2,
+  },
+  descDesc: {
+    // backgroundColor: '#BBDFC5',
+    fontSize: 14,
+    padding: 2,
+  },
+  descPrice: {
+    // justifyContent: 'space-around',
+    // backgroundColor: '#BAB700',
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  descHeart: {
+    // justifyContent: 'space-between',
+    // backgroundColor: '#BAB700',
+    padding: 5,
+  },
+
 });
