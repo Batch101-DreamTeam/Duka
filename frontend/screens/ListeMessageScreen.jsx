@@ -26,9 +26,9 @@ export default function ListeMessageScreen(props, { navigation }) {
         if (isFocused) {
 
             (async () => {
-                const response = await fetch(`${backendAddress}/messages/allPreviousMessages/${user.token}`)
-                const data = await response.json();
-                console.log("la data:", data);
+                // const response = await fetch(`${backendAddress}/messages/allPreviousMessages/${user.token}`)
+                // const data = await response.json();
+                // console.log("la data:", data);
 
 
                 // aller chercher tous les messages reçus par le user
