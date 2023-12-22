@@ -225,9 +225,13 @@ export default function FicheVente(props, { route, navigation }) {
             return newIndex >= photoReducer.length ? 0 : newIndex;
         });
     };
+    const goToMessageOwnerOffer = () => {
+        props.navigation.navigate("Message", { data: dataOffers.id })
+    }
+    //console.log(dataOffers)
 
     const goToMessage = () => {
-        props.navigation.navigate("Message", { data: dataOffers.id })
+        props.navigation.navigate("Message", { data: dataOffers })
     }
     const photos = photoReducer && photoReducer.map((data, i) => {
         return (
@@ -298,8 +302,11 @@ export default function FicheVente(props, { route, navigation }) {
                             search={false}
                             maxHeight={100}
                         />)}
-                    {!modify ? <View >
+                    {!modify ? <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.list}>{cityData} </Text>
+                        {isOwner && <TouchableOpacity onPress={() => goToMessageOwnerOffer()} style={{ marginLeft: '70%' }}>
+                            <FontAwesome name="envelope" size={24} color="black" />
+                        </TouchableOpacity>}
                     </View> :
                         (<SelectList
                             setSelected={(val) => setLocations(val)}
@@ -321,6 +328,7 @@ export default function FicheVente(props, { route, navigation }) {
                                         <Text> Annuler</Text>
                                     </TouchableOpacity>
                                 </View> :
+
                                 <View style={styles.blocModiSuppr}>
                                     {emptyField && <Text>Veuillez remplir les champs</Text>}
                                     <TouchableOpacity onPress={() => changeOffer()} style={styles.send1}>
