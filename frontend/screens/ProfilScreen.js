@@ -38,6 +38,7 @@ export default function ProfilScreen(props, { navigation }) {
     });
 
     const user = useSelector((state) => state.user.value);
+    const tokenUser = user.token
     const photoProfileReducer = user.profilePhoto
 
 
@@ -52,6 +53,7 @@ export default function ProfilScreen(props, { navigation }) {
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modale pour prendre une photo
     const [modalVisible, setModalVisible] = useState(false);
+    const [switche, setSwitche] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -66,7 +68,7 @@ export default function ProfilScreen(props, { navigation }) {
             fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
                 .then(response => response.json())
                 .then(profileInfos => {
-                    //console.log('pro', profileInfos.avatar)
+                    // console.log(profileInfos)
                     if (profileInfos.result) {
                         setProfileData({
                             username: profileInfos.username,
@@ -91,7 +93,7 @@ export default function ProfilScreen(props, { navigation }) {
 
                 });
 
-        }, [])
+        }, [switche, tokenUser, photoProfileReducer])
     );
     console.log('photoProfileReducer', photoProfileReducer)
     //Mettre à jour son profil
@@ -121,6 +123,7 @@ export default function ProfilScreen(props, { navigation }) {
         })
             .then(response => response.json())
             .then(data => {
+                setSwitche(!switche)
                 setModifyField(false)
             })
     }
@@ -156,6 +159,7 @@ export default function ProfilScreen(props, { navigation }) {
                 type: 'image/jpeg',
             })
             dispatch(addProfilePhoto(result.assets[0].uri)) //vise les photos de produits dans le reducer : à modifier!
+            setSwitche(!switche)
             setModalVisible(!modalVisible)
         }
     };
@@ -171,7 +175,7 @@ export default function ProfilScreen(props, { navigation }) {
                 <Header />
                 {user.token ? (
                     <View style={styles.containerContent}>
-                        <SafeAreaView style={styles.container}>
+                        <View style={styles.container}>
                             <ScrollView contentContainerStyle={styles.scrollView}>
 
                                 <Text style={styles.h1}>Mon profil</Text>
@@ -252,7 +256,7 @@ export default function ProfilScreen(props, { navigation }) {
 
                                 </View>
                             </ScrollView>
-                        </SafeAreaView>
+                        </View>
                     </View>
                 ) : (
                     <View style={styles.container}>

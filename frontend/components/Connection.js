@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TextInput,
   KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import React, { useState, useEffect, useRef } from "react";
@@ -183,9 +184,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     height: "100%",
+    width:400,
     textAlignVertical: "center",
     // fontFamily: 'MontserratMedium',
-    fontSize: 20,
+    fontSize: 14,
+    padding:12
   },
   white: {
     color: "white",

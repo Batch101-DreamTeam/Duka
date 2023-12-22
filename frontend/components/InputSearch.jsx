@@ -1,5 +1,5 @@
 import { StyleSheet, Alert, ImageBackground, Text, View, Pressable, Modal, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -39,12 +39,12 @@ export default function InputSearch(navigation) {
 
     // const offer = useSelector((state) => state.offer.value);
     //console.log(offer.resultSearch.searchOnWord)
-   const updatePrice = ()=>{
-       
-   }
+    const updatePrice = () => {
+
+    }
     useFocusEffect(
         React.useCallback(() => {
-        return(()=> console.log('bye'))
+            return (() => console.log('bye'))
         }, [modalVisible]))
 
 
@@ -69,6 +69,7 @@ export default function InputSearch(navigation) {
         }).then(response => response.json())
             .then((data) => {
                 if (data?.result) {
+                    console.log(data)
                     setResult(data.resultQuery)
                     dispatch(newSearch(data.resultQuery))
                     dispatch(nameSearch(searchWord))
@@ -76,7 +77,7 @@ export default function InputSearch(navigation) {
                     // setCategory(null);
                     // setLocations(null);
                     setModalVisible(false);
-                } 
+                }
                 else {
                     setIsResult(false)
                     setResult([])
@@ -127,34 +128,34 @@ export default function InputSearch(navigation) {
                     <SelectList
                         data={store}
                         save="value"
-                        setSelected={(val)=>setCategory(val)}
+                        setSelected={(val) => setCategory(val)}
                         placeholder='Catégorie'
                         search={false}
-                        defaultOption={{key:null, value: 'Catégorie'}}
+                        defaultOption={{ key: null, value: 'Catégorie' }}
                         maxHeight={150}
                     />
                     <SelectList
-                        setSelected={(val) => {setLocations(val)}}
+                        setSelected={(val) => { setLocations(val) }}
                         data={citiesData}
                         save="value"
                         placeholder='Ville'
                         search={false}
                     />
-                    <TextInput 
+                    <TextInput
                         style={styles.numbInput}
-                        keyboardType = 'number-pad'
-                        onChangeText = {(e)=> { setPriceChoice(e)}}
-                        value = {priceChoice}
+                        keyboardType='number-pad'
+                        onChangeText={(e) => { setPriceChoice(e) }}
+                        value={priceChoice}
                         placeholder='prix'
                     />
                 </View>
 
-                <TouchableOpacity style={styles.margiT} onPress={()=> console.log({
-                name: searchWord,
-                category: category,
-                city: location
-            })}> 
-                <Text>sending</Text>
+                <TouchableOpacity style={styles.margiT} onPress={() => console.log({
+                    name: searchWord,
+                    category: category,
+                    city: location
+                })}>
+                    <Text>sending</Text>
 
                 </TouchableOpacity>
 
@@ -220,7 +221,7 @@ export default function InputSearch(navigation) {
 }
 
 const styles = StyleSheet.create({
-    numbInput:{
+    numbInput: {
         // color: 'red',
         // backgroundColor: 'red',
         borderWidth: 1,
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
         padding: 5,
         maxHeight: 45,
         borderColor: 'grey'
-       
+
     },
     moduleSearch: {
         backgroundColor: 'red',
@@ -237,16 +238,16 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center',
     },
-    margiT:{
+    margiT: {
         marginTop: 50,
         borderWidth: 2,
     },
-    slectlist:{
-       flexDirection: 'row',
-       justifyContent:'space-between',
-    //    backgroundColor: 'green',
-       width: "100%",
-       flex: 1
+    slectlist: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        //    backgroundColor: 'green',
+        width: "100%",
+        flex: 1
     },
     SearchRow: {
         flexDirection: 'row',
