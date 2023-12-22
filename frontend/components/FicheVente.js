@@ -227,7 +227,7 @@ export default function FicheVente(props, { route, navigation }) {
     };
 
     const goToMessage = () => {
-        props.navigation.navigate("Message", { data: dataOffers })
+        props.navigation.navigate("Message", { data: dataOffers.id })
     }
     const photos = photoReducer && photoReducer.map((data, i) => {
         return (
