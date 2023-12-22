@@ -2,8 +2,10 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, KeyboardAvoidingView }
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { BACKEND_ADDRESS } from "@env";
 import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs } from '../reducers/user'
 import React, { useState, useEffect, useRef } from 'react';
+const backendAddress = BACKEND_ADDRESS;
 
 
 
@@ -13,15 +15,45 @@ export default function Header(props, { navigation }) {
     const dispatch = useDispatch();
 
     const user = useSelector((state) => state.user.value);
-    const token = user.token
+    const token = user?.token
+    const Favorites = user?.favorites;
 
-
-    const logout = () => {
-        if (token) {
+  
+ const updateAllFavsBeforeLogOut = ()=>{
+    const donne = {
+        Token: token,
+        favorites: Favorites,
+      };
+    fetch(`${backendAddress}/users/setFavorites`, {
+        method: "put", 
+        mode: "cors", 
+        cache: "no-cache", 
+        credentials: "same-origin", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(donne),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            // console.log(data);
             dispatch(updateName(null))
             dispatch(updateToken(null))
             dispatch(updateMail(null))
             dispatch(deleteAllfavs())
+          } else {
+            console.log(data.message);
+            return;
+          }
+        });
+ }
+
+    const logout = () => {
+        
+        if (token) {
+            updateAllFavsBeforeLogOut()
+            
         } else {
             props.navigation.navigate("InscriptionConnection", { navigation: navigation })
         }

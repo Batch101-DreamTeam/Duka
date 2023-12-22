@@ -194,6 +194,7 @@ router.put('/modifyProfil/:idToken', async (req, res) => {
         res.status(400).json({ result: false, message: 'no match for id product' })
       } else {
         const idProductOwner = await Offer.findOne({ _id: idProduct })
+        console.log(idProductOwner)
         if (!idProductOwner) {
           res.status(400).json({ result: false, message: 'no product found' })
         } else {
@@ -202,7 +203,15 @@ router.put('/modifyProfil/:idToken', async (req, res) => {
           if (idToken._id.equals(idProductOwner.seller)) {
             res.status(200).json({ result: true })
           } else {
-            res.status(400).json({ result: false, message: 'this user is not the owner of the product' })
+            const infoSeller = await User.findOne({ _id: idProductOwner.seller })
+            res.status(400).json({
+              result: false, message: 'this user is not the owner of the product', info: true,
+              username: infoSeller.username,
+              contact: infoSeller.contact,
+              mail: infoSeller.mail,
+              description: infoSeller.description,
+              avatarUrl: infoSeller.avatarUrl
+            })
           }
         }
 
