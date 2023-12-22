@@ -18,11 +18,9 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function MessageScreen(props, { navigation }) {
-    console.log(props.route)
-    // console.log(props.route)
-    // console.log("regarde ici", props.route.params.data);
-    const idProduct = props.route.params.data;
-    const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
+
+    const idProduct = props.route.params.data.id;
+    console.log("regarde ici", props.route.params.data.id);
 
     const isFocused = useIsFocused();
     const user = useSelector((state) => state.user.value);
@@ -69,8 +67,9 @@ export default function MessageScreen(props, { navigation }) {
     }, [isFocused]);
 
 
-
-
+    // const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
+    const imgProduct = props.route.params.data.images;
+    // console.log(product.images)
     // Leave chat
     useEffect(() => {
         return async () => {
@@ -128,11 +127,11 @@ export default function MessageScreen(props, { navigation }) {
             <Header />
             <View style={styles.infos}>
                 <View style={styles.infosArticle}>
-                    {/* <Text style={styles.white}>Vendeur : {seller.username}  </Text>
-                    <Text style={styles.white}> Produit: {product.offerTitle} </Text> */}
+                    <Text style={styles.white}>Vendeur : {seller.username}  </Text>
+                    <Text style={styles.white}> Produit: {props.route.params.data.offerTitle} </Text>
                 </View>
                 <View style={styles.photoArticle}>
-                    <Image style={styles.image} source={{ uri: imgProduct }} />
+                    {/* <Image style={styles.image} source={{ uri: props.route.params.data.images }} /> */}
 
                 </View>
 

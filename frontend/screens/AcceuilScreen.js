@@ -6,7 +6,7 @@ import ResultSearch from '../components/ResultSearch';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import { newSearch, nameSearch } from '../reducers/offer'
+import { newSearch, nameSearch, filterApply } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
@@ -17,17 +17,15 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
-    //console.log('fav', Favorites)
-
+    const filterOn = offer.haveFilter
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
-    console.log(offer)
     const dispatch = useDispatch();
     const [offersData, setOffersData] = useState([]);
-    //console.log(resultSearchUser);
- 
 
-    const callOfData = ()=>{
+
+
+    const callOfData = () => {
         fetch(`${backendAddress}/offers/allOffers`, {
             method: 'GET',
             headers: {
@@ -38,14 +36,14 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             .then(data => {
                 // console.log("alors fetch")
                 if (data.offers) {
-                    setOffersData( (prev) => {return data.offers.filter((el)=> {return !Favorites?.includes(el._id)})});
+                    setOffersData((prev) => { return data.offers.filter((el) => { return !Favorites?.includes(el._id) }) });
                     setRefreshing(false);
                     // console.log('rechaokrge')
                     // setArticlesData(data.articles.filter((data, i) => i > 0));
                     const offers = offersData && offersData.map((data, i) => {
 
                         //  const isLiked = Favorites.some(e => data._id.toString() == e.id)         
-                         return (<ResultSearch
+                        return (<ResultSearch
                             key={i}
                             sellerName={data.sellerName}
                             offerTitle={data.offerTitle}
@@ -58,7 +56,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                             navigation={navigation}
                             date={data.dateOfCreation}
                             route={route}
-                            // isLiked={isLiked}
+                        // isLiked={isLiked}
                         />);
                     })
                 }
@@ -73,7 +71,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
         console.log('res')
         setRefreshing(true); // Démarre le rafraîchissement
         callOfData(); // Appelle la fonction pour récupérer les nouvelles données
-      };
+    };
 
     useFocusEffect(
         React.useCallback(() => {
@@ -91,6 +89,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const deleteSearch = () => {
         dispatch(newSearch())
         dispatch(nameSearch())
+        dispatch(filterApply(false))
     }
     const offers = offersData && offersData.map((data, i) => {
         const isLiked = Favorites?.some((offer) => {
@@ -132,12 +131,20 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                         </View>
                         {!offersData.length && <Text>Pas de résultat</Text>}
                     </View>}
-                <ScrollView style={styles.scrollView}  refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />}
-          >
+                {filterOn &&
+                    <View style={styles.votreRecherche}>
+                        <Text>Supprimer les filtres</Text>
+                        <TouchableOpacity onPress={() => deleteSearch()}>
+                            <MaterialIcons name="cancel" size={24} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                }
+                <ScrollView style={styles.scrollView} refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />}
+                >
 
                     <View style={styles.productList}>
                         {offers}

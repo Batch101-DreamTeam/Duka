@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     height: "100%",
-    width:400,
+    width: 400,
     textAlignVertical: "center",
     // fontFamily: 'MontserratMedium',
     fontSize: 14,
-    padding:12
+    padding: 12
   },
   white: {
     color: "white",

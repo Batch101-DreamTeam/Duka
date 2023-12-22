@@ -66,7 +66,7 @@ export default function FicheVente(props, { route, navigation }) {
     const [price, setPrice] = useState('');
     const [locations, setLocations] = useState('');
     const [category, setCategory] = useState('');
-    const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
+    const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile", 'Autres']
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
 
     const [isOwner, setIsOwner] = useState(false)
@@ -225,9 +225,13 @@ export default function FicheVente(props, { route, navigation }) {
             return newIndex >= photoReducer.length ? 0 : newIndex;
         });
     };
+    const goToMessageOwnerOffer = () => {
+        props.navigation.navigate("Message", { data: dataOffers })
+    }
+    //console.log(dataOffers)
 
     const goToMessage = () => {
-        props.navigation.navigate("Message", { data: dataOffers.id })
+        props.navigation.navigate("Message", { data: dataOffers })
     }
     const photos = photoReducer && photoReducer.map((data, i) => {
         return (
@@ -298,8 +302,11 @@ export default function FicheVente(props, { route, navigation }) {
                             search={false}
                             maxHeight={100}
                         />)}
-                    {!modify ? <View >
+                    {!modify ? <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.list}>{cityData} </Text>
+                        {isOwner && <TouchableOpacity onPress={() => goToMessageOwnerOffer()} style={{ marginLeft: '60%' }}>
+                            <FontAwesome name="envelope" size={24} color="black" />
+                        </TouchableOpacity>}
                     </View> :
                         (<SelectList
                             setSelected={(val) => setLocations(val)}
@@ -321,6 +328,7 @@ export default function FicheVente(props, { route, navigation }) {
                                         <Text> Annuler</Text>
                                     </TouchableOpacity>
                                 </View> :
+
                                 <View style={styles.blocModiSuppr}>
                                     {emptyField && <Text>Veuillez remplir les champs</Text>}
                                     <TouchableOpacity onPress={() => changeOffer()} style={styles.send1}>
@@ -480,7 +488,7 @@ const styles = StyleSheet.create({
 
     containerContent: {
         width: '85%',
-        height: '70%',
+        height: '82%',
         backgroundColor: 'white',
         borderRadius: 30,
         padding: 2,

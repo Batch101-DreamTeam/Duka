@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-    value: { resultSearch: null, nameOfResearch: "", filterPrice: null, filterCategory:null, filterCity: null },
+    value: { resultSearch: null, nameOfResearch: "", filterPrice: null, filterCategory: null, filterCity: null, haveFilter: false },
 };
 export const userSlice = createSlice({
     name: 'offer',
@@ -14,16 +14,19 @@ export const userSlice = createSlice({
         nameSearch: (state, action) => {
             state.value.nameOfResearch = action.payload;
         },
-        newFilterPrice: (state, action)=>{
+        newFilterPrice: (state, action) => {
             state.value.filterPrice = action.payload;
         },
-        newFilterCategory: (state, action)=>{
+        newFilterCategory: (state, action) => {
             state.value.filterPrice = action.payload;
         },
-        newFiltercity: (state, action)=>{
+        newFiltercity: (state, action) => {
             state.value.filterPrice = action.payload;
+        },
+        filterApply: (state, action) => {
+            state.value.haveFilter = action.payload;
         }
     },
 });
-export const { newSearch, nameSearch } = userSlice.actions;
+export const { newSearch, nameSearch, filterApply } = userSlice.actions;
 export default userSlice.reducer;

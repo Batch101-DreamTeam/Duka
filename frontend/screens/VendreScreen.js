@@ -28,7 +28,7 @@ export default function VendreScreen({ route, navigation }) {
     const [price, setPrice] = useState('');
     const [locations, setLocations] = useState('');
     const [category, setCategory] = useState('');
-    const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
+    const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile", 'Autres']
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
     const [fillField, setFillField] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
@@ -43,6 +43,7 @@ export default function VendreScreen({ route, navigation }) {
     useFocusEffect(
         React.useCallback(() => {
             setModalVisible(false);
+            //console.log("doit ici")
             dispatch(deleteAllPhoto())
         }, [])
     );
@@ -95,7 +96,7 @@ export default function VendreScreen({ route, navigation }) {
                 })
                 const photoSaveCloudinaty = await response.json() // pas du TOUT opti car toute les photos sont saves avant de savoir si la requete pour save va passer
 
-                console.log('response trouvée : ', photoSaveCloudinaty)
+                //console.log('response trouvée : ', photoSaveCloudinaty)
 
                 photos.push(photoSaveCloudinaty.url) // stock les url cloudinary dans variable d'état
                 //console.log('photos', photos)
@@ -174,6 +175,9 @@ export default function VendreScreen({ route, navigation }) {
         setOpenTakePhotoModal(false);
         setModalVisible(false)
     };
+    const goToDashboard = () => {
+        navigation.navigate('DashboardVendeur')
+    }
 
 
     return (
@@ -276,8 +280,8 @@ export default function VendreScreen({ route, navigation }) {
                         <TouchableOpacity style={styles.send} onPress={() => refresh()}>
                             <Text style={styles.whiteSmall}>Ajouter une nouvelle offre</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.send}>
-                            {/* // ajouter onPress vers tableau de bord */}
+                        <TouchableOpacity onPress={() => goToDashboard()} style={styles.send}>
+
                             <Text style={styles.whiteSmall}>Consulter mon Tableau de bord</Text>
                         </TouchableOpacity>
                     </View>
