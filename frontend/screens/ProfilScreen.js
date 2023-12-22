@@ -175,7 +175,7 @@ export default function ProfilScreen(props, { navigation }) {
                 <Header />
                 {user.token ? (
                     <View style={styles.containerContent}>
-                        <SafeAreaView style={styles.container}>
+                        <View style={styles.container}>
                             <ScrollView contentContainerStyle={styles.scrollView}>
 
                                 <Text style={styles.h1}>Mon profil</Text>
@@ -256,7 +256,7 @@ export default function ProfilScreen(props, { navigation }) {
 
                                 </View>
                             </ScrollView>
-                        </SafeAreaView>
+                        </View>
                     </View>
                 ) : (
                     <View style={styles.container}>

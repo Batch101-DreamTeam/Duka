@@ -66,7 +66,7 @@ export default function FicheVente(props, { route, navigation }) {
     const [price, setPrice] = useState('');
     const [locations, setLocations] = useState('');
     const [category, setCategory] = useState('');
-    const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile"]
+    const store = ["Loisir", 'Informatique', "Maison", "Jardin", 'Vêtement', "Automobile", 'Autres']
     const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
 
     const [isOwner, setIsOwner] = useState(false)
@@ -480,7 +480,7 @@ const styles = StyleSheet.create({
 
     containerContent: {
         width: '85%',
-        height: '70%',
+        height: '82%',
         backgroundColor: 'white',
         borderRadius: 30,
         padding: 2,

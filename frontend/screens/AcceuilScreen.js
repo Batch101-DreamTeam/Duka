@@ -16,11 +16,11 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
-    //console.log('fav', Favorites)
+    console.log('ici', offer)
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
-    console.log(offer)
+    //console.log(offer)
     const dispatch = useDispatch();
     const [offersData, setOffersData] = useState([]);
     //console.log(resultSearchUser);
