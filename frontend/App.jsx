@@ -9,6 +9,7 @@ import AcceuilScreen from "./screens/AcceuilScreen.js";
 import FavorisScreen from "./screens/FavorisScreen.js";
 import VendreScreen from "./screens/VendreScreen.js";
 import MessageScreen from "./screens/MessageScreen.js";
+import ListeMessageScreen from "./screens/ListeMessageScreen.jsx";
 import ProfilScreen from "./screens/ProfilScreen.js";
 import OfferScreen from "./components/OfferScreen.js";
 import Header from "./components/Header.js";
@@ -61,6 +62,7 @@ export const Main = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="AcceuilScreen" component={AcceuilScreen} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="Photo" component={Photo} screenOptions={{ headerShown: false }} />
+      <Stack.Screen name="Message" component={MessageScreen} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="Header" component={Header} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="VendreScreen" component={VendreScreen} screenOptions={{ headerShown: false }} />
       <Stack.Screen name="MesVentes" component={MesVentes} screenOptions={{ headerShown: false }} />
@@ -87,7 +89,7 @@ const TabNavigator = () => {
         else if (route.name === 'Vendre') {
           iconName = 'plus';
         }
-        else if (route.name === 'Message') {
+        else if (route.name === 'ListeMessage') {
           iconName = 'envelope';
         }
         else if (route.name === 'Profil') {
@@ -104,7 +106,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Acceuil" component={Main} />
       <Tab.Screen name="Favoris" component={FavorisScreen} />
       <Tab.Screen name="Vendre" component={VendreScreen} />
-      <Tab.Screen name="Message" component={MessageScreen} />
+      <Tab.Screen name="ListeMessage" component={ListeMessageScreen} />
       <Tab.Screen name="Profil" component={ProfilScreen} />
 
     </Tab.Navigator>

@@ -118,5 +118,8 @@ const styles = StyleSheet.create({
         marginTop: '5%'
 
     },
-
+Text: {
+    textAlign: 'center', 
+    verticalAlign:'center',
+}
 });

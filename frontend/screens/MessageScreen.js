@@ -18,9 +18,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function MessageScreen(props, { navigation }) {
-    console.log(props.route)
-    // console.log(props.route)
-    // console.log("regarde ici", props.route.params.data);
+    console.log("regarde ici", props.route.params.data);
     const idProduct = props.route.params.data;
     const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
 
