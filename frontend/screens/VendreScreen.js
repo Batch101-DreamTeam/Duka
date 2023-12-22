@@ -179,7 +179,7 @@ export default function VendreScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
 
-            <Header />
+            <Header navigation={navigation} />
             {token != undefined ? <View style={styles.containerContent}>
                 <View style={styles.box}>
                     <Text style={styles.textBox}>Ajouter une vente</Text>

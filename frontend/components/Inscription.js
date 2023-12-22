@@ -6,6 +6,7 @@ import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import { BACKEND_ADDRESS } from "@env"
+import { ScrollView } from 'react-native';
 const backendAddress = BACKEND_ADDRESS;
 
 

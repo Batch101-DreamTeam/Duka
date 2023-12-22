@@ -16,7 +16,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function DashboardVendeur(props, { navigation, route }) {
-    console.log("nein", navigation)
+    //console.log("nein", navigation)
     const [offersData, setOffersData] = useState([]);
     const [haveOffers, setHaveOffers] = useState(false)
     const user = useSelector((state) => state.user.value);
@@ -66,9 +66,9 @@ export default function DashboardVendeur(props, { navigation, route }) {
             {token ?
                 <View style={styles.container}>
                     {!haveOffers &&
-                        <View>
+                        <View style={{ alignItems: 'center' }}>
                             <TouchableOpacity style={styles.send1} onPress={GotoMesVentes}>
-                                <Text>Mes dernières offres de vente</Text>
+                                <Text >Voir toutes mes offres de vente</Text>
                             </TouchableOpacity >
                             <ScrollView style={styles.scrollView}>
 
@@ -95,11 +95,14 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
 
     },
     scrollView: {
-        padding: 3,
+        borderBottomWidth: 2,
+        borderTopWidth: 2,
+
     },
     send1: {
         flexDirection: "row",
@@ -111,7 +114,8 @@ const styles = StyleSheet.create({
         // fontFamily: 'MontserratMedium',
         fontSize: 20,
         width: '85%',
-        marginBottom: 10
+        marginBottom: '5%',
+        marginTop: '5%'
 
     },
 

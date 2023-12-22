@@ -21,7 +21,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
-    // console.log(offer)
+    console.log(offer)
     const dispatch = useDispatch();
     const [offersData, setOffersData] = useState([]);
     //console.log(resultSearchUser);
@@ -80,8 +80,6 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             if (resultSearchUser) {
                 setOffersData(resultSearchUser)
             } else {
-                // setOffersData([]);
-                // console.log(backendAddress)
                 callOfData()
             }
         }, [resultSearchUser, Favorites])
@@ -97,7 +95,8 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const offers = offersData && offersData.map((data, i) => {
         const isLiked = Favorites?.some((offer) => {
             //    console.log(offer._id)
-            return offer.id === data._id});
+            return offer.id === data._id
+        });
         return <ResultSearch
             key={i}
             sellerName={data.sellerName}
