@@ -66,6 +66,7 @@ router.post('/', async (req, res) => {
                 createdAt: createdAt,
             },
 
+
         })
         newChatChannel.save().then(() => {
             console.log('Message saved!');
@@ -103,25 +104,68 @@ router.get('/previousMessages/:chatname', async (req, res) => {
     });
 })
 
-router.get(`/:token`, (req, res) => {
-    User.findOne({ token: req.params.token })
-        .populate({
-            path: 'chatChannels',
-            populate: [{ path: 'seller' }, { path: 'buyer' }],
-        })
-        .then((data) => {
-            if (data) {
-                res.json({
-                    result: true,
-                    chats: data.chatChannels,
-                });
-            } else {
-                res.json({
-                    result: false,
-                    error: 'Aucun contact trouvé',
-                });
-            }
-        });
-});
+router.get('/allpreviousMessages/:token', async (req, res) => {
+    const token = req.body.token;
+    const message = await User.findOne({ token: token })
+        .populate('_id')
+    console.log(message)
+    // ChatChannel.find({ name: req.params.conversation }).then((resp) => {
+    //     //console.log(resp)
+    //     if (resp) {
+    //         res.json({
+    //             result: true,
+    //             messages: resp.messages,
+    //         })
+    //     } else {
+    //         res.json({
+    //             result: true,
+    //             messages: [],
+    //         })
+    //     }
+    // });
+})
+
+// route pour voir la liste de tous les messages reçus par un user
+
+// router.get('/:token', async (req, res) => {
+//     const token = req.body.token;
+//     const buyer = await User.findOne({ token: token })
+//         .populate('_id')
+//     ChatChannel.find({ : req.params.chatname }).then((resp) => {
+//         //console.log(resp)
+//         if (resp) {
+//             res.json({
+//                 result: true,
+//                 messages: resp.messages,
+//             })
+//         } else {
+//             res.json({
+//                 result: true,
+//                 messages: [],
+//             })
+//         }
+//     });
+// })
+
+// router.get(`/:token`, (req, res) => {
+//     User.findOne({ token: req.params.token })
+//         .populate({
+//             path: 'chatChannels',
+//             populate: [{ path: 'seller' }, { path: 'buyer' }],
+//         })
+//         .then((data) => {
+//             if (data) {
+//                 res.json({
+//                     result: true,
+//                     chats: data.chatChannels,
+//                 });
+//             } else {
+//                 res.json({
+//                     result: false,
+//                     error: 'Aucun contact trouvé',
+//                 });
+//             }
+//         });
+// });
 
 module.exports = router;
