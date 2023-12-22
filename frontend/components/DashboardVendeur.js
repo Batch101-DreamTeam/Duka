@@ -3,7 +3,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateName, updateToken, updateMail } from '../reducers/user'
+import { updateName, updateToken, updateMail, removeProfilePhoto } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import { BACKEND_ADDRESS } from "@env"
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'center'
 
     },
     scrollView: {

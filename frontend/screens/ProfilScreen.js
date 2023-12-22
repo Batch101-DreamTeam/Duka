@@ -64,11 +64,12 @@ export default function ProfilScreen(props, { navigation }) {
     );
     useFocusEffect(
         React.useCallback(() => {
+            dispatch(removeProfilePhoto())
             console.log('AVANT LE FETCH')
             fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
                 .then(response => response.json())
                 .then(profileInfos => {
-                    // console.log(profileInfos)
+                    //console.log(profileInfos)
                     if (profileInfos.result) {
                         setProfileData({
                             username: profileInfos.username,
@@ -93,7 +94,7 @@ export default function ProfilScreen(props, { navigation }) {
 
                 });
 
-        }, [switche, tokenUser, photoProfileReducer])
+        }, [switche, tokenUser])
     );
     console.log('photoProfileReducer', photoProfileReducer)
     //Mettre à jour son profil
@@ -172,7 +173,7 @@ export default function ProfilScreen(props, { navigation }) {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}>
             <View style={styles.container}>
-                <Header navigation={navigation} />
+                <Header navigation={props.navigation} />
                 {user.token ? (
                     <View style={styles.containerContent}>
                         <View style={styles.container}>
@@ -183,7 +184,7 @@ export default function ProfilScreen(props, { navigation }) {
                                 <View style={styles.userBlock}>
                                     <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.8} style={{ height: '100%', width: '40%', marginLeft: '5%' }} >
                                         {/* <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} /> */}
-                                        {profilPicture && <Image source={{ uri: photoProfileReducer }} style={{ height: '90%', width: '90%', borderRadius: 80 }} />}
+                                        {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={{ height: '90%', width: '90%', borderRadius: 80 }} />}
                                     </TouchableOpacity>
 
                                     <View style={styles.allinfosProfil}>
@@ -274,12 +275,7 @@ export default function ProfilScreen(props, { navigation }) {
                     setOpenTakePhotoModal(!openTakePhotoModal);
                     //console.log(modalVisible)
                 }}>
-
-
                 <Photo closeModal={closeTakePhotoModal} />
-
-
-
             </Modal>
 
         </KeyboardAvoidingView>
