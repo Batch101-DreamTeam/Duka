@@ -131,7 +131,7 @@ export default function MessageScreen(props, { navigation }) {
                     <Text style={styles.white}> Produit: {props.route.params.data.offerTitle} </Text>
                 </View>
                 <View style={styles.photoArticle}>
-                    <Image style={styles.image} source={{ uri: imgProduct }} />
+                    <Image style={styles.image} source={{ uri: props.route.params.data.images }} />
 
                 </View>
 
