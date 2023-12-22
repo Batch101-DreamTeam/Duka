@@ -38,7 +38,7 @@ export default function MessageScreen(props, { navigation }) {
         if (isFocused) {
 
             (async () => {
-                const response = await fetch(`${backendAddress}/offers/search/${idProduct}`)
+                const response = idProduct && await fetch(`${backendAddress}/offers/search/${idProduct}`)
                 const data = await response.json();
                 setSeller(data.message.seller);
                 setProduct(data.message);
