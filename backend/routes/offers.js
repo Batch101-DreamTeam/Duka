@@ -8,7 +8,7 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
 router.post('/addOffer', async (req, res) => {
-    // verif de l'existence du produit dans la db
+    //verif de l'existence du produit dans la db
     console.log(req.body)
     if (!checkBody(req.body, ['offerTitle', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
         res.json({ result: false, error: 'Missing or empty fields' });
@@ -204,8 +204,8 @@ router.post('/search/Bycate', async (req, res, next) => {
         }
         if (nameOfProdChoice) {
             const secure = nameOfProdChoice.trim()
-            console.log('d'+secure+'f')
-            query.offerTitle =   { $regex: secure, $options: 'i' } 
+            console.log('d' + secure + 'f')
+            query.offerTitle = { $regex: secure, $options: 'i' }
         }
 
         const resultQuery = await Offer.find(query);

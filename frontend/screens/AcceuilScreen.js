@@ -20,7 +20,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
 
     const offerName = offer.nameOfResearch
     const resultSearchUser = offer.resultSearch
-    // console.log(offer)
+    console.log(offer)
     const dispatch = useDispatch();
     const [offersData, setOffersData] = useState([]);
     //console.log(resultSearchUser);
@@ -39,10 +39,10 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                 })
                     .then(response => response.json())
                     .then(data => {
-                        // console.log("alors fetch")
+                        //console.log("alors fetch")
                         if (data.offers) {
                             setOffersData(data.offers);
-                            // console.log('rechaokrge')
+                            console.log('rechaokrge')
                             // setArticlesData(data.articles.filter((data, i) => i > 0));
                         }
                         else {
@@ -65,7 +65,8 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const offers = offersData && offersData.map((data, i) => {
         const isLiked = Favorites?.some((offer) => {
             //    console.log(offer._id)
-            return offer.id === data._id});
+            return offer.id === data._id
+        });
         return <ResultSearch
             key={i}
             sellerName={data.sellerName}
