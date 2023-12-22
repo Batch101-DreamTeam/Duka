@@ -17,6 +17,7 @@ import Photo from './Photo';
 import { LogBox } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import ProfilScreen from '../screens/ProfilScreen';
 
 
 export default function FicheVente(props, { route, navigation }) {
@@ -43,16 +44,22 @@ export default function FicheVente(props, { route, navigation }) {
     let annee = date.getFullYear()
     let dateMiseEnVente = `${jour}/${mois}/${annee}`
 
-
     const [modify, setModify] = useState(false) // affichage conditionel en cours de modification
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalAddPhoto, setmMdalAddPhoto] = useState(false)
+    const [modalProfilVendeur, setModalProfilVendeur] = useState(false)
     const [emptyField, setEmptyField] = useState(false)
     const [openTakePhotoModal, setOpenTakePhotoModal] = useState(false); // modal pour prendre une photo
     const [openPhoto, setOpenPhoto] = useState(false);
     const [displayOpenPhoto, setDisplayOpenPhoto] = useState("")
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+
+    const [contactSeller, setContactSeller] = useState("")
+    const [mailSeller, setMailSeller] = useState("")
+    const [descriptionSeller, setDescriptionSeller] = useState("")
+    const [lieuxSeller, setLieuxSeller] = useState("")
+    const [avatarSeller, setAvatarSeller] = useState("")
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -98,6 +105,15 @@ export default function FicheVente(props, { route, navigation }) {
                 .then(data => {
                     if (data.result) {
                         setIsOwner(data.result)
+                    } else {
+                        if (data.info) {
+                            // console.log('aqui', data)
+                            setContactSeller(data.username)
+                            setMailSeller(data.mail)
+                            setDescriptionSeller(data.description)
+                            setLieuxSeller(data.location)
+                            setAvatarSeller(data.avatarUrl)
+                        }
                     }
                 })
         }, [])
@@ -243,7 +259,6 @@ export default function FicheVente(props, { route, navigation }) {
         );
     });
 
-
     return (
         <View style={styles.container}>
 
@@ -318,7 +333,7 @@ export default function FicheVente(props, { route, navigation }) {
                             }
                         </View>
                         : <View style={styles.blocModiSuppr}>
-                            <TouchableOpacity style={styles.send1}>
+                            <TouchableOpacity style={styles.send1} onPress={() => { setModalProfilVendeur(!modalProfilVendeur) }} >
                                 <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.send1} onPress={goToMessage}>
@@ -401,6 +416,50 @@ export default function FicheVente(props, { route, navigation }) {
                     </ImageBackground>
                 </Pressable>
             </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalProfilVendeur}
+                onRequestClose={() => {
+                    setModalProfilVendeur(!modalProfilVendeur);
+                    //console.log(modalVisible)
+                }}>
+                <Pressable onPress={() => setModalProfilVendeur(!modalProfilVendeur)} style={styles.ModalProfil} >
+                    <View style={styles.containerContent}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={styles.h1}>Profil du Vendeur</Text>
+                            <TouchableOpacity onPress={() => setModalProfilVendeur(!modalProfilVendeur)}>
+                                <AntDesign name="closecircle" size={30} color="green" />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.userBlock}>
+
+                            {avatarSeller ? <Image source={{ uri: avatarSeller }} style={{ height: '100%', width: '40%', marginLeft: '5%' }} /> : <></>}
+
+                            <View style={styles.allinfosProfil}>
+                                <Text style={styles.name}>Nom : {sellerNameOffer}</Text>
+                                <Text style={styles.tel}>Tél. : {contactSeller}</Text>
+                                <Text style={styles.mail}>email : {mailSeller} </Text>
+                            </View>
+
+                        </View>
+                        <Text style={styles.h2}>Description</Text>
+                        <View style={styles.descriptionBloc}>
+                            <Text style={styles.whiteText}>{descriptionSeller}</Text>
+                        </View>
+                        <Text style={styles.h2}>Lieux favoris</Text>
+                        <View style={styles.descriptionBloc}>
+                            <Text style={styles.whiteText}>test</Text>
+                        </View>
+
+                        <View>
+
+                        </View>
+
+
+                    </View>
+                </Pressable>
+            </Modal>
         </View>
     );
 }
@@ -419,6 +478,15 @@ const styles = StyleSheet.create({
         fontSize: 25,
     },
 
+    containerContent: {
+        width: '85%',
+        height: '70%',
+        backgroundColor: 'white',
+        borderRadius: 30,
+        padding: 2,
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     product: {
         flex: 1,
         flexDirection: 'column',
@@ -514,6 +582,12 @@ const styles = StyleSheet.create({
         marginTop: 22,
         marginBottom: 48,
     },
+    ModalProfil: {
+        backgroundColor: 'transparent',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     modalView: {
         margin: 20,
         backgroundColor: 'white',
@@ -553,7 +627,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '10%'
+        marginTop: '100%'
     },
     iconModal: {
         marginRight: 10
@@ -566,5 +640,63 @@ const styles = StyleSheet.create({
     },
     price: {
         fontSize: 16
+    },
+    userBlock: {
+        backgroundColor: '#60935D',
+        width: '100%',
+        height: '20%',
+        borderRadius: 10,
+        alignItems: 'center',
+        flexDirection: 'row'
+        // backgroundColor:'blue'
+    },
+    h1: {
+        // fontFamily: 'MontserratMedium',
+        fontSize: 28,
+        color: '#BAB700',
+        fontWeight: 'bold'
+    },
+    allinfosProfil: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginLeft: '5%'
+    },
+    name: {
+        // height: 35,
+        marginTop: '5%',
+        marginBottom: 20,
+        borderRadius: 5,
+        justifyContent: 'flex-start',
+        color: 'white',
+    },
+
+    tel: {
+        marginBottom: '2%',
+        color: 'white',
+    },
+
+    mail: {
+        marginTop: 20,
+        width: 200,
+        height: 35,
+        borderRadius: 5,
+        fontSize: 14,
+        color: 'white',
+        // borderBottomWidth: 5,
+        // fontFamily: 'MontserratMedium',
+    },
+    descriptionBloc: {
+        backgroundColor: '#60935D',
+        width: '98%',
+        height: 80,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    whiteText: {
+        // fontFamily: 'MontserratRegular',
+        fontSize: 16,
+        color: 'white',
     },
 })
