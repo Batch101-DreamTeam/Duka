@@ -61,7 +61,7 @@ export default function ListeMessageScreen(props, { navigation }) {
     return (
         // objInfo.sellerName &&
         <View style={styles.container}>
-            <Header />
+            <Header navigation={navigation} />
             <View style={styles.infos}>
                 <View style={styles.infosArticle}>
                     {/* <Text style={styles.white}>Vendeur : {seller.username}  </Text>
