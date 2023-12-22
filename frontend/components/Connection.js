@@ -29,7 +29,7 @@ export default function Connection(navigation) {
   const dispatch = useDispatch();
   const token = user?.token;
   const Favorites = user?.favorites;
-  console.log(Favorites);
+  // console.log(Favorites);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [wrong, setWrong] = useState(true);
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     height: "100%",
-    width:400,
+    width: 400,
     textAlignVertical: "center",
     // fontFamily: 'MontserratMedium',
     fontSize: 14,
-    padding:12
+    padding: 12
   },
   white: {
     color: "white",

@@ -43,7 +43,7 @@ export default function DashboardVendeur(props, { navigation, route }) {
         props.navigation.navigate("VendreScreen", { navigation: navigation })
     }
     const offers = offersData && offersData.map((data, i) => {
-        console.log(data)
+        //console.log(data)
         return (
             <ResultSearch
                 key={i}
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
         marginTop: '5%'
 
     },
-Text: {
-    textAlign: 'center', 
-    verticalAlign:'center',
-}
+    Text: {
+        textAlign: 'center',
+        verticalAlign: 'center',
+    }
 });
