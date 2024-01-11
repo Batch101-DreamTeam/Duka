@@ -36,7 +36,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             .then(data => {
                 // console.log("alors fetch")
                 if (data.offers) {
-                    setOffersData((prev) => { return data.offers.filter((el) => { return !Favorites?.includes(el._id) }) });
+                    setOffersData(data.offers);
                     setRefreshing(false);
                     // console.log('rechaokrge')
                     // setArticlesData(data.articles.filter((data, i) => i > 0));
