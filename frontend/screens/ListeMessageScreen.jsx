@@ -32,10 +32,11 @@ export default function ListeMessageScreen(props, { navigation }) {
     //     console.log('chargé')
     //     if (isFocused) {
 
-    //         (async () => {
-    //             const response = await fetch(`${backendAddress}/messages/allPreviousMessages/${user.token}`)
-    //             const data = await response.json();
-    //             console.log("la data:", data);
+
+            // (async () => {
+                // const response = await fetch(`${backendAddress}/messages/allPreviousMessages/${user.token}`)
+                // const data = await response.json();
+                // console.log("la data:", data);
 
 
     //             // aller chercher tous les messages reçus par le user
@@ -102,7 +103,7 @@ export default function ListeMessageScreen(props, { navigation }) {
     return (
         // objInfo.sellerName &&
         <View style={styles.container}>
-            <Header />
+            <Header navigation={navigation} />
             <View style={styles.infos}>
                 <View style={styles.infosArticle}>
                     {/* <Text style={styles.white}>Vendeur : {seller.username}  </Text>

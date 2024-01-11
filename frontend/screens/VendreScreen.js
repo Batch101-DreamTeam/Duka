@@ -43,6 +43,7 @@ export default function VendreScreen({ route, navigation }) {
     useFocusEffect(
         React.useCallback(() => {
             setModalVisible(false);
+            //console.log("doit ici")
             dispatch(deleteAllPhoto())
         }, [])
     );

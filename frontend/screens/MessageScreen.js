@@ -18,9 +18,10 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function MessageScreen(props, { navigation }) {
-    console.log("regarde ici", props.route.params.data);
-    const idProduct = props.route.params.data;
-    const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
+
+    const idProduct = props.route.params.data.id;
+    const imgProduct = props.route.params.data.images[0];
+    console.log("regarde ici", imgProduct);
 
     const isFocused = useIsFocused();
     const user = useSelector((state) => state.user.value);
@@ -68,8 +69,9 @@ export default function MessageScreen(props, { navigation }) {
     }, [isFocused]);
 
 
-
-
+    // const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
+    // const imgProduct = props.route.params.data.images;
+    // console.log(product.images)
     // Leave chat
     useEffect(() => {
         return async () => {
@@ -124,12 +126,11 @@ export default function MessageScreen(props, { navigation }) {
     return (
         // objInfo.sellerName &&
         <View style={styles.container}>
-            <Header />
-
+            <Header navigation={props.navigation} />
             <View style={styles.infos}>
                 <View style={styles.infosArticle}>
-                    {/* <Text style={styles.white}>Vendeur : {seller.username}  </Text>
-                    <Text style={styles.white}> Produit: {product.offerTitle} </Text> */}
+                    <Text style={styles.white}>Vendeur : {seller.username}  </Text>
+                    <Text style={styles.white}> Produit: {props.route.params.data.offerTitle} </Text>
                 </View>
                 <View style={styles.photoArticle}>
                     <Image style={styles.image} source={{ uri: imgProduct }} />
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 70,
         // backgroundColor: 'rgba(52, 52, 52)',
-        backgroundColor: 'grey',
+        backgroundColor: '#14342B',
         // opacity: 0.9,
         padding: '1%',
         marginTop: 1,

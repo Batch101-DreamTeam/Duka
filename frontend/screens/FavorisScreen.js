@@ -28,19 +28,19 @@ export default function FavorisScreen({ navigation, route }) {
 
   const displayFav = Favorites?.map((el, i) => {
     // let isliked;
-    return <ResultSearch 
-    key={i}
-    sellerName={el.sellerName}
-    offerTitle={el.offerTitle}
-    locations={el.locations}
-    images={el.images}
-    description={el.description}
-    price={el.price}
-    category={el.category}
-    id={el.id}
-    navigation={navigation}
-    route={route}
-    isLiked={true}
+    return <ResultSearch
+      key={i}
+      sellerName={el.sellerName}
+      offerTitle={el.offerTitle}
+      locations={el.locations}
+      images={el.images}
+      description={el.description}
+      price={el.price}
+      category={el.category}
+      id={el.id}
+      navigation={navigation}
+      route={route}
+      isLiked={true}
     >  </ResultSearch>;
   });
   // useFocusEffect(
@@ -56,40 +56,40 @@ export default function FavorisScreen({ navigation, route }) {
         Token: token,
         favorites: Favorites,
       };
-      if(token){
-      fetch(`${backendAddress}/users/setFavorites`, {
-        method: "put", 
-        mode: "cors", 
-        cache: "no-cache", 
-        credentials: "same-origin", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(donne),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result) {
-            console.log(data);
-          } else {
-            console.log(data.message);
-            return;
-          }
-        });
+      if (token) {
+        fetch(`${backendAddress}/users/setFavorites`, {
+          method: "put",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(donne),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.result) {
+              console.log(data);
+            } else {
+              console.log(data.message);
+              return;
+            }
+          });
       }
       console.log("bye");
     };
   });
 
   let display;
-  if(!token){
-   display = ( <View style={styles.container}>
-        <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
-        <Connection />
-        <Inscription />
+  if (!token) {
+    display = (<View style={styles.container}>
+      <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+      <Connection />
+      <Inscription />
     </View>
-   )
- }
+    )
+  }
   else if (!Favorites?.length && token) {
     display = (
       <View style={styles.containerContent}>
@@ -108,29 +108,29 @@ export default function FavorisScreen({ navigation, route }) {
       </View>
     );
   } else if (Favorites.length && token) {
-    display =(
-    <ScrollView style={styles.scrollView}>
-       {displayFav}
-   </ScrollView>
+    display = (
+      <ScrollView style={styles.scrollView}>
+        {displayFav}
+      </ScrollView>
     )
 
   }
-  
+
   // console.log(Favorites);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <Header navigation={navigation} />
       <Text style={styles.title}> Favoris </Text>
       {display}
-   </SafeAreaView>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  title:{
-     marginTop: 20,
-     marginLeft: 50,
-     fontSize: 30,
+  title: {
+    marginTop: 20,
+    marginLeft: 50,
+    fontSize: 30,
   },
   container: {
     flex: 1,
@@ -165,21 +165,21 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     paddingTop: 30
 
-},
-productList: {
-  flex: 1,
-  flexDirection: 'column',
-  flexWrap: 'wrap',
-  width: '100%',
-  height: '100%',
-  paddingBottom: '1%',
-},
-h3: {
-  // fontFamily: 'MontserratRegular',
-  fontSize: 16,
-  color: 'black',
-  textAlign: 'center',
-  marginTop: 5
-},
+  },
+  productList: {
+    flex: 1,
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    width: '100%',
+    height: '100%',
+    paddingBottom: '1%',
+  },
+  h3: {
+    // fontFamily: 'MontserratRegular',
+    fontSize: 16,
+    color: 'black',
+    textAlign: 'center',
+    marginTop: 5
+  },
 });
 

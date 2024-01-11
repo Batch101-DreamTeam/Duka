@@ -5,7 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
 import { RemoteDataSetExample2 } from '../components/autodrop';
 import { useDispatch, useSelector } from 'react-redux';
-import { newSearch, nameSearch } from '../reducers/offer'
+import { newSearch, nameSearch, filterApply } from '../reducers/offer'
 import { SelectList } from 'react-native-dropdown-select-list';
 import { ServerContainer, useFocusEffect } from '@react-navigation/native';
 const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
@@ -47,6 +47,14 @@ export default function InputSearch(navigation) {
             return (() => console.log('bye'))
         }, [modalVisible]))
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setSearchWord("")
+            setCategory("")
+            setLocations("")
+            setPriceChoice("")
+        }, []))
+
 
     const handleSubmit = () => {
         // console.log("ok")
@@ -69,10 +77,10 @@ export default function InputSearch(navigation) {
         }).then(response => response.json())
             .then((data) => {
                 if (data?.result) {
-                    console.log(data)
                     setResult(data.resultQuery)
                     dispatch(newSearch(data.resultQuery))
                     dispatch(nameSearch(searchWord))
+                    dispatch(filterApply(true))
                     // setSearchWord(null);
                     // setCategory(null);
                     // setLocations(null);
@@ -119,10 +127,7 @@ export default function InputSearch(navigation) {
                         maxLength={200}
                     />
                 </View>
-                <View style={styles.SearchRow}>
-                    <FontAwesome name="map-marker" style={styles.iconSearch} size={20} />
-                    <TextInput style={styles.inputSearch} placeholder=" Où ?" maxLength={200} />
-                </View>
+
 
                 <View style={styles.slectlist}>
                     <SelectList
@@ -149,17 +154,17 @@ export default function InputSearch(navigation) {
                         placeholder='prix'
                     />
                 </View>
-
+                {/* 
                 <TouchableOpacity style={styles.margiT} onPress={() => console.log({
                     name: searchWord,
                     category: category,
                     city: location
                 })}>
-                    <Text>sending</Text>
 
-                </TouchableOpacity>
 
-                <RemoteDataSetExample2 />
+                </TouchableOpacity> */}
+
+                {/* <RemoteDataSetExample2 /> */}
 
                 {/* <Dropdown /> */}
 
@@ -245,9 +250,12 @@ const styles = StyleSheet.create({
     slectlist: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        //    backgroundColor: 'green',
+        // backgroundColor: 'white',
         width: "100%",
-        flex: 1
+        // height: '30%',
+        // flex: 1
+        marginBottom: 20,
+        // backgroundColor: 'green',
     },
     SearchRow: {
         flexDirection: 'row',
@@ -281,12 +289,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
-        marginBottom: 48,
+        // marginTop: 22,
+        // marginBottom: 48,
 
     },
     modalView: {
-        margin: 20,
+        // margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
