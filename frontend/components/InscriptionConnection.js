@@ -24,18 +24,18 @@ export default function InscriptionConnection(props, { navigation }) {
     }, [isTokenAvailable, navigation]);
     return (
 
-                <View style={styles.container}>
-                    {!isTokenAvailable &&
-                        <SafeAreaView>
-                            <View>
-                                <Connection />
-                                
-                                <Inscription />
-                                                 
-                            </View>
-                        </SafeAreaView>
-                    }
-                </View>
+        <View style={styles.container}>
+            {!isTokenAvailable &&
+                <SafeAreaView>
+                    <View>
+                        <Connection />
+
+                        <Inscription />
+
+                    </View>
+                </SafeAreaView>
+            }
+        </View>
     );
 }
 
