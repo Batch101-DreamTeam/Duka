@@ -54,7 +54,24 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
 
 
 
+    // const onRefresh = () => {
+    //     console.log('res')
+    //     setRefreshing(true); // Démarre le rafraîchissement
+    //     callOfData(); // Appelle la fonction pour récupérer les nouvelles données
+    // };
 
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         if (resultSearchUser) {
+    //             setOffersData(resultSearchUser)
+    //             console.log(resultSearchUser)
+    //         } else {
+    //             // setOffersData([]);
+    //             // console.log(backendAddress)
+    //             callOfData()
+    //         }
+    //     }, [resultSearchUser, Favorites])
+    // )
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, [Favorites]);
