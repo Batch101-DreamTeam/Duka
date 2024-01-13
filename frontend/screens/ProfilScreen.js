@@ -2,7 +2,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, TextInput, Dimensions, KeyboardAvoidingView, ScrollView, Modal, ImageBackground, Pressable } from 'react-native';
 import Header from '../components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Inscription from '../components/Inscription';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Camera } from 'expo-camera';
@@ -10,7 +9,7 @@ import Photo from '../components/Photo';
 import { removePhoto, addPhoto, deleteAllPhoto, addProfilePhoto, removeProfilePhoto } from '../reducers/user';
 import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-
+import Connexion from '../components/Connexion';
 
 // Import des fichiers de police
 import { useFonts } from 'expo-font';
@@ -18,7 +17,6 @@ import { useFonts } from 'expo-font';
 // import MontserratMedium from '../res/fonts/Montserrat-Medium.ttf';
 
 import { BACKEND_ADDRESS } from "@env";
-import Connection from '../components/Connection';
 import { useFocusEffect } from '@react-navigation/native';
 
 const backendAddress = BACKEND_ADDRESS;
@@ -26,8 +24,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 
-export default function ProfilScreen(props, { navigation }) {
-    // données chargées par défault
+export default function ProfilScreen(props) {
     const [profileData, setProfileData] = useState({
         username: "",
         contact: "",
@@ -56,18 +53,17 @@ export default function ProfilScreen(props, { navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [switche, setSwitche] = useState(false);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            setModifyField(false)
-            setModalVisible(false);
-            dispatch(deleteAllPhoto())
-        }, [])
-    );
-    
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         setModifyField(false)
+    //         setModalVisible(false);
+    //         dispatch(deleteAllPhoto())
+    //     }, [])
+    // );
     useFocusEffect(
         React.useCallback(() => {
             dispatch(removeProfilePhoto())
-            console.log('AVANT LE FETCH')
+            // console.log('AVANT LE FETCH')
             fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
                 .then(response => response.json())
                 .then(profileInfos => {
@@ -98,7 +94,7 @@ export default function ProfilScreen(props, { navigation }) {
 
         }, [switche, tokenUser])
     );
-    console.log('photoProfileReducer', photoProfileReducer)
+    // console.log('photoProfileReducer', photoProfileReducer)
     //Mettre à jour son profil
     const updateProfilInfo = async () => {
 
@@ -171,101 +167,97 @@ export default function ProfilScreen(props, { navigation }) {
 
 
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.container}>
-            <View style={styles.container}>
-                <Header navigation={props.navigation} />
+
+        <View style={styles.container}>
+            <Header navigation={props.navigation} />
+
+            <View style={styles.containerContent}>
                 {user.token ? (
-                    <View style={styles.containerContent}>
-                        <View style={styles.container}>
-                            <ScrollView contentContainerStyle={styles.scrollView}>
+                    <View>
+                        <ScrollView Style={styles.scrollView}>
 
-                                <Text style={styles.h1}>Mon profil</Text>
+                            <Text style={styles.h1}>Mon profil</Text>
 
-                                <View style={styles.userBlock}>
-                                    <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.8} style={{ height: '100%', width: '40%', marginLeft: '5%' }} >
-                                        {/* <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} /> */}
-                                        {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={{ height: '90%', width: '90%', borderRadius: 80 }} />}
-                                    </TouchableOpacity>
+                            <View style={styles.userBlock}>
+                                <TouchableOpacity onPress={() => setModalVisible(true)} activeOpacity={0.8} style={{ height: '100%', width: '40%', marginLeft: '5%' }} >
+                                    {/* <FontAwesome style={styles.modifyProfilePhotoPen} name="pencil" size={50} color={'white'} /> */}
+                                    {photoProfileReducer && <Image source={{ uri: photoProfileReducer }} style={{ height: '90%', width: '90%', borderRadius: 80 }} />}
+                                </TouchableOpacity>
 
-                                    <View style={styles.allinfosProfil}>
-                                        {!modifyField ? <Text style={styles.name}>Nom : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} value={updatedUsername} style={styles.textInputUsername} />}
-                                        {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} value={updatedContact} style={styles.textInputTel} />}
-                                        <Text style={styles.mail}>email :  {profileData.mail}</Text>
-                                    </View>
-
-                                    <Modal
-                                        animationType="slide"
-                                        transparent={true}
-                                        visible={modalVisible}
-                                        onRequestClose={() => {
-                                            setModalVisible(!modalVisible);
-                                            //console.log(modalVisible)
-                                        }}>
-
-                                        <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
-                                            <View style={styles.modalView}>
-                                                <TouchableOpacity style={styles.send} onPress={pickImage}>
-                                                    <Foundation name="photo" size={24} color="black" style={styles.iconModal} />
-                                                    <Text style={styles.whiteSmall}>
-                                                        A partir de la bibliothèque
-                                                    </Text>
-                                                </TouchableOpacity >
-                                                <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
-                                                    <FontAwesome name="camera" size={24} color="black" style={styles.iconModal} />
-                                                    <Text style={styles.whiteSmall}>
-                                                        Prendre une photo
-                                                    </Text>
-                                                </TouchableOpacity >
-                                            </View>
-                                        </Pressable>
-                                    </Modal>
-                                </View>
-                                <Text style={styles.h2}>Description</Text>
-                                <View style={styles.descriptionBloc}>
-                                    {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value) => setUpdatedDescription(value)} value={updatedDescription} style={styles.textInputDescription} />}
-                                </View>
-                                <Text style={styles.h2}>Lieux favoris</Text>
-                                <View style={styles.localisationContainer}>
-                                    {[1, 2, 3].map((item) => (
-                                        <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
-                                            <Text style={styles.whiteText}>{profileData.location}</Text>
-                                        </TouchableOpacity>
-                                    ))}
-
+                                <View style={styles.allinfosProfil}>
+                                    {!modifyField ? <Text style={styles.name}>Nom : {profileData.username}</Text> : <TextInput onChangeText={(value) => setUpdatedUsername(value)} value={updatedUsername} style={styles.textInputUsername} />}
+                                    {!modifyField ? <Text style={styles.tel}>Tél. : {profileData.contact}</Text> : <TextInput onChangeText={(value) => setUpdatedContact(value)} value={updatedContact} style={styles.textInputTel} />}
+                                    <Text style={styles.mail}>email :  {profileData.mail}</Text>
                                 </View>
 
-                                <View>
-                                    {!modifyField ? <TouchableOpacity onPress={() => setModifyField(true)} activeOpacity={0.8} style={styles.btn}>
-                                        <Text style={styles.white}>
-                                            Modifier le profil
-                                        </Text>
-                                    </TouchableOpacity >
-                                        : <View>
-                                            <TouchableOpacity onPress={() => updateProfilInfo()} activeOpacity={0.8} style={styles.btn1}>
-                                                <Text style={styles.white}>
-                                                    Enregistrer les modifications
+                                <Modal
+                                    animationType="slide"
+                                    transparent={true}
+                                    visible={modalVisible}
+                                    onRequestClose={() => {
+                                        setModalVisible(!modalVisible);
+                                        //console.log(modalVisible)
+                                    }}>
+
+                                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}>
+                                        <View style={styles.modalView}>
+                                            <TouchableOpacity style={styles.send} onPress={pickImage}>
+                                                <Foundation name="photo" size={24} color="black" style={styles.iconModal} />
+                                                <Text style={styles.whiteSmall}>
+                                                    A partir de la bibliothèque
                                                 </Text>
                                             </TouchableOpacity >
-                                            <TouchableOpacity onPress={() => setModifyField(false)} activeOpacity={0.8} style={styles.btn}>
-                                                <Text style={styles.white}>
-                                                    Annuler
+                                            <TouchableOpacity style={styles.send} onPress={() => takePicture()}>
+                                                <FontAwesome name="camera" size={24} color="black" style={styles.iconModal} />
+                                                <Text style={styles.whiteSmall}>
+                                                    Prendre une photo
                                                 </Text>
                                             </TouchableOpacity >
-
                                         </View>
-                                    }
+                                    </Pressable>
+                                </Modal>
+                            </View>
+                            <Text style={styles.h2}>Description</Text>
+                            <View style={styles.descriptionBloc}>
+                                {!modifyField ? <Text style={styles.whiteText}>{profileData.description}</Text> : <TextInput onChangeText={(value) => setUpdatedDescription(value)} value={updatedDescription} style={styles.textInputDescription} />}
+                            </View>
+                            <Text style={styles.h2}>Lieux favoris</Text>
+                            <View style={styles.localisationContainer}>
+                                {[1, 2, 3].map((item) => (
+                                    <TouchableOpacity activeOpacity={0.8} key={item} style={styles.altBtn}>
+                                        <Text style={styles.whiteText}>{profileData.location}</Text>
+                                    </TouchableOpacity>
+                                ))}
 
-                                </View>
-                            </ScrollView>
-                        </View>
+                            </View>
+
+                            <View>
+                                {!modifyField ? <TouchableOpacity onPress={() => setModifyField(true)} activeOpacity={0.8} style={styles.btn}>
+                                    <Text style={styles.white}>
+                                        Modifier le profil
+                                    </Text>
+                                </TouchableOpacity >
+                                    : <View>
+                                        <TouchableOpacity onPress={() => updateProfilInfo()} activeOpacity={0.8} style={styles.btn1}>
+                                            <Text style={styles.white}>
+                                                Enregistrer les modifications
+                                            </Text>
+                                        </TouchableOpacity >
+                                        <TouchableOpacity onPress={() => setModifyField(false)} activeOpacity={0.8} style={styles.btn}>
+                                            <Text style={styles.white}>
+                                                Annuler
+                                            </Text>
+                                        </TouchableOpacity >
+
+                                    </View>
+                                }
+
+                            </View>
+                        </ScrollView>
                     </View>
                 ) : (
-                    <View style={styles.container}>
-                        <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
-                        <Connection />
-                        <Inscription />
+                    <View>
+                        <Connexion />
                     </View>
                 )}
             </View>
@@ -279,8 +271,10 @@ export default function ProfilScreen(props, { navigation }) {
                 }}>
                 <Photo closeModal={closeTakePhotoModal} />
             </Modal>
+        </View>
 
-        </KeyboardAvoidingView>
+
+
     )
 }
 

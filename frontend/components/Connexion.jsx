@@ -11,41 +11,45 @@ import Connection from './Connection';
 const backendAddress = BACKEND_ADDRESS;
 
 
-export default function InscriptionConnection(props, { navigation }) {
-    //console.log('ici', props)
-    const user = useSelector((state) => state.user.value);
-    const token = user.token
-    const isTokenAvailable = !!token
+export default function Connexion() {
+    // console.log('ici')
 
-    useEffect(() => {
-        if (isTokenAvailable) {
-            props.navigation.goBack();
-        }
-    }, [isTokenAvailable, navigation]);
+
     return (
 
-        <View style={styles.container}>
-            {!isTokenAvailable &&
-                <SafeAreaView>
-                    <View>
-                        <Connection />
+        <View style={styles.containerConnexion}>
 
-                        <Inscription />
 
-                    </View>
-                </SafeAreaView>
-            }
+            <View>
+                <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+                <Connection />
+
+                <Inscription />
+
+            </View>
+
+
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    containerConnexion: {
+        // flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
-        alignItems: 'center'
+        justifyContent: 'center',
+        alignItems: 'center',
 
+    },
+    h3: {
+
+        padding: 10,
+        backgroundColor: '#FF579F',
+
+        // fontFamily: 'MontserratMedium',
+        fontSize: 20,
+        color: '#14342B',
     },
 
 

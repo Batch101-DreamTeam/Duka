@@ -11,16 +11,17 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import Connection from '../components/Connection';
-import Inscription from '../components/Inscription';
+// import Connection from '../components/Connection';
+// import Inscription from '../components/Inscription';
 import { AntDesign } from '@expo/vector-icons';
 import { removePhoto, addPhoto, deleteAllPhoto } from '../reducers/user'
 import { BACKEND_ADDRESS } from "@env"
 import { useFocusEffect } from '@react-navigation/native';
 import Photo from '../components/Photo';
+import Connexion from '../components/Connexion';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function VendreScreen({ route, navigation }) {
+export default function VendreScreen({ navigation }) {
     const dispatch = useDispatch();
 
     const [name, setName] = useState('');
@@ -120,7 +121,7 @@ export default function VendreScreen({ route, navigation }) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    //console.log('reponse du back addoffer', data)
+                    // console.log('reponse du back addoffer', data)
                     if (data.result) {
                         setName("")
                         setDescription("")
@@ -129,11 +130,11 @@ export default function VendreScreen({ route, navigation }) {
                         setCategory("")
                         setLocations("")
                         setOfferRegister(!offerRegister)
-                    } else {
-
                     }
-                })
-                .catch(err=>console.log(err))
+                    // else {
+
+                    // }
+                });
         } else {
             setFillField(false)
         }
@@ -263,10 +264,11 @@ export default function VendreScreen({ route, navigation }) {
 
 
             </View> :
-                <View style={styles.container}>
-                    <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
-                    <Connection />
-                    <Inscription />
+                <View>
+                    {/* <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text> */}
+                    <Connexion />
+                    {/* <Connection />
+                    <Inscription /> */}
                 </View>}
             <Modal
                 animationType="slide"

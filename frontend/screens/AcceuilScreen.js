@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, RefreshControl, ImageBackground, Text, View, To
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
+import AlternHome from '../components/AlternHome';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,7 +26,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const [offersData, setOffersData] = useState([]);
 
 
-    // fonction d'appel de donnée GET (toutes les offres)
+
     const callOfData = () => {
         fetch(`${backendAddress}/offers/allOffers`, {
             method: 'GET',
@@ -40,44 +41,19 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                     setOffersData(data.offers);
                     setRefreshing(false);
                     // console.log('rechaokrge')
-                    // setArticlesData(data.articles.filter((data, i) => i > 0));
-                    const offers = offersData && offersData.map((data, i) => {
-
-                        //  const isLiked = Favorites.some(e => data._id.toString() == e.id)         
-                        return (<ResultSearch
-                            key={i}
-                            sellerName={data.sellerName}
-                            offerTitle={data.offerTitle}
-                            locations={data.locations}
-                            images={data.images}
-                            description={data.description}
-                            price={data.price}
-                            category={data.category}
-                            id={data._id}
-                            navigation={navigation}
-                            date={data.dateOfCreation}
-                            route={route}
-                        // isLiked={isLiked}
-                        />);
-                    })
+                    // setArticlesData(data.articles.filter((data, i) => i > 0));                       
                 }
                 else {
                     console.log('aucune donnée')
                     return
                 }
-            })
-            
-            
-            .catch(err=>console.log(err)
-            );
+            });
     }
-
- // fonction de mise à jour de la scrollview pour réactualiser les offres disponibles   
 
     const onRefresh = () => {
         console.log('res')
-        setRefreshing(true); 
-        callOfData(); 
+        setRefreshing(true); // Démarre le rafraîchissement
+        callOfData(); // Appelle la fonction pour récupérer les nouvelles données
     };
 
     useFocusEffect(
@@ -85,12 +61,12 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             if (resultSearchUser) {
                 setOffersData(resultSearchUser)
             } else {
+                // setOffersData([]);
+                // console.log(backendAddress)
                 callOfData()
             }
         }, [resultSearchUser, Favorites])
     )
-
-
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, [Favorites]);
@@ -123,8 +99,8 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
         />;
     }
     );
+    
     return (
-
         <View style={styles.container}>
 
             <Header navigation={navigation} />
@@ -149,16 +125,24 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                         </TouchableOpacity>
                     </View>
                 }
-                <ScrollView style={styles.scrollView} refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />}
+                <ScrollView
+                    style={styles.scrollView}
+                //  refreshControl={
+                //     <RefreshControl
+                //         refreshing={refreshing}
+                //         onRefresh={onRefresh}
+                //     />
+                // }
                 >
+                    {offersData ?
 
-                    <View style={styles.productList}>
-                        {offers}
-                    </View>
+                        <View style={styles.productList}>
+                            {offers}
+                        </View> :
+                        <AlternHome />
+
+                    }
+
                 </ScrollView>
             </View>
 

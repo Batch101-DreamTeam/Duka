@@ -18,10 +18,12 @@ import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
 
 
-export default function MessageScreen(props) {
-    console.log(props)
-    const idProduct = props.route.params.data.id;
-    const imgProduct = props.route.params.data.images[0];
+export default function MessageBisScreen(props) {
+    console.log(props.route.params.userTwo)
+    // console.log(props.route.params.offerId)
+    const userTwo = props.route.params.userTwo;
+    const idProduct = props.route.params.offerId;
+    // const imgProduct = props.route.params.data.images[0];
     // console.log("regarde ici", imgProduct);
 
     const isFocused = useIsFocused();
@@ -32,7 +34,7 @@ export default function MessageScreen(props) {
     const [seller, setSeller] = useState([]);
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState('');
-    const chatname = idProduct + user.name;
+    const chatname = idProduct + userTwo;
     let pusher = null
 
     // Join chat
@@ -85,7 +87,9 @@ export default function MessageScreen(props) {
     // }, []);
 
     const handleReceiveMessage = async (data) => {
+
         setMessages((messages) => [...messages, data]);
+
     };
 
     const handleSendMessage = () => {
@@ -131,11 +135,11 @@ export default function MessageScreen(props) {
             {user.token != undefined ? <>
                 <View style={styles.infos}>
                     <View style={styles.infosArticle}>
-                        <Text style={styles.white}>Vendeur : {seller.username}  </Text>
-                        <Text style={styles.white}> Produit: {props.route.params.data.offerTitle} </Text>
+                        {/* <Text style={styles.white}>Vendeur : {seller.username}  </Text> */}
+                        {/* <Text style={styles.white}> Produit: {props.route.params.data.offerTitle} </Text> */}
                     </View>
                     <View style={styles.photoArticle}>
-                        <Image style={styles.image} source={{ uri: imgProduct }} />
+                        {/* <Image style={styles.image} source={{ uri: imgProduct }} /> */}
 
                     </View>
 
