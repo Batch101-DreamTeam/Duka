@@ -6,11 +6,11 @@ import { updateName, updateToken, updateMail } from '../reducers/user'
 import { useIsFocused } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import { BACKEND_ADDRESS } from "@env"
-import { ScrollView,  } from 'react-native';
+import { ScrollView, } from 'react-native';
 const backendAddress = BACKEND_ADDRESS;
 
 
-export default function Inscription(navigation) {
+export default function Inscription() {
 
     const isFocused = useIsFocused()
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export default function Inscription(navigation) {
     const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const user = useSelector((state) => state.user.value);
     const tokens = user.token
-    console.log('oui', user.name)
+    // console.log('oui', user.name)
 
     useEffect(() => {
         if (isFocused) {
@@ -67,7 +67,7 @@ export default function Inscription(navigation) {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
+                        // console.log(data)
                         if (data.result) {
                             dispatch(updateName(data.data.username))
                             dispatch(updateToken(data.data.token))
@@ -93,57 +93,57 @@ export default function Inscription(navigation) {
     }
 
     return (
-        
-        <View style={styles.container}>
+
+        <View style={styles.containerInscription}>
             <View style={styles.box}>
-                <Text style={styles.textBox}>   Inscription</Text>
+                <Text style={styles.textBox}>Inscription</Text>
             </View>
             <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.btnConnexion}>
-                <Text style={styles.white}>Inscription par mail</Text>
+                <Text style={styles.white}>Inscription</Text>
             </TouchableOpacity>
             <KeyboardAvoidingView>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}>
-                <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}></Pressable>
-                <View style={styles.modalView}>
-                    <TextInput onChangeText={(value) => setUsername(value)} value={username} style={styles.input} placeholder=" Nom utilisateur" />
-                    <TextInput onChangeText={(value) => setEmail(value)} value={email} style={styles.input} placeholder=" email" keyboardType="email-address" />
-                    {!wrong ? < Text style={styles.erreur} > Veuillez entrez une adresse mail</Text> : <></>}
-                    <View style={styles.password}>
-                        <TextInput onChangeText={(value) => setPassword(value)} value={password} placeholder=" Password" maxLength={200} secureTextEntry={eye ? true : false} style={styles.passwordInput} />
-                        <TouchableOpacity onPress={() => showPassword()}>
-                            <Ionicons name={eye ? "eye" : 'eye-off'} size={34} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.password}>
-                        <TextInput onChangeText={(value) => setConfirmPassword(value)} value={confirmPassword} placeholder=" Password" maxLength={200} secureTextEntry={eyeTwo ? true : false} style={styles.passwordInput} />
-                        <TouchableOpacity onPress={() => showPasswordTwo()}>
-                            <Ionicons name={eyeTwo ? "eye" : 'eye-off'} size={34} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                    {!userExist ? < Text style={styles.erreur} > Adresse Mail dejà existante</Text> : <></>}
-                    {!missingField ? < Text style={styles.erreur} > Veuillez remplir tout les champs</Text> : <></>}
-                    {!passwordDifferent ? < Text style={styles.erreur} >Veuillez entrer le même mot de passe</Text> : <></>}
-                    <TouchableOpacity onPress={() => checkConnection()} style={styles.btnConnexion} >
-                        <Text style={styles.white}>
-                            Inscription
-                        </Text>
-                    </TouchableOpacity >
-                </View >
-            </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}>
+                    <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.ModalAcceuil}></Pressable>
+                    <View style={styles.modalView}>
+                        <TextInput onChangeText={(value) => setUsername(value)} value={username} style={styles.input} placeholder=" Nom utilisateur" />
+                        <TextInput onChangeText={(value) => setEmail(value)} value={email} style={styles.input} placeholder=" email" keyboardType="email-address" />
+                        {!wrong ? < Text style={styles.erreur} > Veuillez entrez une adresse mail</Text> : <></>}
+                        <View style={styles.password}>
+                            <TextInput onChangeText={(value) => setPassword(value)} value={password} placeholder=" Password" maxLength={200} secureTextEntry={eye ? true : false} style={styles.passwordInput} />
+                            <TouchableOpacity onPress={() => showPassword()}>
+                                <Ionicons name={eye ? "eye" : 'eye-off'} size={34} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.password}>
+                            <TextInput onChangeText={(value) => setConfirmPassword(value)} value={confirmPassword} placeholder=" Password" maxLength={200} secureTextEntry={eyeTwo ? true : false} style={styles.passwordInput} />
+                            <TouchableOpacity onPress={() => showPasswordTwo()}>
+                                <Ionicons name={eyeTwo ? "eye" : 'eye-off'} size={34} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                        {!userExist ? < Text style={styles.erreur} > Adresse Mail dejà existante</Text> : <></>}
+                        {!missingField ? < Text style={styles.erreur} > Veuillez remplir tout les champs</Text> : <></>}
+                        {!passwordDifferent ? < Text style={styles.erreur} >Veuillez entrer le même mot de passe</Text> : <></>}
+                        <TouchableOpacity onPress={() => checkConnection()} style={styles.btnConnexion} >
+                            <Text style={styles.white}>
+                                Inscription
+                            </Text>
+                        </TouchableOpacity >
+                    </View >
+                </Modal>
             </KeyboardAvoidingView>
         </View>
-    
+
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    containerInscription: {
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
@@ -151,7 +151,8 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        margin: 8,
+        margin: 15,
+        padding: 10,
         borderWidth: 2,
         height: 40,
         width: 300,
@@ -162,20 +163,20 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: '#60935D',
         width: '100%',
-        height: '10%',
+        height: '20%',
         borderRadius: 5,
         marginBottom: 20
     },
 
     textBox: {
-    textAlign: "center",
-    color: "white",
-    height: "100%",
-    width:400,
-    textAlignVertical: "center",
-    // fontFamily: 'MontserratMedium',
-    fontSize: 14,
-    padding:12
+        textAlign: "center",
+        color: "white",
+        height: "100%",
+        width: 400,
+        textAlignVertical: "center",
+        // fontFamily: 'MontserratMedium',
+        fontSize: 14,
+        padding: 12
     },
     white: {
         color: 'white',
@@ -199,13 +200,15 @@ const styles = StyleSheet.create({
     ModalAcceuil: {
         backgroundColor: 'transparent',
         flex: 1,
+
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
         marginBottom: 48,
     },
     modalView: {
-        margin: 20,
+        // margin: 20,
+        height: '100%',
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,

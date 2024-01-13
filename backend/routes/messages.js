@@ -1,11 +1,12 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
 
-const Pusher = require("pusher");
-// const Offer = require("../models/offer");
-const User = require("../models/user");
-const ChatChannel = require("../models/ChatChannel");
-const { get } = require("mongoose");
+const Pusher = require('pusher');
+const Offer = require("../models/offer");
+const User = require('../models/user');
+const ChatChannel = require('../models/ChatChannel');
+
+
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APPID,
@@ -15,9 +16,12 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
+
 // Join chat
-router.put("/:chatname/:username", async (req, res) => {
-  await pusher.trigger(req.params.chatname, "join", {
+
+router.put('/:chatname/:username', async (req, res) => {
+  console.log('Join chat')
+  await pusher.trigger(req.params.chatname, 'join', {
     username: req.params.username,
   });
 
@@ -25,8 +29,10 @@ router.put("/:chatname/:username", async (req, res) => {
 });
 
 // Leave chat
-router.delete("/:chatname/:username", async (req, res) => {
-  await pusher.trigger(req.params.chatname, "leave", {
+
+router.delete('/:chatname/:username', async (req, res) => {
+  console.log('Leave chat')
+  await pusher.trigger(req.params.chatname, 'leave', {
     username: req.params.username,
   });
 
@@ -34,23 +40,39 @@ router.delete("/:chatname/:username", async (req, res) => {
 });
 
 // Send message
-router.post("/", async (req, res) => {
+
+router.post('/', async (req, res) => {
+  console.log('send message')
   const tokenBuyer = req.body.tokenBuyer;
   const tokenSeller = req.body.tokenSeller;
 
-  const { text, username, chatname, createdAt } = req.body;
+
+
+  const { idProduct, text, username, chatname, createdAt } = req.body;
   const alreadyFound = await ChatChannel.findOne({ name: chatname });
-  await pusher.trigger(chatname, "message", req.body);
-
-  const buyer = await User.findOne({ token: tokenBuyer }).populate("_id");
-
-  const seller = await User.findOne({ token: tokenSeller }).populate("_id");
+  await pusher.trigger(chatname, 'message', req.body);
 
   if (!alreadyFound) {
+    let buyer = await User.findOne({ token: tokenBuyer })
+    let seller = await User.findOne({ token: tokenSeller })
+    // User.updateOne(
+
+    //     { buyer: buyer._id },
+    //     { $push: { conversations: { chatname } } }
+    // ).exec();
+
+
+    // User.updateOne(
+    //     { seller: seller._id },
+    //     { $push: { conversations: { chatname } } }
+    // ).exec();
+
+
     const newChatChannel = new ChatChannel({
       name: chatname,
       buyer: buyer._id,
       seller: seller._id,
+      offer: idProduct,
       dateOfCreation: createdAt,
       online: true,
       messages: {
@@ -58,125 +80,123 @@ router.post("/", async (req, res) => {
         text: text,
         createdAt: createdAt,
       },
-    });
-    newChatChannel.save().then(() => {
-      console.log("Message saved!");
-    });
+
+
+    })
+    newChatChannel.save().then((data) => {
+
+      // console.log(data)
+      // const id = data._id;
+
+      // console.log(buyer)
+      // User.updateOne(
+      //     { username: buyer.username },
+      //     { $set: { conversations: { chatname } } }
+      // )
+      // User.updateOne(
+      //     { username: seller.username },
+      //     { $set: { conversations: { chatname } } }
+      // )
+      // User.updateOne(
+      //     { _id: buyer._id },
+      //     {
+      //         $set:
+      //         {
+      //             conversations: chatname,
+
+      //         }
+      //     }
+      // )
+      // User.updateOne(
+      //     { _id: seller._id },
+      //     {
+      //         $set:
+      //         {
+      //             conversations: chatname,
+
+      //         }
+      //     }
+      // )
+      buyer = User.updateOne({
+        token: tokenBuyer
+      }, { $set: { conversations: chatname } });
+      seller = User.updateOne({
+        token: tokenSeller
+      }, { $set: { conversations: chatname } });
+      console.log(seller);
+      console.log('Save new chat!');
+
+    })
+
+    // User.updateOne(
+    //     { buyer: buyer._id },
+    //     { $push: { conversations: { chatname } } }
+    // ).exec();
+    // User.updateOne(
+    //     { seller: seller._id },
+    //     { $push: { conversations: { chatname } } }
+    // ).exec();
+
     res.json({ result: true });
-  } else {
+  }
+  else {
     ChatChannel.updateOne(
       { name: chatname },
       { $push: { messages: { username, text, createdAt } } }
     ).exec();
-    res.status(400).json({ result: false, message: "chat existe!" });
-    return;
+    res.status(400).json({ result: false, message: "chat existe!" })
+    console.log('chat existe')
+    return
   }
+  ;
+
+
 });
 
-router.get("/previousMessages/:chatname", async (req, res) => {
+// display previous messages by chatname
+router.get('/previousMessages/:chatname', async (req, res) => {
+
   ChatChannel.findOne({ name: req.params.chatname }).then((resp) => {
     //console.log(resp)
     if (resp) {
       res.json({
         result: true,
         messages: resp.messages,
-      });
+      })
     } else {
       res.json({
         result: true,
         messages: [],
-      });
+      })
     }
   });
-});
+})
 
-router.get("/allpreviousMessages/:token", async (req, res) => {
-  const token = req.body.token;
-  const message = await User.findOne({ token: token }).populate("_id");
-  console.log(message);
-  // ChatChannel.find({ name: req.params.conversation }).then((resp) => {
-  //     //console.log(resp)
-  //     if (resp) {
-  //         res.json({
-  //             result: true,
-  //             messages: resp.messages,
-  //         })
-  //     } else {
-  //         res.json({
-  //             result: true,
-  //             messages: [],
-  //         })
-  //     }
-  // });
-});
 
-// route pour voir la liste de tous les messages reçus par un user
+//diplay list of message by idProduct
+router.get('/messagesByProduct/:idProduct', async (req, res) => {
 
-// router.get('/:token', async (req, res) => {
-//     const token = req.body.token;
-//     const buyer = await User.findOne({ token: token })
-//         .populate('_id')
-//     ChatChannel.find({ : req.params.chatname }).then((resp) => {
-//         //console.log(resp)
-//         if (resp) {
-//             res.json({
-//                 result: true,
-//                 messages: resp.messages,
-//             })
-//         } else {
-//             res.json({
-//                 result: true,
-//                 messages: [],
-//             })
-//         }
-//     });
-// })
+  const offerByMessage = await Offer.findOne({ _id: req.params.idProduct })
+    .populate('_id');
+  // console.log(offerByMessage)
+  ChatChannel.find({ offer: req.params.idProduct }).then((resp) => {
 
-// router.get(`/:token`, (req, res) => {
-//     User.findOne({ token: req.params.token })
-//         .populate({
-//             path: 'chatChannels',
-//             populate: [{ path: 'seller' }, { path: 'buyer' }],
-//         })
-//         .then((data) => {
-//             if (data) {
-//                 res.json({
-//                     result: true,
-//                     chats: data.chatChannels,
-//                 });
-//             } else {
-//                 res.json({
-//                     result: false,
-//                     error: 'Aucun contact trouvé',
-//                 });
-//             }
-//         });
-// });
+    console.log(resp)
+    if (resp) {
+      res.json({
+        result: true,
+        messagesProduct: resp,
+        product: offerByMessage
 
-//getAllconversation
-router.get("/getAllConversation/:userToken", async (req, res, next) => {
-  try {
-    const identity = req?.params?.userToken;
-    const findTheOne = await User.findOne({token: identity}).populate('conversations') 
-    const all = await User.find()  
-    console.log(all);
-     // console.log(findTheOne);
-    if (!identity || !findTheOne) {
-      res.status(400).json({ result: false, message: "somthing is Wrong with the request" });
-      console.log('somthing is Wrong with the request')
-      return;
+      })
     } else {
-      const chatChannels =  findTheOne;
-      // const returndata = chatChannels.populate('conversations')
-      // console.log(chatChannels);
-      res.status(200).json({ result: true, chatChannels });
-      // console.log(findTheOne.token)
+      res.json({
+        result: false,
+
+      })
     }
-  } catch {
-    res.status(400).json({ result: false, message: "the request failed" });
-    console.log('somthing is Wrong with the request')
-    return;
-  }
-});
+  });
+})
+
 
 module.exports = router;

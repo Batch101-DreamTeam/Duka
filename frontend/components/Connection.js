@@ -23,7 +23,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { BACKEND_ADDRESS } from "@env";
 const backendAddress = BACKEND_ADDRESS;
 
-export default function Connection(navigation) {
+export default function Connection() {
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -100,7 +100,7 @@ export default function Connection(navigation) {
     setEye(!eye);
   };
   return (
-    <View style={styles.container}>
+    <View style={styles.containerConnection}>
       <View style={styles.box}>
         <Text style={styles.textBox}> Connexion</Text>
       </View>
@@ -112,7 +112,7 @@ export default function Connection(navigation) {
         keyboardType="email-address"
       />
       {!wrong ? (
-        <Text style={styles.erreur}> Veuillez entre une adresse mail</Text>
+        <Text style={styles.erreur}> Veuillez entrer une adresse mail</Text>
       ) : (
         <></>
       )}
@@ -156,14 +156,17 @@ export default function Connection(navigation) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  containerConnection: {
+    // flex: 1,
     flexDirection: "column",
     backgroundColor: "white",
     alignItems: "center",
+    // marginBottom: 35,
+    padding: 5,
   },
   input: {
-    margin: 8,
+    margin: 15,
+    padding: 10,
     borderWidth: 2,
     height: 40,
     width: 300,
@@ -175,9 +178,9 @@ const styles = StyleSheet.create({
   box: {
     backgroundColor: "#60935D",
     width: "100%",
-    height: "10%",
+    height: "20%",
     borderRadius: 5,
-    marginTop: 20,
+    // marginTop: 20,
   },
 
   textBox: {
@@ -216,6 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
+
   },
   passwordInput: {
     flex: 1,

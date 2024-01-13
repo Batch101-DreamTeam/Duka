@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, RefreshControl, ImageBackground, Text, View, To
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
+import AlternHome from '../components/AlternHome';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,65 +26,52 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
 
 
 
-    const callOfData = () => {
-        fetch(`${backendAddress}/offers/allOffers`, {
-            method: 'GET',
-            headers: {
-                'Cache-Control': 'no-cache',
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                // console.log("alors fetch")
-                if (data.offers) {
-                    setOffersData(data.offers);
-                    setRefreshing(false);
-                    // console.log('rechaokrge')
-                    // setArticlesData(data.articles.filter((data, i) => i > 0));
-                    const offers = offersData && offersData.map((data, i) => {
+    useEffect(() => {
+        if (!resultSearchUser) {
+            // console.log(resultSearchUser)
+            (async () => {
+                fetch(`${backendAddress}/offers/allOffers`, {
+                    method: 'GET',
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
 
-                        //  const isLiked = Favorites.some(e => data._id.toString() == e.id)         
-                        return (<ResultSearch
-                            key={i}
-                            sellerName={data.sellerName}
-                            offerTitle={data.offerTitle}
-                            locations={data.locations}
-                            images={data.images}
-                            description={data.description}
-                            price={data.price}
-                            category={data.category}
-                            id={data._id}
-                            navigation={navigation}
-                            date={data.dateOfCreation}
-                            route={route}
-                        // isLiked={isLiked}
-                        />);
-                    })
-                }
-                else {
-                    console.log('aucune donnée')
-                    return
-                }
-            });
-    }
+                        if (data.offers) {
+                            setOffersData(() => { return data.offers.filter((el) => { return !Favorites?.includes(el._id) }) });
 
-    const onRefresh = () => {
-        console.log('res')
-        setRefreshing(true); // Démarre le rafraîchissement
-        callOfData(); // Appelle la fonction pour récupérer les nouvelles données
-    };
+                        }
 
-    useFocusEffect(
-        React.useCallback(() => {
-            if (resultSearchUser) {
-                setOffersData(resultSearchUser)
-            } else {
-                // setOffersData([]);
-                // console.log(backendAddress)
-                callOfData()
-            }
-        }, [resultSearchUser, Favorites])
-    )
+                    });
+            })();
+        } else {
+            setOffersData(resultSearchUser)
+            // console.log(resultSearchUser)
+        }
+    }, [resultSearchUser, Favorites]);
+
+
+
+    // const onRefresh = () => {
+    //     console.log('res')
+    //     setRefreshing(true); // Démarre le rafraîchissement
+    //     callOfData(); // Appelle la fonction pour récupérer les nouvelles données
+    // };
+
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         if (resultSearchUser) {
+    //             setOffersData(resultSearchUser)
+    //             console.log(resultSearchUser)
+    //         } else {
+    //             // setOffersData([]);
+    //             // console.log(backendAddress)
+    //             callOfData()
+    //         }
+    //     }, [resultSearchUser, Favorites])
+    // )
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, [Favorites]);
@@ -141,16 +129,24 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                         </TouchableOpacity>
                     </View>
                 }
-                <ScrollView style={styles.scrollView} refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />}
+                <ScrollView
+                    style={styles.scrollView}
+                //  refreshControl={
+                //     <RefreshControl
+                //         refreshing={refreshing}
+                //         onRefresh={onRefresh}
+                //     />
+                // }
                 >
+                    {offersData ?
 
-                    <View style={styles.productList}>
-                        {offers}
-                    </View>
+                        <View style={styles.productList}>
+                            {offers}
+                        </View> :
+                        <AlternHome />
+
+                    }
+
                 </ScrollView>
             </View>
 

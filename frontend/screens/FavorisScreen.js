@@ -11,12 +11,12 @@ import Header from "../components/Header";
 import FontAwesome from "react-native-vector-icons/FontAwesome/";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import Connection from "../components/Connection";
-import Inscription from "../components/Inscription";
+
 import { useFocusEffect } from "@react-navigation/native";
 import { BACKEND_ADDRESS } from "@env";
 import { getFavorites } from "../reducers/user";
 import ResultSearch from "../components/ResultSearch";
+import Connexion from "../components/Connexion";
 const backendAddress = BACKEND_ADDRESS;
 
 export default function FavorisScreen({ navigation, route }) {
@@ -83,11 +83,12 @@ export default function FavorisScreen({ navigation, route }) {
 
   let display;
   if (!token) {
-    display = (<View style={styles.container}>
-      <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
+    display = (<>
+      <Connexion />
+      {/* <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
       <Connection />
-      <Inscription />
-    </View>
+      <Inscription /> */}
+    </>
     )
   }
   else if (!Favorites?.length && token) {
@@ -121,7 +122,7 @@ export default function FavorisScreen({ navigation, route }) {
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
-      <Text style={styles.title}> Favoris </Text>
+      {/* <Text style={styles.title}> Favoris </Text> */}
       {display}
     </SafeAreaView>
   );
