@@ -44,7 +44,6 @@ export default function Inscription(navigation) {
             setPasswordDifferent(true)
             setEye(true)
         }
-
     }, [isFocused]);
 
     const checkConnection = () => {
@@ -96,7 +95,7 @@ export default function Inscription(navigation) {
         
         <View style={styles.container}>
             <View style={styles.box}>
-                <Text style={styles.textBox}>   Inscription</Text>
+                <Text style={styles.textBox}>Inscription</Text>
             </View>
             <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.btnConnexion}>
                 <Text style={styles.white}>Inscription par mail</Text>

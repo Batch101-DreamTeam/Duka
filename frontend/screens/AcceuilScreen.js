@@ -12,6 +12,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation, route }) {// ne pas mettre PROPS
     //console.log("acceuil", navigation)
+    
     const [refreshing, setRefreshing] = useState(false);
     const user = useSelector((state) => state.user.value);
     const token = user.token
@@ -24,7 +25,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const [offersData, setOffersData] = useState([]);
 
 
-
+    // fonction d'appel de donnée GET (toutes les offres)
     const callOfData = () => {
         fetch(`${backendAddress}/offers/allOffers`, {
             method: 'GET',
@@ -64,13 +65,19 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                     console.log('aucune donnée')
                     return
                 }
-            });
+            })
+            
+            
+            .catch(err=>console.log(err)
+            );
     }
+
+ // fonction de mise à jour de la scrollview pour réactualiser les offres disponibles   
 
     const onRefresh = () => {
         console.log('res')
-        setRefreshing(true); // Démarre le rafraîchissement
-        callOfData(); // Appelle la fonction pour récupérer les nouvelles données
+        setRefreshing(true); 
+        callOfData(); 
     };
 
     useFocusEffect(
@@ -78,12 +85,12 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             if (resultSearchUser) {
                 setOffersData(resultSearchUser)
             } else {
-                // setOffersData([]);
-                // console.log(backendAddress)
                 callOfData()
             }
         }, [resultSearchUser, Favorites])
     )
+
+
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, [Favorites]);
@@ -93,6 +100,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
         dispatch(nameSearch())
         dispatch(filterApply(false))
     }
+
     const offers = offersData && offersData.map((data, i) => {
         const isLiked = Favorites?.some((offer) => {
             //    console.log(offer._id)

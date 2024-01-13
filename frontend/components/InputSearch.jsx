@@ -57,11 +57,6 @@ export default function InputSearch(navigation) {
 
 
     const handleSubmit = () => {
-        // console.log("ok")
-        // const filterString = searchWord.trim()
-        // if (filterString.length === 0) {
-        //     return;
-        // }
         fetch(`${backendAddress}/offers/search/Bycate`, {
             method: 'POST',
             headers: {

@@ -12,6 +12,8 @@ export default function MesVentes({ navigation, route }) {
     const [offersData, setOffersData] = useState([]);
     const user = useSelector((state) => state.user.value);
     const token = user.token
+
+// au focus appel de données qui retourne les offres publiées par l'utilisateur connecté    
     useFocusEffect(
         React.useCallback(() => {
             const fetchData = async () => {
@@ -22,10 +24,6 @@ export default function MesVentes({ navigation, route }) {
             fetchData();
         }, [])
     );
-    // const handleNavigate = (data) => {
-    //     navigation.navigate("FicheVente", { dataOffers: data });
-    // };
-
 
     const offers = offersData && offersData.map((data, i) => {
         return (
@@ -47,9 +45,7 @@ export default function MesVentes({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-
             <Header />
-
             <View style={styles.containerContent}>
                 <ScrollView style={styles.scrollView}>
 

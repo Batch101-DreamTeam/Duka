@@ -27,6 +27,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function ProfilScreen(props, { navigation }) {
+    // données chargées par défault
     const [profileData, setProfileData] = useState({
         username: "",
         contact: "",
@@ -62,6 +63,7 @@ export default function ProfilScreen(props, { navigation }) {
             dispatch(deleteAllPhoto())
         }, [])
     );
+    
     useFocusEffect(
         React.useCallback(() => {
             dispatch(removeProfilePhoto())
@@ -89,7 +91,7 @@ export default function ProfilScreen(props, { navigation }) {
                         dispatch(addProfilePhoto(profileData.avatarProfil))
                     }
                 })
-                .catch(error => {
+                .catch(error => { console.log(error)
                     //console.error("Error fetching profile information:", error);
 
                 });

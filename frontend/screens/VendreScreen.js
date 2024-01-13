@@ -49,7 +49,8 @@ export default function VendreScreen({ route, navigation }) {
     );
 
 
-
+    // fonction our choisir une photo exixtant dans la galerie 
+    
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -131,7 +132,8 @@ export default function VendreScreen({ route, navigation }) {
                     } else {
 
                     }
-                });
+                })
+                .catch(err=>console.log(err))
         } else {
             setFillField(false)
         }

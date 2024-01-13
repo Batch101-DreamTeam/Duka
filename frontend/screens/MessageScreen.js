@@ -45,8 +45,6 @@ export default function MessageScreen(props, { navigation }) {
                 setSeller(data.message.seller);
                 setProduct(data.message);
 
-
-
                 pusher = new Pusher('3295d486d5ad2af1a1af', { cluster: 'eu' });
                 const respon = await fetch(`${backendAddress}/messages/previousMessages/${chatname}`)
                 const dataPrev = await respon.json();
@@ -63,7 +61,6 @@ export default function MessageScreen(props, { navigation }) {
                 subscription.bind('pusher:subscription_succeeded', () => {
                     subscription.bind('message', handleReceiveMessage);
                 });
-
             })();
         }
     }, [isFocused]);
@@ -81,11 +78,8 @@ export default function MessageScreen(props, { navigation }) {
             });
         };
     }, []);
-
     const handleReceiveMessage = async (data) => {
-
         setMessages((messages) => [...messages, data]);
-
     };
 
     const handleSendMessage = () => {

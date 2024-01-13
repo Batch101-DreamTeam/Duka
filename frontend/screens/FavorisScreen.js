@@ -51,6 +51,8 @@ export default function FavorisScreen({ navigation, route }) {
   // )
 
   useFocusEffect(() => {
+
+    // quand la page n'est plus 'focus' le tableau favoris en backend est modifié 
     return () => {
       const donne = {
         Token: token,
@@ -82,6 +84,7 @@ export default function FavorisScreen({ navigation, route }) {
   });
 
   let display;
+  // rendu conditionnel jsx variable suivant l'état de connexion et des favoris ajoutés
   if (!token) {
     display = (<View style={styles.container}>
       <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>

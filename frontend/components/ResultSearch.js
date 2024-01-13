@@ -22,6 +22,7 @@ export default function ResultSearch(props) {
 
   let heart;
   const target = Favorites?.find(el => el.id == props.id)
+  
   if (target) {
     heart = (
       <TouchableOpacity
