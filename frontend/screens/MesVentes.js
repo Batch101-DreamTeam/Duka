@@ -8,7 +8,7 @@ import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
 
 export default function MesVentes({ navigation, route }) {
-    //console.log('ici')
+    //console.log(navigation)
     const [offersData, setOffersData] = useState([]);
     const user = useSelector((state) => state.user.value);
     const token = user.token

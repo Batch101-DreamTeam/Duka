@@ -22,38 +22,40 @@ const backendAddress = BACKEND_ADDRESS;
 
 export default function ListeMessageScreen(props, { navigation }) {
     console.log(props)
-    // const idProduct = props.route.params.data.id;
-    // const imgProduct = props.route.params.data.images[0];
+    const idProduct = props.route.params.data.id;
+    const imgProduct = props.route.params.data.images[0];
     const user = useSelector((state) => state.user.value);
-    // const [messagesProduct, setMessagesProduct] = useState([{}]);
-    // const [product, setProduct] = useState([{}]);
+    const [messagesProduct, setMessagesProduct] = useState([{}]);
+    const [product, setProduct] = useState([{}]);
     // console.log('messagesp', messagesProduct[0].messages[0].createdAt)
-    // useEffect(() => {
-    //     (async () => {
-    //         const response = idProduct && await fetch(`${backendAddress}/messages/messagesByProduct/${idProduct}`)
-    //         const data = await response.json();
+    useEffect(() => {
+        (async () => {
+            const response = idProduct && await fetch(`${backendAddress}/messages/messagesByProduct/${idProduct}`)
+            const data = await response.json();
 
-    //         setMessagesProduct(data.messagesProduct);
-    //         setProduct(data.product);
-    // console.log('messagesp', data)
-    // console.log('product', data.product)
-    //     })();
+            setMessagesProduct(data.messagesProduct);
+            setProduct(data.product);
+            // console.log('messagesp', data)
+            // console.log('product', data.product)
+        })();
 
-    // }, []);
+    }, []);
 
 
-    // const listeMessages = messagesProduct && messagesProduct.map((data, i) => {
-    //     return <ListeMessages
-    //         key={i}
-    //         dateOfCreation={data.dateOfCreation}
-    //         messages={data.messages}
-    //         navigation={props.navigation}
-    //         offer={product}
-    //         route={props.route}
-
-    //     />;
-    // }
-    // );
+    const listeMessages = messagesProduct && messagesProduct.map((data, i) => {
+        return <ListeMessages
+            key={i}
+            dateOfCreation={data.dateOfCreation}
+            messages={data.messages}
+            navigation={props.navigation}
+            offer={product}
+            route={props.route}
+        // username={data.messages[0].username}
+        // text={data.messages[0].text}
+        // username={data.messages[i].username}
+        />;
+    }
+    );
 
 
     return (
@@ -65,7 +67,7 @@ export default function ListeMessageScreen(props, { navigation }) {
                 <ScrollView style={styles.scrollView}>
 
                     {/* <ListeMessages /> */}
-                    {/* {listeMessages} */}
+                    {listeMessages}
 
                 </ScrollView>
             ) : (

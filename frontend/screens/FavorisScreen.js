@@ -120,7 +120,7 @@ export default function FavorisScreen({ navigation, route }) {
 
   }
 
-  // console.log(Favorites);
+  //console.log(Favorites);
 
   return (
     <SafeAreaView style={styles.container}>

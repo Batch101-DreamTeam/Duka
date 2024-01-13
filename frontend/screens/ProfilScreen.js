@@ -78,7 +78,7 @@ export default function ProfilScreen(props) {
                             location: profileInfos.location,
                             // favorites: profileInfos.favorites,
                         });
-                        //console.log(profileData.avatarProfil)
+                        console.log(profileData.avatarProfil)
                         setUpdatedUsername(profileInfos.username)
                         setUpdatedContact(profileInfos.contact)
                         setUpdatedDescription(profileInfos.description)
