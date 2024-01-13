@@ -10,9 +10,7 @@ const offerShema = mongoose.Schema({
   price: Number,
   category: String,
   dateOfCreation: Date,
-  locations: [String],
-  //categories: [String],
-  // categories déja définies
+  locations: [String]
 });
 
 

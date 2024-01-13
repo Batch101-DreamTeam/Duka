@@ -3,15 +3,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { BACKEND_ADDRESS } from "@env";
-import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs, removeProfilePhoto } from '../reducers/user'
+import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs, removeProfilePhoto } from '../reducers/user';
 import React, { useState, useEffect, useRef } from 'react';
 import { Foundation } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
 
-
-export default function Header(props, { navigation }) {
-
+export default function Header(props) {
+    // console.log(props.navigation.navigate)
 
     const dispatch = useDispatch();
 
@@ -44,20 +43,23 @@ export default function Header(props, { navigation }) {
                     dispatch(updateMail(null))
                     dispatch(deleteAllfavs())
                     dispatch(removeProfilePhoto())
-                } else {
-                    console.log(data.message);
-                    return;
                 }
+                // else {
+                //     console.log(data.message);
+                //     return;
+                // }
             });
     }
 
     const logout = () => {
-
+        console.log('logout')
+        // dispatch(logout());
+        // updateAllFavsBeforeLogOut()
+        // props.navigation.navigate("Connexion", { navigation: navigation })
         if (token) {
+            // console.log(token)
             updateAllFavsBeforeLogOut()
 
-        } else {
-            props.navigation.navigate("InscriptionConnection", { navigation: navigation })
         }
 
     }
@@ -74,7 +76,7 @@ export default function Header(props, { navigation }) {
                 {/* <Text style={styles.duka} >dUka</Text> */}
                 <View style={styles.topRightHeader} >
                     <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
-                        <AntDesign name="logout" size={25} color="white" />
+                        {token && <AntDesign name="logout" size={25} color="white" />}
                     </TouchableOpacity>
 
                 </View>

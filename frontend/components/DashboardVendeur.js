@@ -15,8 +15,8 @@ import ResultSearch from './ResultSearch';
 const backendAddress = BACKEND_ADDRESS;
 
 
-export default function DashboardVendeur(props, { navigation, route }) {
-    //console.log("nein", navigation)
+export default function DashboardVendeur({ navigation, route }) {
+    // console.log("nein", navigation)
     const [offersData, setOffersData] = useState([]);
     const [haveOffers, setHaveOffers] = useState(false)
     const user = useSelector((state) => state.user.value);
@@ -26,7 +26,9 @@ export default function DashboardVendeur(props, { navigation, route }) {
             const fetchData = async () => {
 
                 const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
+                // console.log(response)
                 const newData = await response.json();
+                // console.log(newData)
                 setOffersData(newData.offers);
                 if (newData.offers.length === 0) {
                     setHaveOffers(true)
@@ -37,10 +39,10 @@ export default function DashboardVendeur(props, { navigation, route }) {
     );
 
     const GotoMesVentes = () => {
-        props.navigation.navigate("MesVentes", { navigation: navigation })
+        navigation.navigate("MesVentes", { navigation: navigation })
     }
     const GotoAjouterVente = () => {
-        props.navigation.navigate("VendreScreen", { navigation: navigation })
+        navigation.navigate("VendreScreen", { navigation: navigation })
     }
     const offers = offersData && offersData.map((data, i) => {
         //console.log(data)
@@ -54,7 +56,7 @@ export default function DashboardVendeur(props, { navigation, route }) {
                 price={data.price}
                 category={data.category}
                 id={data._id}
-                navigation={props.navigation}
+                navigation={navigation}
                 route={route}
             />
         )
@@ -67,7 +69,7 @@ export default function DashboardVendeur(props, { navigation, route }) {
                 <View style={styles.container}>
                     {!haveOffers &&
                         <View style={{ alignItems: 'center' }}>
-                            <TouchableOpacity style={styles.send1} onPress={GotoMesVentes}>
+                            <TouchableOpacity style={styles.send1} onPress={() => navigation.navigate('MesVentes')}>
                                 <Text >Voir toutes mes offres de vente</Text>
                             </TouchableOpacity >
                             <ScrollView style={styles.scrollView}>

@@ -18,13 +18,14 @@ import { LogBox } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import ProfilScreen from '../screens/ProfilScreen';
+LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+]);
 
-
-export default function FicheVente(props, { route, navigation }) {
+export default function FicheVente(props) {
+    // console.log(props.route)
     const dispatch = useDispatch()
-    LogBox.ignoreLogs([
-        'Non-serializable values were found in the navigation state',
-    ]);
+
     //console.log("route", props.route.params.route)
     const dataOffers = props.route.params.dataOffers; // recuperation des infos du parent
 
@@ -82,11 +83,10 @@ export default function FicheVente(props, { route, navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
-            //console.log('ici')
             dispatch(deleteAllPhoto())
             setName(offerTitle)
             setDescription(descriptionOffer)
-            setPrice(priceOffer)
+            setPrice(price)
             setLocations(cityData)
             setCategory(categoryOffer)
             for (let i = 0; i < imagesToMap.length; i++) {
@@ -103,6 +103,7 @@ export default function FicheVente(props, { route, navigation }) {
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data)
                     if (data.result) {
                         setIsOwner(data.result)
                     } else {
@@ -123,7 +124,7 @@ export default function FicheVente(props, { route, navigation }) {
         setModalVisible(true)
     }
     const deleteOffer = () => {
-        console.log("ici")
+        // console.log("ici")
         fetch(`${backendAddress}/offers/deleteOffer/${idProduct}`, {
             method: 'DELETE',
         })
@@ -178,8 +179,8 @@ export default function FicheVente(props, { route, navigation }) {
                     dispatch(deleteAllPhoto())
                     props.navigation.navigate("AcceuilScreen")
                 })
-        }
-    }
+        } // fin else
+    }// fin confirmChange
     const deletePhotoDisplay = (picture) => {
         dispatch(removePhoto(picture))
     }
@@ -226,12 +227,15 @@ export default function FicheVente(props, { route, navigation }) {
         });
     };
     const goToMessageOwnerOffer = () => {
-        props.navigation.navigate("Message", { data: dataOffers })
+        console.log('Owner')
+        props.navigation.navigate("Messages", { data: dataOffers })
+
     }
     //console.log(dataOffers)
 
     const goToMessage = () => {
         props.navigation.navigate("Message", { data: dataOffers })
+        console.log(dataOffers)
     }
     const photos = photoReducer && photoReducer.map((data, i) => {
         return (
@@ -266,90 +270,94 @@ export default function FicheVente(props, { route, navigation }) {
     return (
         <View style={styles.container}>
 
-            <Header />
+            <Header navigation={props.navigation} />
             {photos[currentPhotoIndex]}
+
             <View style={styles.product}>
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.descProd}>
+                        <Text>Date de mise en ligne: {dateMiseEnVente}</Text>
 
-                <View style={styles.descProd}>
-                    <View >
+                        {!modify ? (<View >
+                            <Text style={styles.detail} >Nom : {offerTitle}</Text>
+                            <Text style={styles.description}>Description : {descriptionOffer}</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.price} >Prix : {priceOffer}</Text>
+                                <Text style={{ marginLeft: '5%' }}>CFA</Text>
+                            </View >
+                            <View >
+                                <Text style={styles.list} >Categorie : {categoryOffer} </Text>
+                            </View>
+                            < View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.list}>Lieu : {cityData} </Text>
+                                {isOwner && <TouchableOpacity onPress={() => goToMessageOwnerOffer()} style={{ marginLeft: '60%' }}>
+                                    <FontAwesome name="envelope" size={24} color="black" />
+                                </TouchableOpacity>}
+                            </View>
 
-                        {!modify ?
-                            <Text style={styles.detail} >{offerTitle}</Text>
-                            : <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.detail} placeholder=" Nom" maxLength={200}></TextInput>}
-                    </View>
-                    <View >
-                        {!modify ?
-                            <Text style={styles.description}>{descriptionOffer}</Text>
-                            : <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.description} placeholder=" Description" maxLength={400}></TextInput>}
-                    </View>
-                    <View >
+                        </View>)
+                            :
+                            (<View >
 
-                        {!modify ? (<View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.price} >{priceOffer}</Text>
-                            <Text style={{ marginLeft: '5%' }}>CFA</Text>
-                        </View >)
-                            : <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.price} placeholder=" Prix" maxLength={200} keyboardType="numeric"></TextInput>}
-                    </View>
-                    <Text>Date de mise en ligne: {dateMiseEnVente}</Text>
-                    {!modify ? <View >
-                        <Text style={styles.list} >{categoryOffer} </Text>
-                    </View> :
-                        (<SelectList
-                            setSelected={(val) => setCategory(val)}
-                            data={store}
-                            save="value"
-                            placeholder={category}
-                            search={false}
-                            maxHeight={100}
-                        />)}
-                    {!modify ? <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.list}>{cityData} </Text>
-                        {isOwner && <TouchableOpacity onPress={() => goToMessageOwnerOffer()} style={{ marginLeft: '60%' }}>
-                            <FontAwesome name="envelope" size={24} color="black" />
-                        </TouchableOpacity>}
-                    </View> :
-                        (<SelectList
-                            setSelected={(val) => setLocations(val)}
-                            data={citiesData}
-                            save="value"
-                            placeholder={locations}
-                            search={false}
-                            maxHeight={100}
-                        />)}
+                                <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.detail} placeholder=" Nom" maxLength={200}></TextInput>
+                                <TextInput onChangeText={(value) => setDescription(value)} value={description} style={styles.description} placeholder=" Description" maxLength={400}></TextInput>
+                                <Text style={styles.price} >Prix Actuel : {priceOffer} CFA</Text>
 
-                    {isOwner ?
-                        <View >
-                            {modify ?
-                                <View style={styles.blocModiSuppr} >
-                                    <TouchableOpacity onPress={() => confirmChange()} style={styles.send}>
-                                        <Text> Confirmer les changements</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.suppr} onPress={() => { setModify(false); setEmptyField(false) }}>
-                                        <Text> Annuler</Text>
-                                    </TouchableOpacity>
-                                </View> :
-
-                                <View style={styles.blocModiSuppr}>
-                                    {emptyField && <Text>Veuillez remplir les champs</Text>}
-                                    <TouchableOpacity onPress={() => changeOffer()} style={styles.send1}>
-                                        <Text> Modifier les informations</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.suppr} onPress={() => ConfirmationDelete()}>
-                                        <Text> Supprimer l'offre</Text>
-                                    </TouchableOpacity>
+                                <View style={styles.blocPrice}>
+                                    <Text style={styles.price} >Entrer nouveau prix :</Text>
+                                    <TextInput onChangeText={(value) => setPrice(value)} value={price} style={styles.price} placeholder="Prix" maxLength={200} keyboardType="numeric"></TextInput>
                                 </View>
-                            }
-                        </View>
-                        : <View style={styles.blocModiSuppr}>
-                            <TouchableOpacity style={styles.send1} onPress={() => { setModalProfilVendeur(!modalProfilVendeur) }} >
-                                <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.send1} onPress={goToMessage}>
-                                <Text>Contacter le vendeur</Text>
-                            </TouchableOpacity>
-                        </View>}
-                </View>
-            </View>
+                                <SelectList
+                                    setSelected={(val) => setCategory(val)}
+                                    data={store}
+                                    save="value"
+                                    placeholder={category}
+                                    search={false}
+                                    maxHeight={100}
+                                />
+                                <SelectList
+                                    setSelected={(val) => setLocations(val)}
+                                    data={citiesData}
+                                    save="value"
+                                    placeholder={locations}
+                                    search={false}
+                                    maxHeight={100}
+                                />
+                            </View>)}
+                        {isOwner ?
+                            <View >
+                                {modify ?
+                                    <View style={styles.blocModiSuppr} >
+                                        <TouchableOpacity onPress={() => confirmChange()} style={styles.send}>
+                                            <Text> Confirmer les changements</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.suppr} onPress={() => { setModify(false); setEmptyField(false) }}>
+                                            <Text> Annuler</Text>
+                                        </TouchableOpacity>
+                                    </View> :
+
+                                    <View style={styles.blocModiSuppr}>
+                                        {emptyField && <Text>Veuillez remplir les champs</Text>}
+                                        <TouchableOpacity onPress={() => changeOffer()} style={styles.send1}>
+                                            <Text> Modifier les informations</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.suppr} onPress={() => ConfirmationDelete()}>
+                                            <Text> Supprimer l'offre</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
+                            </View>
+                            : <View style={styles.blocModiSuppr}>
+                                <TouchableOpacity style={styles.send1} onPress={() => { setModalProfilVendeur(!modalProfilVendeur) }} >
+                                    <Text>Voir le profil du vendeur {sellerNameOffer} </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.send1} onPress={goToMessage}>
+                                    <Text>Contacter le vendeur</Text>
+                                </TouchableOpacity>
+                            </View>}
+                    </View>
+                </ScrollView>
+            </View >
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -468,7 +476,7 @@ export default function FicheVente(props, { route, navigation }) {
                     </View>
                 </Pressable>
             </Modal>
-        </View>
+        </View >
     );
 }
 
@@ -706,5 +714,8 @@ const styles = StyleSheet.create({
         // fontFamily: 'MontserratRegular',
         fontSize: 16,
         color: 'white',
+    },
+    blocPrice: {
+        flexDirection: 'row',
     },
 })
