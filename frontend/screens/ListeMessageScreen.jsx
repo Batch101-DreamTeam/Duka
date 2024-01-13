@@ -3,9 +3,9 @@ import {
     KeyboardAvoidingView, View, StyleSheet, Text, ScrollView, TextInput, Pressable, Image, TouchableOpacity
 } from 'react-native';
 // import NetInfo from "@react-native-community/netinfo";
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Pusher from 'pusher-js/react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import InfoContainer from '../components/messagesElements/InfoContainer';
@@ -18,45 +18,87 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function ListeMessageScreen(props, { navigation }) {
-    const isFocused = useIsFocused();
+    // const isFocused = useIsFocused();
     let pusher = null;
     const user = useSelector((state) => state.user.value);
-    // console.log(user)
-    useEffect(() => {
-        if (isFocused) {
+    const token = user.token
 
-            (async () => {
+
+
+    const [allChatChannels,  setAllChatChannels] = useState([])
+
+    // console.log(user)
+    // useEffect(() => {
+    //     console.log('chargé')
+    //     if (isFocused) {
+
+
+            // (async () => {
                 // const response = await fetch(`${backendAddress}/messages/allPreviousMessages/${user.token}`)
                 // const data = await response.json();
                 // console.log("la data:", data);
 
 
-                // aller chercher tous les messages reçus par le user
+    //             // aller chercher tous les messages reçus par le user
 
-                // const response = await fetch(`${backendAddress}/messages/${user.token}`)
-                // const data = await response.json();
-                // console.log(data);
+    //             // const response = await fetch(`${backendAddress}/messages/${user.token}`)
+    //             // const data = await response.json();
+    //             // console.log(data);
 
-                // pusher = new Pusher('3295d486d5ad2af1a1af', { cluster: 'eu' });
-                // const respon = await fetch(`${backendAddress}/messages/previousMessages/${chatname}`)
-                // const dataPrev = await respon.json();
-                // setMessages(dataPrev.messages)
-
-
-                // const resp = await fetch(`${backendAddress}/messages/${chatname}/${user.name}`, {
-                //     method: 'PUT',
-                // })
+    //             // pusher = new Pusher('3295d486d5ad2af1a1af', { cluster: 'eu' });
+    //             // const respon = await fetch(`${backendAddress}/messages/previousMessages/${chatname}`)
+    //             // const dataPrev = await respon.json();
+    //             // setMessages(dataPrev.messages)
 
 
-                // const subscription = pusher.subscribe(chatname);
+    //             // const resp = await fetch(`${backendAddress}/messages/${chatname}/${user.name}`, {
+    //             //     method: 'PUT',
+    //             // })
 
-                // subscription.bind('pusher:subscription_succeeded', () => {
-                //     subscription.bind('message', handleReceiveMessage);
-                // });
 
-            })();
-        }
-    }, [isFocused]);
+    //             // const subscription = pusher.subscribe(chatname);
+
+    //             // subscription.bind('pusher:subscription_succeeded', () => {
+    //             //     subscription.bind('message', handleReceiveMessage);
+    //             // });
+
+    //         })();
+    //     }
+    // }, [isFocused]);
+   const callOfData = async ()=>{
+    const appel = await fetch(`${backendAddress}/messages/getAllConversation/${token}`)
+    const response = await appel.json()
+      if(response?.result && response?.chatChannels){
+          console.log('ok les channels sont chargés!')
+          setAllChatChannels([...data.chatChannels]);
+          console.log(allChatChannels)
+          return  
+      }
+    }
+   
+
+     useFocusEffect(
+        React.useCallback(()=>{
+           callOfData()
+        }, []))
+
+
+    let convs;
+    const displayConv = allChatChannels.map((conv)=>{
+    return (
+       <View style={styles.containerOfConv}> 
+      <Text> conversation pour {conv.offerTitle}</Text>
+      <Text> A {conv.locations[0]}</Text>
+       </View>
+    )
+    })
+
+    if(!allChatChannels.length){
+         convs = (<Text> pas de conversation encore achete une truc </Text>)
+    }
+    else {
+        convs = (displayConv)
+    }
 
     return (
         // objInfo.sellerName &&
@@ -74,7 +116,8 @@ export default function ListeMessageScreen(props, { navigation }) {
 
             </View>
             <ScrollView style={styles.scrollView}>
-                <Text>message reçus</Text>
+                {/* <Text>message reçus</Text> */}
+                {convs}
             </ScrollView>
             <View style={styles.SearchRow} >
 

@@ -25,6 +25,7 @@ export default function MessageScreen(props, { navigation }) {
 
     const isFocused = useIsFocused();
     const user = useSelector((state) => state.user.value);
+    const token = user.token
     // console.log(user)
     const [objInfo, setObjInfo] = useState({});
     const [product, setProduct] = useState([]);
@@ -34,10 +35,10 @@ export default function MessageScreen(props, { navigation }) {
     const chatname = idProduct + seller._id;
     let pusher = null
 
+
     // Join chat
     useEffect(() => {
         if (isFocused) {
-
             (async () => {
                 const response = idProduct && await fetch(`${backendAddress}/offers/search/${idProduct}`)
                 const data = await response.json();
@@ -118,8 +119,8 @@ export default function MessageScreen(props, { navigation }) {
             <SingleMessage key={i} userId={userId} messageContent={message.text} />
         )
     })
-
-
+     
+    
 
 
     return (
@@ -138,7 +139,9 @@ export default function MessageScreen(props, { navigation }) {
 
             </View>
             <ScrollView style={styles.scrollView}>
+            {convs}
                 {messagesTextJsx}
+                
             </ScrollView>
             <View style={styles.SearchRow} >
                 <FontAwesome name="pencil" style={styles.iconSearch} size={20} />
@@ -172,7 +175,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: 'black',
     },
+    containerOfConv:{
+        flexDirection: 'row',
 
+    },
     scrollView: {
         backgroundColor: 'white',
         padding: 3,
