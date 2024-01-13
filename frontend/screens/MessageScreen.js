@@ -70,7 +70,7 @@ export default function MessageScreen(props, { navigation }) {
 
     // const imgProduct = 'https://res.cloudinary.com/dzdrlauim/image/upload/v1702893055/mfuued7dtdxewhdqmghl.jpg';
     // const imgProduct = props.route.params.data.images;
-    // console.log(product.images)
+    console.log(product.images)
     // Leave chat
     useEffect(() => {
         return async () => {

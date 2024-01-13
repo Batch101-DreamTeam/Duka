@@ -72,7 +72,7 @@ export default function FicheVente(props, { route, navigation }) {
     const [isOwner, setIsOwner] = useState(false)
 
 
-    //console.log(dateMiseEnVente)
+    console.log(dateMiseEnVente)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos

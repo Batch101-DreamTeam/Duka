@@ -38,7 +38,7 @@ export default function Header(props, { navigation }) {
             .then((response) => response.json())
             .then((data) => {
                 if (data.result) {
-                    // console.log(data);
+                    //console.log(data);
                     dispatch(updateName(null))
                     dispatch(updateToken(null))
                     dispatch(updateMail(null))
