@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, RefreshControl, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
 import AlternHome from '../components/AlternHome';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 import { newSearch, nameSearch, filterApply } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function AcceuilScreen({ navigation, route }) {// ne pas mettre PROPS
-    //console.log("acceuil", navigation)
-    const [refreshing, setRefreshing] = useState(false);
+export default function AcceuilScreen({ navigation, route }) {
+
     const user = useSelector((state) => state.user.value);
-    const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
     const filterOn = offer.haveFilter
@@ -28,7 +25,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
 
     useEffect(() => {
         if (!resultSearchUser) {
-            // console.log(resultSearchUser)
+
             (async () => {
                 fetch(`${backendAddress}/offers/allOffers`, {
                     method: 'GET',
@@ -48,30 +45,13 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             })();
         } else {
             setOffersData(resultSearchUser)
-            // console.log(resultSearchUser)
+
         }
     }, [resultSearchUser, Favorites]);
 
 
 
-    // const onRefresh = () => {
-    //     console.log('res')
-    //     setRefreshing(true); // Démarre le rafraîchissement
-    //     callOfData(); // Appelle la fonction pour récupérer les nouvelles données
-    // };
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         if (resultSearchUser) {
-    //             setOffersData(resultSearchUser)
-    //             console.log(resultSearchUser)
-    //         } else {
-    //             // setOffersData([]);
-    //             // console.log(backendAddress)
-    //             callOfData()
-    //         }
-    //     }, [resultSearchUser, Favorites])
-    // )
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, [Favorites]);
@@ -83,7 +63,7 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     }
     const offers = offersData && offersData.map((data, i) => {
         const isLiked = Favorites?.some((offer) => {
-            //    console.log(offer._id)
+
             return offer.id === data._id
         });
         return <ResultSearch
@@ -131,12 +111,6 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                 }
                 <ScrollView
                     style={styles.scrollView}
-                //  refreshControl={
-                //     <RefreshControl
-                //         refreshing={refreshing}
-                //         onRefresh={onRefresh}
-                //     />
-                // }
                 >
                     {offersData ?
 

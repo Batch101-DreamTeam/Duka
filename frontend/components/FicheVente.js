@@ -18,6 +18,7 @@ import { LogBox } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import ProfilScreen from '../screens/ProfilScreen';
+
 LogBox.ignoreLogs([
     'Non-serializable values were found in the navigation state',
 ]);

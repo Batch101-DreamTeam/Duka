@@ -83,9 +83,25 @@ router.post('/', async (req, res) => {
 
 
     })
+    // User.updateOne(
+    //   { username: buyer.username },
+    //   {
+    //     $push:
+    //       { conversation: _id }
+    //   }
+    // )
+    // User.updateOne(
+    //   { username: seller.username },
+    //   {
+    //     $push:
+    //       { conversation: _id }
+    //   }
+    // )
     newChatChannel.save().then((data) => {
 
-      // console.log(data)
+      // console.log(seller.username)
+      // console.log(buyer.username)
+      // console.log(data._id)
       // const id = data._id;
 
       // console.log(buyer)
@@ -117,13 +133,14 @@ router.post('/', async (req, res) => {
       //         }
       //     }
       // )
-      buyer = User.updateOne({
-        token: tokenBuyer
-      }, { $set: { conversations: chatname } });
-      seller = User.updateOne({
-        token: tokenSeller
-      }, { $set: { conversations: chatname } });
-      console.log(seller);
+      // buyer = User.updateOne({
+      //   token: tokenBuyer
+      // }, { $set: { conversations: chatname } });
+      // seller = User.updateOne({
+      //   token: tokenSeller
+      // }, { $set: { conversations: chatname } });
+      // console.log(seller);
+
       console.log('Save new chat!');
 
     })

@@ -19,7 +19,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function MessageScreen(props) {
-    console.log(props)
+    // console.log(props)
     const idProduct = props.route.params.data.id;
     const imgProduct = props.route.params.data.images[0];
     // console.log("regarde ici", imgProduct);
