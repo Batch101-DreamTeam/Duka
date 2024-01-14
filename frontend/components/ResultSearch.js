@@ -85,23 +85,7 @@ export default function ResultSearch(props) {
           <Text style={styles.descDesc}>{props.description}</Text>
           <Text style={styles.descPrice}>Prix : {props.price}  CFA</Text>
           <Text style={styles.descHeart}>Ajouter aux favoris {heart}</Text>
-          {/* {isLiked ? (
-            <TouchableOpacity
-              onPress={() => {
-                suppLike();
-              }}
-            >
-              <FontAwesome style={styles.red} name="heart" size={20} />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                addLike();
-              }}
-            >
-              <FontAwesome name="heart" size={20} />
-            </TouchableOpacity>
-          )} */}
+  
         </View>
       </View>
     </TouchableOpacity>

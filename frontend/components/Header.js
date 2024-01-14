@@ -6,6 +6,7 @@ import { BACKEND_ADDRESS } from "@env";
 import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs, removeProfilePhoto } from '../reducers/user';
 import React, { useState, useEffect, useRef } from 'react';
 import { Foundation } from '@expo/vector-icons';
+import { removeToken } from '../reducers/user';
 const backendAddress = BACKEND_ADDRESS;
 
 
@@ -48,20 +49,13 @@ export default function Header(props) {
                 //     console.log(data.message);
                 //     return;
                 // }
-            });
+            })
+            .catch(err=> oconsole.log(err.message));
     }
 
-    const logout = () => {
-        console.log('logout')
-        // dispatch(logout());
-        // updateAllFavsBeforeLogOut()
-        // props.navigation.navigate("Connexion", { navigation: navigation })
-        if (token) {
-            // console.log(token)
+    const localLogout = () => {
             updateAllFavsBeforeLogOut()
-
-        }
-
+            dispatch(removeToken());
     }
 
 
@@ -75,10 +69,9 @@ export default function Header(props) {
                 <Image style={styles.logo} source={require('../assets/Logo_DUKA.png')} />
                 {/* <Text style={styles.duka} >dUka</Text> */}
                 <View style={styles.topRightHeader} >
-                    <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
+                    <TouchableOpacity onPress={()=> localLogout()} style={styles.iconRightHeader}>
                         {token && <AntDesign name="logout" size={25} color="white" />}
                     </TouchableOpacity>
-
                 </View>
 
             </View>

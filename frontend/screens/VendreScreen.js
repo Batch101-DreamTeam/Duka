@@ -82,6 +82,7 @@ export default function VendreScreen({ navigation }) {
 
 
     const Validate = async () => {
+        //TODO  trim avant 
         if (name != "" || description != "" || price != "") {
             const photos = []
             for (let i = 0; i < photoReducer.length; i++) { // boucle pour sauvegarder toutes les photos du reducer dns le backend
@@ -144,6 +145,7 @@ export default function VendreScreen({ navigation }) {
         setOpenTakePhotoModal(true)
         //navigation.navigate('Photo', { from: 'VendreScreen' })
     }
+    
     const refresh = () => { // ne fonctionne pas
         setName("")
         setDescription("")
@@ -163,6 +165,7 @@ export default function VendreScreen({ navigation }) {
         setOpenPhoto(true)
         setDisplayOpenPhoto(data)
     }
+
     const photos = user.photos.map((data, i) => { // afficher les photos stockés dans le reducer 
         return (
             <TouchableOpacity key={i} onPress={() => openModalPhoto(data)} >
@@ -174,10 +177,12 @@ export default function VendreScreen({ navigation }) {
             </TouchableOpacity>
         );
     });
+
     const closeTakePhotoModal = () => {
         setOpenTakePhotoModal(false);
         setModalVisible(false)
     };
+
     const goToDashboard = () => {
         navigation.navigate('DashboardVendeur')
     }

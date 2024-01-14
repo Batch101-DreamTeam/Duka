@@ -28,11 +28,12 @@ export default function ListeMessageScreen(props, { navigation }) {
     const [messagesProduct, setMessagesProduct] = useState([{}]);
     const [product, setProduct] = useState([{}]);
     // console.log('messagesp', messagesProduct[0].messages[0].createdAt)
+
+
     useEffect(() => {
         (async () => {
             const response = idProduct && await fetch(`${backendAddress}/messages/messagesByProduct/${idProduct}`)
             const data = await response.json();
-
             setMessagesProduct(data.messagesProduct);
             setProduct(data.product);
             // console.log('messagesp', data)

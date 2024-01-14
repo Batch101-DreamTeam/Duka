@@ -10,6 +10,7 @@ export const RemoteDataSetExample2 = memo(() => {
 
     const searchRef = useRef(null)
 
+    // fonction d'appel de la librairy externe pour génerer le dropdown
     const getSuggestions = useCallback(async q => {
         const filterToken = q.toLowerCase()
         console.log('getSuggestions', q)

@@ -29,9 +29,7 @@ export default function Photo(props) {
         if (isFocused) {
             //Update the state you want to be updated
             setPhotoTake('')
-
         }
-
     }, [isFocused]);
 
     useEffect(() => {
@@ -52,7 +50,6 @@ export default function Photo(props) {
         });
         setPhotoTake(photo.uri)// enregistre la photo prise dans une variable d'état: permet de demander si on garde la photo ou non
         setSaveFormData(formData)
-
     }
 
     const savePhoto = () => {

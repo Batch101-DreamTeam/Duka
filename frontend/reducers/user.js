@@ -46,7 +46,6 @@ export const userSlice = createSlice({
 
     suppFavorites: (state, action) => {
       state.value.favorites = state.value.favorites?.filter((data) => data.id !== action.payload.id);
-      console.log('tryed   eqsfkhzsrmrkgf')
     },
     deleteAllfavs: (state, action) => {
       state.value.favorites = [];
@@ -62,9 +61,13 @@ export const userSlice = createSlice({
     removeProfilePhoto: (state, action) => {
       state.value.profilePhoto = "";
     },
+    removeToken: (state, action) => {
+      state.value.token = null;
+    },
+   
 
   },
 });
 
-export const { deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto, addProfilePhoto, removeProfilePhoto } = userSlice.actions;
+export const { removeToken,deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto, addProfilePhoto, removeProfilePhoto } = userSlice.actions;
 export default userSlice.reducer;

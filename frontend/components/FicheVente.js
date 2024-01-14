@@ -134,9 +134,11 @@ export default function FicheVente(props) {
                 props.navigation.navigate("AcceuilScreen")
             });
     }
+
     const changeOffer = () => {
         setModify(true)
     }
+
     const confirmChange = async () => {
         if (name === "" || description === '' || price === '') {
             setEmptyField(true)
