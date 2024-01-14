@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 // const image = { uri: 'https://legacy.reactjs.org/logo-og.png' };
 
 export default function ResultSearch(props) {
-  //console.log("props", props)
+  console.log("props", props)
   const { navigation } = props;
   // console.log("ici", props)
   const [isLiked, setIsliked] = useState(false);
@@ -22,6 +22,7 @@ export default function ResultSearch(props) {
 
   let heart;
   const target = Favorites?.find(el => el.id == props.id)
+  
   if (target) {
     heart = (
       <TouchableOpacity
@@ -84,23 +85,7 @@ export default function ResultSearch(props) {
           <Text style={styles.descDesc}>{props.description}</Text>
           <Text style={styles.descPrice}>Prix : {props.price}  CFA</Text>
           <Text style={styles.descHeart}>Ajouter aux favoris {heart}</Text>
-          {/* {isLiked ? (
-            <TouchableOpacity
-              onPress={() => {
-                suppLike();
-              }}
-            >
-              <FontAwesome style={styles.red} name="heart" size={20} />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                addLike();
-              }}
-            >
-              <FontAwesome name="heart" size={20} />
-            </TouchableOpacity>
-          )} */}
+  
         </View>
       </View>
     </TouchableOpacity>

@@ -74,7 +74,7 @@ export default function FicheVente(props) {
     const [isOwner, setIsOwner] = useState(false)
 
 
-    //console.log(dateMiseEnVente)
+    console.log(dateMiseEnVente)
     const user = useSelector((state) => state.user.value);
     const token = user.token
     const photoReducer = user.photos
@@ -135,9 +135,11 @@ export default function FicheVente(props) {
                 props.navigation.navigate("AcceuilScreen")
             });
     }
+
     const changeOffer = () => {
         setModify(true)
     }
+
     const confirmChange = async () => {
         if (name === "" || description === '' || price === '') {
             setEmptyField(true)

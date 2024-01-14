@@ -26,8 +26,9 @@ export default function FavorisScreen({ navigation, route }) {
   const dispatch = useDispatch();
   console.log(Favorites)
 
+  // map des favoris de l'utilisateur dans le reducer '?' = ça existe
   const displayFav = Favorites?.map((el, i) => {
-    // let isliked;
+
     return <ResultSearch
       key={i}
       sellerName={el.sellerName}
@@ -43,14 +44,10 @@ export default function FavorisScreen({ navigation, route }) {
       isLiked={true}
     >  </ResultSearch>;
   });
-  // useFocusEffect(
-  //   React.useCallback(()=>{
-  //     console.log('haha')
-  //     dispatch(getFavorites())
-  //   })
-  // )
 
+  
   useFocusEffect(() => {
+    // quand la page n'est plus focus le tableau favoris en backend est modifié (role du return)
     return () => {
       const donne = {
         Token: token,
@@ -81,7 +78,11 @@ export default function FavorisScreen({ navigation, route }) {
     };
   });
 
+
+
   let display;
+  // rendu conditionnel jsx variable suivant l'état de connexion et des favoris ajoutés
+
   if (!token) {
     display = (<>
       <Connexion />
@@ -91,6 +92,7 @@ export default function FavorisScreen({ navigation, route }) {
     </>
     )
   }
+  
   else if (!Favorites?.length && token) {
     display = (
       <View style={styles.containerContent}>
@@ -117,12 +119,11 @@ export default function FavorisScreen({ navigation, route }) {
 
   }
 
-  // console.log(Favorites);
+  //console.log(Favorites);
 
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
-      {/* <Text style={styles.title}> Favoris </Text> */}
       {display}
     </SafeAreaView>
   );

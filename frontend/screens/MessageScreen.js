@@ -53,7 +53,6 @@ export default function MessageScreen(props) {
             // console.log('dataprev', isFocused)
             setMessages(dataPrev.messages)
 
-
             const resp = await fetch(`${backendAddress}/messages/${chatname}/${user.name}`, {
                 method: 'PUT',
             })
@@ -85,9 +84,7 @@ export default function MessageScreen(props) {
     // }, []);
 
     const handleReceiveMessage = async (data) => {
-
         setMessages((messages) => [...messages, data]);
-
     };
 
     const handleSendMessage = () => {

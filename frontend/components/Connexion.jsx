@@ -18,17 +18,11 @@ export default function Connexion() {
     return (
 
         <View style={styles.containerConnexion}>
-
-
             <View>
                 <Text style={styles.h3}>Vous devez d'abord vous connecter pour accéder à ce service</Text>
                 <Connection />
-
                 <Inscription />
-
             </View>
-
-
         </View>
     );
 }

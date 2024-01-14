@@ -22,48 +22,64 @@ export default function AcceuilScreen({ navigation, route }) {
     const [offersData, setOffersData] = useState([]);
 
 
-
-    useEffect(() => {
-        if (!resultSearchUser) {
-
-            (async () => {
-                fetch(`${backendAddress}/offers/allOffers`, {
-                    method: 'GET',
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-
-                        if (data.offers) {
-                            setOffersData(() => { return data.offers.filter((el) => { return !Favorites?.includes(el._id) }) });
-
-                        }
-
-                    });
-            })();
-        } else {
-            setOffersData(resultSearchUser)
-
-        }
-    }, [resultSearchUser, Favorites]);
+    // fonction d'appel de toutes les offres 
+    const callOfData = () => {
+        fetch(`${backendAddress}/offers/allOffers`, {
+            method: 'GET',
+            headers: {
+                'Cache-Control': 'no-cache',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log("alors fetch")
+                if (data.offers) {
+                    setOffersData(data.offers);
+                    setRefreshing(false);
+                }
+                else {
+                    console.log('aucune donnée')
+                    return
+                }
+            });
+    }
 
 
 
+    //    fonction de rafraichissement de la liste d'offres
+    const onRefresh = () => {
+        console.log('res')
+        setRefreshing(true); // Démarre le rafraîchissement
+        callOfData(); // Appelle la fonction pour récupérer les nouvelles données
+    };
 
+
+    //   au focus de la page si une recherche de produit est dans le reducer les offres correspondent au resultat de recherche 
+    //   sinon un appel de toutes les données est effectué 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (resultSearchUser) {
+                setOffersData(resultSearchUser)
+            } else {
+                callOfData()
+            }
+        }, [resultSearchUser, Favorites])
+    )
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, [Favorites]);
 
+    // fonction de suppression de recherche 
     const deleteSearch = () => {
         dispatch(newSearch())
         dispatch(nameSearch())
         dispatch(filterApply(false))
     }
+
+    // map de toutes les offres 
     const offers = offersData && offersData.map((data, i) => {
         const isLiked = Favorites?.some((offer) => {
-
+            //    console.log(offer._id)
             return offer.id === data._id
         });
         return <ResultSearch
@@ -79,12 +95,11 @@ export default function AcceuilScreen({ navigation, route }) {
             navigation={navigation}
             date={data.dateOfCreation}
             route={route}
-            isLiked={isLiked}
+        // isLiked={isLiked}
         />;
-    }
-    );
-    return (
+    });
 
+    return (
         <View style={styles.container}>
 
             <Header navigation={navigation} />
@@ -111,14 +126,18 @@ export default function AcceuilScreen({ navigation, route }) {
                 }
                 <ScrollView
                     style={styles.scrollView}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
                 >
-                    {offersData ?
-
+                    {offersData.length ?
                         <View style={styles.productList}>
                             {offers}
                         </View> :
                         <AlternHome />
-
                     }
 
                 </ScrollView>

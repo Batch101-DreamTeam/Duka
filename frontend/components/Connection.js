@@ -29,7 +29,7 @@ export default function Connection() {
   const dispatch = useDispatch();
   const token = user?.token;
   const Favorites = user?.favorites;
-  // console.log(Favorites);
+  //console.log(Favorites);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [wrong, setWrong] = useState(true);
@@ -90,7 +90,9 @@ export default function Connection() {
               setAuthentification(false);
             }
           }
-        });
+        }
+        );
+
     } else {
       setWrong(false);
     }
