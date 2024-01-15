@@ -45,7 +45,6 @@ export default function InputSearch() {
 
 
     const handleSubmit = () => {
-        console.log("ok")
 
         fetch(`${backendAddress}/offers/search/Bycate`, {
             method: 'POST',

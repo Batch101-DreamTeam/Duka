@@ -51,7 +51,7 @@ export default function VendreScreen({ navigation }) {
 
 
     // fonction our choisir une photo exixtant dans la galerie 
-    
+
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -82,7 +82,6 @@ export default function VendreScreen({ navigation }) {
 
 
     const Validate = async () => {
-        //TODO  trim avant 
         if (name != "" || description != "" || price != "") {
             const photos = []
             for (let i = 0; i < photoReducer.length; i++) { // boucle pour sauvegarder toutes les photos du reducer dns le backend
@@ -97,15 +96,9 @@ export default function VendreScreen({ navigation }) {
                     method: 'POST',
                     body: formData,
                 })
-                const photoSaveCloudinaty = await response.json() // pas du TOUT opti car toute les photos sont saves avant de savoir si la requete pour save va passer
-
-                //console.log('response trouvée : ', photoSaveCloudinaty)
-
+                const photoSaveCloudinaty = await response.json()
                 photos.push(photoSaveCloudinaty.url) // stock les url cloudinary dans variable d'état
-                //console.log('photos', photos)
-
             }
-
             fetch(`${backendAddress}/offers/addOffer`, {// http://172.16.0.153:3000/offers/addOffer
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -132,9 +125,6 @@ export default function VendreScreen({ navigation }) {
                         setLocations("")
                         setOfferRegister(!offerRegister)
                     }
-                    // else {
-
-                    // }
                 });
         } else {
             setFillField(false)
@@ -145,7 +135,7 @@ export default function VendreScreen({ navigation }) {
         setOpenTakePhotoModal(true)
         //navigation.navigate('Photo', { from: 'VendreScreen' })
     }
-    
+
     const refresh = () => { // ne fonctionne pas
         setName("")
         setDescription("")

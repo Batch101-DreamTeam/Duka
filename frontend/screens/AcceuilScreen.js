@@ -22,7 +22,7 @@ export default function AcceuilScreen({ navigation, route }) {
     const dispatch = useDispatch();
     const [offersData, setOffersData] = useState([]);
 
-
+    console.log("oui")
     // fonction d'appel de toutes les offres 
     const callOfData = () => {
         fetch(`${backendAddress}/offers/allOffers`, {

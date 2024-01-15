@@ -62,12 +62,10 @@ export default function ProfilScreen(props) {
     //     }, [])
     // );
 
-   // appel api et remplacement des champs par les datas en base
+    // appel api et remplacement des champs par les datas en base
     useFocusEffect(
         React.useCallback(() => {
             dispatch(removeProfilePhoto())
-            //???
-            // console.log('AVANT LE FETCH')
             fetch(`${backendAddress}/users/getProfilInfos/${user.token}`)
                 .then(response => response.json())
                 .then(profileInfos => {
@@ -91,7 +89,8 @@ export default function ProfilScreen(props) {
                         dispatch(addProfilePhoto(profileData.avatarProfil))
                     }
                 })
-                .catch(error => { console.log(error)
+                .catch(error => {
+                    console.log(error)
                     //console.error("Error fetching profile information:", error);
                 });
 
@@ -101,7 +100,7 @@ export default function ProfilScreen(props) {
 
     //Mettre à jour son profil 1 appel pour upload le fichier photo sur cloudinary et l'autre pour modifierr le profil
     const updateProfilInfo = async () => {
-        
+
         const formData = new FormData();
         formData.append('photoFromFront', {
             uri: photoProfileReducer,
@@ -115,7 +114,7 @@ export default function ProfilScreen(props) {
         })
         const photoSaveCloudinaty = await response.json()
 
-        
+
         fetch(`${backendAddress}/users/modifyProfil/${user.token}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },

@@ -36,7 +36,7 @@ router.post('/addOffer', async (req, res) => {
                 description: req.body.description,
                 category: req.body.category,
                 price: req.body.price,
-                dateOfCreation: req.body.date, // la donnée sera donnée dans le front
+                dateOfCreation: req.body.date,
                 locations: req.body.locations, // à récupérer sous forme de liste déroulante dans le front
             })
             newOffer.save()

@@ -115,7 +115,6 @@ export default function MessageScreen(props) {
         setMessageText('');
     };
 
-
     const messagesTextJsx = messages.map((message, i) => {
         const userId = message.username === user.name ? 1 : 2
         return (

@@ -42,7 +42,6 @@ router.delete('/:chatname/:username', async (req, res) => {
 // Send message
 
 router.post('/', async (req, res) => {
-  console.log('send message')
   const tokenBuyer = req.body.tokenBuyer;
   const tokenSeller = req.body.tokenSeller;
 
@@ -78,7 +77,6 @@ router.post('/', async (req, res) => {
       console.log('Save new chat!');
 
     })
-
     res.json({ result: true });
   }
   else {

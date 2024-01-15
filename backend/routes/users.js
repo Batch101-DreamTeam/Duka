@@ -17,11 +17,9 @@ router.get('/getProfilInfos/:token', async (req, res) => {
     token: req.params.token
   });
   if (!potentielUser) {
-    //console.log(potentielUser)
     return
   }
   const potentielId = potentielUser._id
-  //ajouter contact et description au modele users!
   User.findOne({ _id: potentielId }).then(data => {
     res.json({
       result: true,
@@ -73,7 +71,7 @@ router.post('/connexion', async (req, res, next) => {
 
 
 router.post('/inscription', async (req, res, next) => {
-  if (!checkBody(req.body, ['username', 'mail', 'password'])) { 
+  if (!checkBody(req.body, ['username', 'mail', 'password'])) {
     // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
