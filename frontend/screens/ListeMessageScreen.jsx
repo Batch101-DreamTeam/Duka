@@ -21,7 +21,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function ListeMessageScreen(props) {
-    console.log(props)
+
     const idProduct = props.route.params.data.id;
     const imgProduct = props.route.params.data.images[0];
     const user = useSelector((state) => state.user.value);

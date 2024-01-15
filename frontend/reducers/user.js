@@ -34,14 +34,14 @@ export const userSlice = createSlice({
     },
 
     addFavorites: (state, action) => {
-  
-       if(state.value.favorites?.includes(action.payload._id) || !state.value.token){
-        console.log('already Had')
-        return 
+
+      if (state.value.favorites?.includes(action.payload._id) || !state.value.token) {
+        // console.log('already Had')
+        return
       }
-      else if(state.value.token){
+      else if (state.value.token) {
         state.value.favorites?.push(action.payload);
-    }
+      }
     },
 
     suppFavorites: (state, action) => {
@@ -49,14 +49,14 @@ export const userSlice = createSlice({
     },
     deleteAllfavs: (state, action) => {
       state.value.favorites = [];
-      console.log('del: ', state.value.favorites);
+      // console.log('del: ', state.value.favorites);
     },
     getFavorites: (state, action) => {
       state.value.favorites = action.payload;
     },
 
     addProfilePhoto: (state, action) => {
-      state.value.profilePhoto=action.payload
+      state.value.profilePhoto = action.payload
     },
     removeProfilePhoto: (state, action) => {
       state.value.profilePhoto = "";
@@ -64,10 +64,10 @@ export const userSlice = createSlice({
     removeToken: (state, action) => {
       state.value.token = null;
     },
-   
+
 
   },
 });
 
-export const { removeToken,deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto, addProfilePhoto, removeProfilePhoto } = userSlice.actions;
+export const { removeToken, deleteAllfavs, addFavorites, suppFavorites, getFavorites, updateName, updateMail, updateToken, addPhoto, removePhoto, deleteAllPhoto, addProfilePhoto, removeProfilePhoto } = userSlice.actions;
 export default userSlice.reducer;

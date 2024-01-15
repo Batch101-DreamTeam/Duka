@@ -19,7 +19,7 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function MessageScreen(props) {
-    // console.log(props)
+    console.log(props)
     const idProduct = props.route.params.data.id;
     const imgProduct = props.route.params.data.images[0];
     // console.log("regarde ici", imgProduct);
@@ -53,6 +53,7 @@ export default function MessageScreen(props) {
             // console.log('dataprev', isFocused)
             setMessages(dataPrev.messages)
 
+
             const resp = await fetch(`${backendAddress}/messages/${chatname}/${user.name}`, {
                 method: 'PUT',
             })
@@ -84,7 +85,9 @@ export default function MessageScreen(props) {
     // }, []);
 
     const handleReceiveMessage = async (data) => {
+
         setMessages((messages) => [...messages, data]);
+
     };
 
     const handleSendMessage = () => {

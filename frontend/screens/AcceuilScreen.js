@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, Text, View, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
-import AlternHome from '../components/AlternHome';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import { newSearch, nameSearch, filterApply } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
 export default function AcceuilScreen({ navigation, route }) {
 
+    const [refreshing, setRefreshing] = useState(false);
     const user = useSelector((state) => state.user.value);
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
@@ -44,15 +45,12 @@ export default function AcceuilScreen({ navigation, route }) {
             });
     }
 
-
-
     //    fonction de rafraichissement de la liste d'offres
     const onRefresh = () => {
-        console.log('res')
+        // console.log('res')
         setRefreshing(true); // Démarre le rafraîchissement
         callOfData(); // Appelle la fonction pour récupérer les nouvelles données
     };
-
 
     //   au focus de la page si une recherche de produit est dans le reducer les offres correspondent au resultat de recherche 
     //   sinon un appel de toutes les données est effectué 
@@ -101,7 +99,6 @@ export default function AcceuilScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-
             <Header navigation={navigation} />
             <InputSearch />
             <View style={styles.containerContent}>
@@ -124,30 +121,18 @@ export default function AcceuilScreen({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
                 }
-                <ScrollView
-                    style={styles.scrollView}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
-                    }
+                <ScrollView style={styles.scrollView} refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />}
                 >
-                    {offersData.length ?
-                        <View style={styles.productList}>
-                            {offers}
-                        </View> :
-                        <AlternHome />
-                    }
 
+                    <View style={styles.productList}>
+                        {offers}
+                    </View>
                 </ScrollView>
             </View>
-
-
-
-
-
-
         </View>
     );
 }
@@ -157,24 +142,15 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
 
     containerContent: {
         flex: 1,
         borderRadius: 20,
-        // marginTop: 100,
         backgroundColor: 'white',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
     scrollView: {
-        // backgroundColor: 'red',
         padding: 3,
-        // marginHorizontal: 2,
-        // marginVertical: 2,
-        // minHeight: '40%',
         maxHeight: '100%',
     },
     productList: {
@@ -183,12 +159,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         width: '100%',
         height: '100%',
-        // minHeight: '45%',
-        // padding: 0,
         paddingBottom: '1%',
-        // backgroundColor: 'black',
-        // justifyContent: 'center',
-        // alignItems: 'center',
     },
     votreRecherche: {
         flexDirection: 'row'

@@ -10,21 +10,10 @@ const backendAddress = BACKEND_ADDRESS;
 
 
 export default function ListeMessages(props) {
-    console.log('props', props)
-    // let messages = messages.push(props.messages);
 
-    // console.log('promes', messages)
-    // let username = props.messages[0].username;
-    // let text = props.messages[0].text;
-    // const handleNavigate = (data) => {
-    //     console.log(data.offer)
-    //     dataOffers = data.offer;
-    // props.navigation.navigate("Message", { dataOffers: dataOffers });
-    // };
     const goToMessage = () => {
 
         props.navigation.navigate("MessageBis", { offerId: props.offer._id, userTwo: props.messages[0].username })
-        // props.navigation.navigate("MessageBis", { data: dataOffers })
         console.log('props2', props.offer._id)
     }
     return (
@@ -34,7 +23,7 @@ export default function ListeMessages(props) {
                 <View>
                     <Text>{props.dateOfCreation}</Text>
                     <Text>{props.offer.offerTitle}</Text>
-                    {/* <Text>{text}</Text> */}
+
                 </View>
             </TouchableOpacity>
 

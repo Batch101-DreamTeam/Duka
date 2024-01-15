@@ -9,9 +9,7 @@ const InfoContainer = (props) => {
       </View>
       <View style={styles.photoArticle}>
         <Image style={styles.image} source={{ uri: props.images }} />
-        {/* <Image style={styles.image} source={require('../../assets/toilet.jpg')} /> */}
       </View>
-      {/* <Text style={styles.white}> truc </Text> */}
     </View>
   )
 }

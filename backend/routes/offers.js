@@ -9,7 +9,7 @@ const fs = require('fs');
 
 router.post('/addOffer', async (req, res) => {
     //verif de l'existence du produit dans la db
-    console.log(req.body)
+    // console.log(req.body)
     if (!checkBody(req.body, ['offerTitle', 'description', 'price', 'locations', 'token'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
         res.json({ result: false, error: 'Missing or empty fields' });
         return;
