@@ -24,7 +24,7 @@ export default function FavorisScreen({ navigation, route }) {
   const token = user?.token;
   const Favorites = user?.favorites;
   const dispatch = useDispatch();
-  console.log(Favorites)
+
 
   const displayFav = Favorites?.map((el, i) => {
     // let isliked;
@@ -117,7 +117,7 @@ export default function FavorisScreen({ navigation, route }) {
 
   }
 
-  //console.log(Favorites);
+  // console.log(Favorites);
 
   return (
     <SafeAreaView style={styles.container}>

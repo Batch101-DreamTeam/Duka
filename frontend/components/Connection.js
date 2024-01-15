@@ -90,7 +90,9 @@ export default function Connection() {
               setAuthentification(false);
             }
           }
-        });
+        }
+        );
+
     } else {
       setWrong(false);
     }

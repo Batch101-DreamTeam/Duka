@@ -73,7 +73,8 @@ router.post('/connexion', async (req, res, next) => {
 
 
 router.post('/inscription', async (req, res, next) => {
-  if (!checkBody(req.body, ['username', 'mail', 'password'])) { // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
+  if (!checkBody(req.body, ['username', 'mail', 'password'])) { 
+    // liste des champs obligatoires (ajouter seller quand on aura des id utilisateurs)
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
@@ -94,16 +95,12 @@ router.post('/inscription', async (req, res, next) => {
       dateOfCreation: new Date(),
       location: []
     });
-
-
-
     newUser.save()
       .then((data) => {
         res.status(200).json({
           result: true,
           data: newUser
         })
-
       })
   }
   else {

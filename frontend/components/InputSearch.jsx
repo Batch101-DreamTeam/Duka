@@ -9,19 +9,11 @@ import { newSearch, nameSearch, filterApply } from '../reducers/offer'
 import { SelectList } from 'react-native-dropdown-select-list';
 import { ServerContainer, useFocusEffect } from '@react-navigation/native';
 const citiesData = ['Moroni', 'Mutsamudu', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
-// const pricesRange = [10, ', 'Fomboni', 'Iconi', 'Itsandra', 'MalÃ©', 'Ouellah', 'Sima'];
-// import RNPickerSelect from 'react-native-picker-select';
-// import { Dropdown } from './Dropdown';
 import { BACKEND_ADDRESS } from "@env"
 const backendAddress = BACKEND_ADDRESS;
-// const backendAddress = process.env.BACKEND_ADDRESS;
-// const BACKEND_ADDRESS = 'http://192.168.43.46:3000';
-// import ModalScreen from './ModalScreen';
-// BACKEND_ADDRESS = 'http://192.168.43.46:3000'
-// BACKEND_ADDRESS = 'http://192.168.1.7:3000';
 
 
-export default function InputSearch(navigation) {
+export default function InputSearch() {
     const [selectedItem, setSelectedItem] = useState(null);
     const price = ["Prix croissant", "Prix décroisssant"]
     const place = ["Par produit le plus proche", "Par prix décroisssant"]
@@ -37,11 +29,7 @@ export default function InputSearch(navigation) {
     const [location, setLocations] = useState('');
     const [priceChoice, setPriceChoice] = useState(null);
 
-    // const offer = useSelector((state) => state.offer.value);
-    //console.log(offer.resultSearch.searchOnWord)
-    // const updatePrice = () => {
 
-    // }
     useFocusEffect(
         React.useCallback(() => {
             return (() => console.log('bye'))
@@ -58,10 +46,7 @@ export default function InputSearch(navigation) {
 
     const handleSubmit = () => {
         console.log("ok")
-        // const filterString = searchWord.trim()
-        // if (filterString.length === 0) {
-        //     return;
-        // }
+
         fetch(`${backendAddress}/offers/search/Bycate`, {
             method: 'POST',
             headers: {
@@ -81,9 +66,6 @@ export default function InputSearch(navigation) {
                     dispatch(newSearch(data.resultQuery))
                     dispatch(nameSearch(searchWord))
                     dispatch(filterApply(true))
-                    // setSearchWord(null);
-                    // setCategory(null);
-                    // setLocations(null);
                     setModalVisible(false);
                 }
                 else {
@@ -154,19 +136,7 @@ export default function InputSearch(navigation) {
                         placeholder='prix'
                     />
                 </View>
-                {/* 
-                <TouchableOpacity style={styles.margiT} onPress={() => console.log({
-                    name: searchWord,
-                    category: category,
-                    city: location
-                })}>
 
-
-                </TouchableOpacity> */}
-
-                {/* <RemoteDataSetExample2 /> */}
-
-                {/* <Dropdown /> */}
 
                 <TouchableOpacity onPress={() => handleSubmit()} style={styles.btnConnexion} >
                     <Text style={styles.white}>

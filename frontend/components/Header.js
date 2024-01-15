@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { BACKEND_ADDRESS } from "@env";
-import { updateName, updateToken, updateMail, deleteAllPhoto, deleteAllfavs, removeProfilePhoto } from '../reducers/user';
-import React, { useState, useEffect, useRef } from 'react';
+import { updateName, updateToken, updateMail, deleteAllfavs, removeProfilePhoto } from '../reducers/user';
+
 import { Foundation } from '@expo/vector-icons';
+import { removeToken } from '../reducers/user';
 const backendAddress = BACKEND_ADDRESS;
 
 
@@ -48,41 +49,33 @@ export default function Header(props) {
                 //     console.log(data.message);
                 //     return;
                 // }
-            });
+            })
+            .catch(err => console.log(err.message));
     }
 
-    const logout = () => {
-        console.log('logout')
-        // dispatch(logout());
-        // updateAllFavsBeforeLogOut()
-        // props.navigation.navigate("Connexion", { navigation: navigation })
-        if (token) {
-            // console.log(token)
-            updateAllFavsBeforeLogOut()
-
-        }
-
+    const localLogout = () => {
+        updateAllFavsBeforeLogOut()
+        dispatch(removeToken());
     }
 
 
     return (
         <>
-            {/* <SafeAreaView style={styles.safeTop}> */}
+
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => props.navigation.navigate('DashboardVendeur')} style={styles.iconRightHeader}>
                     <Foundation name="monitor" size={25} color="white" />
                 </TouchableOpacity>
                 <Image style={styles.logo} source={require('../assets/Logo_DUKA.png')} />
-                {/* <Text style={styles.duka} >dUka</Text> */}
+
                 <View style={styles.topRightHeader} >
-                    <TouchableOpacity onPress={() => logout()} style={styles.iconRightHeader}>
+                    <TouchableOpacity onPress={() => localLogout()} style={styles.iconRightHeader}>
                         {token && <AntDesign name="logout" size={25} color="white" />}
                     </TouchableOpacity>
-
                 </View>
 
             </View>
-            {/* </SafeAreaView > */}
+
 
 
 

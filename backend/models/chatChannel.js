@@ -10,7 +10,7 @@ const messageSchema = mongoose.Schema({
 const ChatChannelShema = mongoose.Schema({
     buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     seller: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
-    offer: { type: mongoose.Schema.Types.ObjectId, ref: 'offers' },//ajout pour recuperer offre dans messageBisScreen 
+    offer: { type: mongoose.Schema.Types.ObjectId, ref: 'offers' },     //ajout pour recuperer offre dans messageBisScreen 
     messages: [messageSchema],
     dateOfCreation: Date,
     online: Boolean,

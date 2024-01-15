@@ -15,6 +15,7 @@ import ResultSearch from './ResultSearch';
 const backendAddress = BACKEND_ADDRESS;
 
 
+
 export default function DashboardVendeur({ navigation, route }) {
     // console.log("nein", navigation)
     const [offersData, setOffersData] = useState([]);
@@ -24,7 +25,6 @@ export default function DashboardVendeur({ navigation, route }) {
     useFocusEffect(
         React.useCallback(() => {
             const fetchData = async () => {
-
                 const response = await fetch(`${backendAddress}/offers/allOffersBySeller/${token}`);
                 // console.log(response)
                 const newData = await response.json();
@@ -41,6 +41,7 @@ export default function DashboardVendeur({ navigation, route }) {
     const GotoMesVentes = () => {
         navigation.navigate("MesVentes", { navigation: navigation })
     }
+    
     const GotoAjouterVente = () => {
         navigation.navigate("VendreScreen", { navigation: navigation })
     }

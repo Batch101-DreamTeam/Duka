@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, RefreshControl, ImageBackground, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, Text, View, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import InputSearch from '../components/InputSearch';
 import ResultSearch from '../components/ResultSearch';
-import AlternHome from '../components/AlternHome';
 import { BACKEND_ADDRESS } from "@env"
 import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
@@ -11,11 +10,10 @@ import { newSearch, nameSearch, filterApply } from '../reducers/offer'
 import { MaterialIcons } from '@expo/vector-icons';
 const backendAddress = BACKEND_ADDRESS;
 
-export default function AcceuilScreen({ navigation, route }) {// ne pas mettre PROPS
-    //console.log("acceuil", navigation)
+export default function AcceuilScreen({ navigation, route }) {
+
     const [refreshing, setRefreshing] = useState(false);
     const user = useSelector((state) => state.user.value);
-    const token = user.token
     const Favorites = user.favorites;
     const offer = useSelector((state) => state.offer.value);
     const filterOn = offer.haveFilter
@@ -25,62 +23,58 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
     const [offersData, setOffersData] = useState([]);
 
 
+    // fonction d'appel de toutes les offres 
+    const callOfData = () => {
+        fetch(`${backendAddress}/offers/allOffers`, {
+            method: 'GET',
+            headers: {
+                'Cache-Control': 'no-cache',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log("alors fetch")
+                if (data.offers) {
+                    setOffersData(data.offers);
+                    setRefreshing(false);
+                }
+                else {
+                    console.log('aucune donnée')
+                    return
+                }
+            });
+    }
 
-    useEffect(() => {
-        if (!resultSearchUser) {
-            // console.log(resultSearchUser)
-            (async () => {
-                fetch(`${backendAddress}/offers/allOffers`, {
-                    method: 'GET',
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
+    //    fonction de rafraichissement de la liste d'offres
+    const onRefresh = () => {
+        // console.log('res')
+        setRefreshing(true); // Démarre le rafraîchissement
+        callOfData(); // Appelle la fonction pour récupérer les nouvelles données
+    };
 
-                        if (data.offers) {
-                            setOffersData(() => { return data.offers.filter((el) => { return !Favorites?.includes(el._id) }) });
-
-                        }
-
-                    });
-            })();
-        } else {
-            setOffersData(resultSearchUser)
-            // console.log(resultSearchUser)
-        }
-    }, [resultSearchUser, Favorites]);
-
-
-
-    // const onRefresh = () => {
-    //     console.log('res')
-    //     setRefreshing(true); // Démarre le rafraîchissement
-    //     callOfData(); // Appelle la fonction pour récupérer les nouvelles données
-    // };
-
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         if (resultSearchUser) {
-    //             setOffersData(resultSearchUser)
-    //             console.log(resultSearchUser)
-    //         } else {
-    //             // setOffersData([]);
-    //             // console.log(backendAddress)
-    //             callOfData()
-    //         }
-    //     }, [resultSearchUser, Favorites])
-    // )
+    //   au focus de la page si une recherche de produit est dans le reducer les offres correspondent au resultat de recherche 
+    //   sinon un appel de toutes les données est effectué 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (resultSearchUser) {
+                setOffersData(resultSearchUser)
+            } else {
+                callOfData()
+            }
+        }, [resultSearchUser, Favorites])
+    )
     useEffect(() => {
         return () => dispatch(newSearch(""));
     }, [Favorites]);
 
+    // fonction de suppression de recherche 
     const deleteSearch = () => {
         dispatch(newSearch())
         dispatch(nameSearch())
         dispatch(filterApply(false))
     }
+
+    // map de toutes les offres 
     const offers = offersData && offersData.map((data, i) => {
         const isLiked = Favorites?.some((offer) => {
             //    console.log(offer._id)
@@ -99,14 +93,12 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
             navigation={navigation}
             date={data.dateOfCreation}
             route={route}
-            isLiked={isLiked}
+        // isLiked={isLiked}
         />;
-    }
-    );
+    });
+
     return (
-
         <View style={styles.container}>
-
             <Header navigation={navigation} />
             <InputSearch />
             <View style={styles.containerContent}>
@@ -129,32 +121,18 @@ export default function AcceuilScreen({ navigation, route }) {// ne pas mettre P
                         </TouchableOpacity>
                     </View>
                 }
-                <ScrollView
-                    style={styles.scrollView}
-                //  refreshControl={
-                //     <RefreshControl
-                //         refreshing={refreshing}
-                //         onRefresh={onRefresh}
-                //     />
-                // }
+                <ScrollView style={styles.scrollView} refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />}
                 >
-                    {offersData ?
 
-                        <View style={styles.productList}>
-                            {offers}
-                        </View> :
-                        <AlternHome />
-
-                    }
-
+                    <View style={styles.productList}>
+                        {offers}
+                    </View>
                 </ScrollView>
             </View>
-
-
-
-
-
-
         </View>
     );
 }
@@ -164,24 +142,15 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
 
     containerContent: {
         flex: 1,
         borderRadius: 20,
-        // marginTop: 100,
         backgroundColor: 'white',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
     scrollView: {
-        // backgroundColor: 'red',
         padding: 3,
-        // marginHorizontal: 2,
-        // marginVertical: 2,
-        // minHeight: '40%',
         maxHeight: '100%',
     },
     productList: {
@@ -190,12 +159,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         width: '100%',
         height: '100%',
-        // minHeight: '45%',
-        // padding: 0,
         paddingBottom: '1%',
-        // backgroundColor: 'black',
-        // justifyContent: 'center',
-        // alignItems: 'center',
     },
     votreRecherche: {
         flexDirection: 'row'

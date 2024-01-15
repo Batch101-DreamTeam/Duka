@@ -46,8 +46,6 @@ router.post('/', async (req, res) => {
   const tokenBuyer = req.body.tokenBuyer;
   const tokenSeller = req.body.tokenSeller;
 
-
-
   const { idProduct, text, username, chatname, createdAt } = req.body;
   const alreadyFound = await ChatChannel.findOne({ name: chatname });
   await pusher.trigger(chatname, 'message', req.body);
@@ -55,19 +53,6 @@ router.post('/', async (req, res) => {
   if (!alreadyFound) {
     let buyer = await User.findOne({ token: tokenBuyer })
     let seller = await User.findOne({ token: tokenSeller })
-    // User.updateOne(
-
-    //     { buyer: buyer._id },
-    //     { $push: { conversations: { chatname } } }
-    // ).exec();
-
-
-    // User.updateOne(
-    //     { seller: seller._id },
-    //     { $push: { conversations: { chatname } } }
-    // ).exec();
-
-
     const newChatChannel = new ChatChannel({
       name: chatname,
       buyer: buyer._id,
@@ -80,43 +65,9 @@ router.post('/', async (req, res) => {
         text: text,
         createdAt: createdAt,
       },
-
-
     })
     newChatChannel.save().then((data) => {
 
-      // console.log(data)
-      // const id = data._id;
-
-      // console.log(buyer)
-      // User.updateOne(
-      //     { username: buyer.username },
-      //     { $set: { conversations: { chatname } } }
-      // )
-      // User.updateOne(
-      //     { username: seller.username },
-      //     { $set: { conversations: { chatname } } }
-      // )
-      // User.updateOne(
-      //     { _id: buyer._id },
-      //     {
-      //         $set:
-      //         {
-      //             conversations: chatname,
-
-      //         }
-      //     }
-      // )
-      // User.updateOne(
-      //     { _id: seller._id },
-      //     {
-      //         $set:
-      //         {
-      //             conversations: chatname,
-
-      //         }
-      //     }
-      // )
       buyer = User.updateOne({
         token: tokenBuyer
       }, { $set: { conversations: chatname } });
@@ -127,15 +78,6 @@ router.post('/', async (req, res) => {
       console.log('Save new chat!');
 
     })
-
-    // User.updateOne(
-    //     { buyer: buyer._id },
-    //     { $push: { conversations: { chatname } } }
-    // ).exec();
-    // User.updateOne(
-    //     { seller: seller._id },
-    //     { $push: { conversations: { chatname } } }
-    // ).exec();
 
     res.json({ result: true });
   }
@@ -149,8 +91,6 @@ router.post('/', async (req, res) => {
     return
   }
   ;
-
-
 });
 
 // display previous messages by chatname

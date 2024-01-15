@@ -44,7 +44,6 @@ export default function Inscription() {
             setPasswordDifferent(true)
             setEye(true)
         }
-
     }, [isFocused]);
 
     const checkConnection = () => {
